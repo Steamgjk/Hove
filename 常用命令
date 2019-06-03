@@ -1,0 +1,82 @@
+scp -r beatbat@12.12.10.13:/home/beatbat/pytorch-distributed-example/mnist-pytorch-v1.0.1/* /home/beatbat/pytorch-distributed-example/mnist-pytorch-v1.0.1/       
+
+scp -r beatbat@12.12.10.13:/home/beatbat/Pytorch-Work /home/beatbat/
+gcc -shared -o glue.so -fPIC glue.c -lpthread
+
+ps -aux|grep python|cut -c 9-15|xargs kill -9
+
+/usr/local/cuda/bin/nvprof --profile-from-start off --export-profile test.nvvp -f --print-gpu-trace --log-file test.txt  python worker_process-p2p.py --wid 0 --bs 32
+
+
+3.55 ~ 3.56    10ms   
+
+772ms ~ 782ms  10ms 
+
+bs1  110~120ms  
+bs4  ~0.4s 400ms
+
+160459560
+
+1605632 
+1605632 1605632
+401408  1605632
+		1605632
+
+
+bs1  5.63  6.45  700ms
+
+IP:
+39/40/97/44
+
+export GLOO_SOCKET_IFNAME=eth2
+
+export GLOO_SOCKET_IFNAME=eth3
+
+useradd beatbat
+vim /etc/sudoers
+passwd beatbat
+scp -r beatbat@12.12.10.13:/home/beatbat/Anaconda3-5.3.1-Linux-x86_64.sh /home/beatbat/
+scp -r beatbat@12.12.10.13:/home/beatbat/.pip /home/beatbat/
+
+source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+conda config --prepend channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+
+
+conda config --remove-key channels
+conda config --prepend channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+conda create -n py37 python=3.7
+conda activate py37
+conda install pytorch torchvision cudatoolkit=9.0 -c https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+conda deactivate
+
+[global]
+index-url = https://pypi.mirrors.ustc.edu.cn/simple/
+[install]
+trusted-host=mirrows.aliyun.com
+
+pip install --upgrade pip
+pip install torch torchvision torchsummary
+
+scp -r beatbat@12.12.10.13:/home/beatbat/.pip /home/beatbat/
+
+scp -r beatbat@12.12.10.13:/home/beatbat/*.sh /home/beatbat/
+
+scp -r beatbat@12.12.10.13:/home/beatbat/Pytorch-Work /home/beatbat/
+
+scp -r beatbat@12.12.10.12:/home/beatbat/Pytorch-Work /home/beatbat/
+
+scp -r beatbat@12.12.10.11:/home/beatbat/Pytorch-Work /home/beatbat/
+
+source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+
+python MultiPipe.py --wid $WID --wn 4 --bs 8 --subbs 1
+
+
+# 激活环境
+source activate
+# 退出环境
+source deactivate
+
+interface ethernet 1/25 speed 10G force
+
+python MultiPipe.py --wid $WID --wn 8 --bs 4 --subbs 1 --nproc 1 --gn 3 --gsz 3 --prt 23112
