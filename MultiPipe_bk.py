@@ -240,14 +240,6 @@ def train_proc(rank, bs, subbs, wid, wn, nproc, sub_net, sync_lock, fp_head_list
                     bp_iter = 0
                     shared_cnters[3].zero_()
                     local_step += 1
-                    if rank == 0:
-                        if global_step == 10:
-                            sta = time.time()
-                            print("sta  ", sta)
-                        if global_step > 10 and global_step % 10 == 0:
-                            ed =time.time()
-                            ac_time = ed - sta
-                            print(global_step, " ", ac_time/(local_step-10))
                     #print(wid, " ", sync_iter)
             #FP has not reached the threshold and can be executed
             if fp_iter < shared_cnters[0]:
@@ -355,7 +347,8 @@ def sync_proc(rank, bs, subbs, wid, wn, nproc, sub_net, sync_lock, grad_dict, sh
 
     for name, param in sub_net.named_parameters():
         param.grad = grad_dict[name]
-
+    sta = 0
+    ed = 0
     while True:
         if sync_counter == nproc:
             #print("should Sync") #Allreduce
@@ -365,6 +358,13 @@ def sync_proc(rank, bs, subbs, wid, wn, nproc, sub_net, sync_lock, grad_dict, sh
             sync_counter.zero_()
             global_step += 1
             #("sync FIN")
+            if global_step == 10:
+                sta = time.time()
+                print("sta  ", sta)
+            if global_step > 10 and global_step % 10 == 0:
+                ed =time.time()
+                ac_time = ed - sta
+                print(global_step.item(), " ", float(ac_time)/(global_step.item()-10))
         else:
             time.sleep(0.001)
         #    print(sync_counter, " == ", nproc)
