@@ -42,6 +42,7 @@ source /home/beatbat/anaconda3/etc/profile.d/conda.sh
 conda config --prepend channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
 
 
+
 conda config --remove-key channels
 conda config --prepend channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
 conda create -n py37 python=3.7
@@ -80,3 +81,5 @@ source deactivate
 interface ethernet 1/25 speed 10G force
 
 python MultiPipe.py --wid $WID --wn 9 --bs 4 --subbs 1 --nproc 1 --gn 3 --gsz 3 --prt 23112
+
+python worker-allreduce-baseline.py --wid $WID --wn 9 --bs 4 --nproc 1 --prt 23112
