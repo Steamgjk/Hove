@@ -28,9 +28,18 @@ bs1  5.63  6.45  700ms
 IP:
 39/40/97/44
 
+
+
+	
+106.13.68.218
 export GLOO_SOCKET_IFNAME=eth2
 
 export GLOO_SOCKET_IFNAME=eth3
+
+export CUDA_VISIBLE_DEVICES='0'
+export GLOO_SOCKET_IFNAME=enp0s3
+python worker-allreduce-baseline.py --wid $WID --wn 3 --bs 4 --nproc 1 --prt 23112 --ip 172.16.0.64
+python MultiPipe_bk.py --wid $WID --wn 3 --bs 4 --subbs 4 --nproc 3 --prt 23112 --ip 172.16.0.64
 
 useradd beatbat
 vim /etc/sudoers
