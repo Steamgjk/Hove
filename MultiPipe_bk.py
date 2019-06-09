@@ -41,6 +41,7 @@ parser.add_argument('--subbs', default=1, type=int, help='sub batch size')
 parser.add_argument('--nproc', default=1, type=int, help='number of procs')
 parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Address')
 parser.add_argument('--prt', default="21331", type=str, help='Master Port')
+parser.add_argument('--partition', default=[0,28,53,-1], nargs='+', type=int)
 args = parser.parse_args()
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -51,15 +52,46 @@ work_partition = [0,14,18,37,-1]
 boundary_shape = [[subbs, 128, 56, 56], [subbs, 256, 56, 56],[subbs, 512, 28, 28]]
 boundary_size = [subbs*128*56*56, subbs*256*56*56, subbs*512*28*28]
 '''
+'''
 work_partition = [0,14,37,-1]
 boundary_shape = [[subbs, 128, 56, 56], [subbs, 512, 28, 28]]
 boundary_size = [subbs*128*56*56, subbs*512*28*28]
+'''
+work_partition = [0,28,53,-1]
+boundary_shape = [[subbs, 512, 28, 28], [subbs, 512, 7, 7]]
+boundary_size = [subbs*512*28*28, subbs*512*7*7]
+
 #VGG19 54
 
+def gen_work_info(partition, wid, wn, bs, subbs):
+    if len(partition)< wn:
+        return None
+    f= open("./vgg_info.dump", "rb")
+    profile_list = pickle.load(f)
+    cnt  = 0
+    for prof in profile_list:
+        print(cnt, " ", prof["shape"])
+        cnt += 1
+    for layer_id in partition:
+        if profile_list[layer_id]["type"]== type(nn.ReLU):
+            print("layer_id=",layer_id, " Relu") 
+            return None
+    print(partition)
+    input_shp = profile_list[partition[wid]]["shape"]
+    print("pre input_shp=", input_shp)
+    input_shp[0] *= subbs
+    if not wid == wn-1:
+        output_shp = profile_list[partition[wid+1]]["shape"]
+        print("pre output_shp=", output_shp)
+        output_shp[0] *= subbs
+    else:
+        output_shp = None
+    print("input_shp=",input_shp, "output_shp=",output_shp)
+    #exit(0)
+    return input_shp, output_shp
 
-
-def gen_fp_bp_tensor_list(iter_thresh, wid, wn):
-    global boundary_size, boundary_shape
+def gen_fp_bp_tensor_list(iter_thresh, wid, wn, input_shp, output_shp):
+    #global boundary_size, boundary_shape
     fp_head_list = []
     fp_tail_list = []
     bp_head_list = []
@@ -70,11 +102,11 @@ def gen_fp_bp_tensor_list(iter_thresh, wid, wn):
         bp_head_tensor = None
         bp_tail_tensor = None
         if not wid == 0:
-            fp_head_tensor = torch.zeros(boundary_shape[wid-1],dtype=torch.float)
-            bp_head_tensor = torch.zeros(boundary_shape[wid-1],dtype=torch.float)
+            fp_head_tensor = torch.zeros(input_shp,dtype=torch.float)
+            bp_head_tensor = torch.zeros(input_shp,dtype=torch.float)
         if not wid == wn -1:
-            fp_tail_tensor = torch.zeros(boundary_shape[wid], dtype=torch.float)
-            bp_tail_tensor = torch.zeros(boundary_shape[wid], dtype=torch.float)
+            fp_tail_tensor = torch.zeros(output_shp, dtype=torch.float)
+            bp_tail_tensor = torch.zeros(output_shp, dtype=torch.float)
         if fp_head_tensor is not None:
             fp_head_tensor =  fp_head_tensor.share_memory_()
         if fp_tail_tensor is not None:
@@ -388,6 +420,10 @@ if __name__ == '__main__':
     wid = args.wid
     bs = args.bs
     subbs = args.subbs
+    work_partition = args.partition
+    input_shp, output_shp = gen_work_info(work_partition, wid, wn, bs, subbs)
+    print("Work Partition:", work_partition, input_shp, output_shp)
+
     iter_thresh = int(bs/subbs)
     num_processes = args.nproc
     criterion = nn.CrossEntropyLoss()
@@ -412,7 +448,7 @@ if __name__ == '__main__':
 
     for rank in range(num_processes):
         #fp_head_tensor, fp_tail_tensor, bp_head_tensor, bp_tail_tensor = gen_fp_bp_tensor_list(bs, wid, wn)
-        fp_head_list, fp_tail_list, bp_head_list, bp_tail_list= gen_fp_bp_tensor_list(iter_thresh, wid, wn)
+        fp_head_list, fp_tail_list, bp_head_list, bp_tail_list= gen_fp_bp_tensor_list(iter_thresh, wid, wn, input_shp, output_shp)
         #print(fp_tail_tensor.size())
         #print("########")
         shared_cnters = gen_shared_counter()

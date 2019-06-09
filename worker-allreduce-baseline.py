@@ -77,6 +77,9 @@ def train_proc(rank, bs,  wid, wn, nproc):
         inputs = fake_input.to(device)
         targets = fake_target.to(device)
         outputs = sub_net(inputs)
+        #print(targets.size())  #4
+        #print(outputs.size())  # [4,1000]
+        #exit(0)
         loss = criterion(outputs, targets)
         loss.backward()
         comm_time_sta = time.time()

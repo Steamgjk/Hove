@@ -92,3 +92,73 @@ interface ethernet 1/25 speed 10G force
 python MultiPipe.py --wid $WID --wn 9 --bs 4 --subbs 1 --nproc 1 --gn 3 --gsz 3 --prt 23112
 
 python worker-allreduce-baseline.py --wid $WID --wn 9 --bs 4 --nproc 1 --prt 23112
+
+python MultiPipe_bk.py --wid $WID --wn 3 --bs 4 --subbs 4 --nproc 3 --prt 23112 --ip 12.12.11.11
+export GLOO_SOCKET_IFNAME=eth3
+
+Relu 层不能开头，因为反向传播时候没有backward_ctx
+Conv, batchNorm, MaxPool，AvgPool 均可以打头
+
+
+0        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.conv.Conv2d'>
+1        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+2        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.activation.ReLU'>
+3        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.conv.Conv2d'>
+4        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+5        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.activation.ReLU'>
+6        torch.Size([1, 64, 112, 112])   <class 'torch.nn.modules.pooling.MaxPool2d'>
+7        torch.Size([1, 128, 112, 112])          <class 'torch.nn.modules.conv.Conv2d'>
+8        torch.Size([1, 128, 112, 112])          <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+9        torch.Size([1, 128, 112, 112])          <class 'torch.nn.modules.activation.ReLU'>
+10       torch.Size([1, 128, 112, 112])          <class 'torch.nn.modules.conv.Conv2d'>
+11       torch.Size([1, 128, 112, 112])          <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+12       torch.Size([1, 128, 112, 112])          <class 'torch.nn.modules.activation.ReLU'>
+13       torch.Size([1, 128, 56, 56])    <class 'torch.nn.modules.pooling.MaxPool2d'>
+14       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.conv.Conv2d'>
+15       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+16       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.activation.ReLU'>
+17       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.conv.Conv2d'>
+18       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+19       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.activation.ReLU'>
+20       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.conv.Conv2d'>
+21       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+22       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.activation.ReLU'>
+23       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.conv.Conv2d'>
+24       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+25       torch.Size([1, 256, 56, 56])    <class 'torch.nn.modules.activation.ReLU'>
+26       torch.Size([1, 256, 28, 28])    <class 'torch.nn.modules.pooling.MaxPool2d'>
+27       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.conv.Conv2d'>
+28       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+29       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.activation.ReLU'>
+30       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.conv.Conv2d'>
+31       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+32       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.activation.ReLU'>
+33       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.conv.Conv2d'>
+34       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+35       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.activation.ReLU'>
+36       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.conv.Conv2d'>
+37       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+38       torch.Size([1, 512, 28, 28])    <class 'torch.nn.modules.activation.ReLU'>
+39       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.pooling.MaxPool2d'>
+40       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.conv.Conv2d'>
+41       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+42       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.activation.ReLU'>
+43       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.conv.Conv2d'>
+44       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+45       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.activation.ReLU'>
+46       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.conv.Conv2d'>
+47       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+48       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.activation.ReLU'>
+49       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.conv.Conv2d'>
+50       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
+51       torch.Size([1, 512, 14, 14])    <class 'torch.nn.modules.activation.ReLU'>
+52       torch.Size([1, 512, 7, 7])      <class 'torch.nn.modules.pooling.MaxPool2d'>
+53       torch.Size([1, 512, 7, 7])      <class 'torch.nn.modules.pooling.AvgPool2d'>
+54       torch.Size([1, 4096])   <class 'torch.nn.modules.linear.Linear'>
+55       torch.Size([1, 4096])   <class 'torch.nn.modules.linear.Linear'>
+56       torch.Size([1, 4096])   <class 'torch.nn.modules.linear.Linear'>
+
+
+
+bs=4, channel=[128,128] layer=2    0.22075464487075805
+bs=4, channel=[128,128] layer=3    0.32630832433700563
