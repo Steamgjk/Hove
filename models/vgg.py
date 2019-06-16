@@ -92,7 +92,7 @@ class VGG(nn.Module):
         self.head_layer_to_send = []
         self.tail_layer_to_send = []
         #TODO  only keep one virtual layer
-
+        '''
         self.sta_lidx = 0
         self.end_lidx = self.total_layer_num
         if not sta_lidx < 0:
@@ -101,6 +101,9 @@ class VGG(nn.Module):
             self.end_lidx = end_lidx
         if not pipe_rank < 0:
             self.pipe_rank = pipe_rank
+        '''
+        self.sta_lidx = sta_lidx
+        self.end_lidx = end_lidx
         self.working_layer_arr = self.feature_arr[self.sta_lidx:self.end_lidx]
         self.virtual_layer = HookLayer()
         self.features = nn.Sequential(*([self.virtual_layer]+self.working_layer_arr))
@@ -110,7 +113,7 @@ class VGG(nn.Module):
         input_dim = 512*7*7
         output_dim = 4096
         class_num = 1000
-        if self.end_lidx == self.total_layer_num:
+        if self.end_lidx == -1:
             #self.fc_layers = nn.Sequential(nn.Linear(512, 512),nn.Linear(512, 512),nn.Linear(512, 512))
             #self.classifier = nn.Linear(512, 10)
             self.fc_layers = nn.Sequential(nn.Linear(input_dim, output_dim),nn.Linear(output_dim, output_dim),nn.Linear(output_dim, output_dim))
@@ -171,9 +174,9 @@ class VGG(nn.Module):
         for layer in self.features:
             cnt += 1
             out = layer(out)
-            #print(type(layer))
+            print(type(layer), "size:", out.size())
 
-        if self.end_lidx == self.total_layer_num:
+        if self.end_lidx == -1:
             #print("fc")    
             out = out.view(out.size(0), -1)
             out = self.fc_layers(out)

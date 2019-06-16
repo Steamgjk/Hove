@@ -94,6 +94,11 @@ python MultiPipe.py --wid $WID --wn 9 --bs 4 --subbs 1 --nproc 1 --gn 3 --gsz 3 
 python worker-allreduce-baseline.py --wid $WID --wn 9 --bs 4 --nproc 1 --prt 23112
 
 python MultiPipe_bk.py --wid $WID --wn 3 --bs 4 --subbs 4 --nproc 3 --prt 23112 --ip 12.12.11.11
+
+python Flex_demo.py --wid $WID --wn 4 --bs 4 --subbs 4 --prt 23112 --ip 12.12.11.11
+
+
+
 export GLOO_SOCKET_IFNAME=eth3
 
 Relu 层不能开头，因为反向传播时候没有backward_ctx
@@ -162,3 +167,4 @@ Conv, batchNorm, MaxPool，AvgPool 均可以打头
 
 bs=4, channel=[128,128] layer=2    0.22075464487075805
 bs=4, channel=[128,128] layer=3    0.32630832433700563
+

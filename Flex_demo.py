@@ -48,18 +48,21 @@ parser.add_argument('--subbs', default=1, type=int, help='sub batch size')
 parser.add_argument('--nproc', default=1, type=int, help='number of procs')
 parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Address')
 parser.add_argument('--prt', default="21331", type=str, help='Master Port')
-parser.add_argument('--partition', default=[0,28,53,-1], nargs='+', type=int)
+parser.add_argument('--partition', default=[0,26, 0, 26, 26, 53, 53,-1], nargs='+', type=int)
 args = parser.parse_args()
 
+if args.wid == 0:
+    os.environ["CUDA_VISIBLE_DEVICES"]='0'
+else:
+    os.environ["CUDA_VISIBLE_DEVICES"]='1'
+'''
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
 subbs = args.subbs
-
 work_partition = [0,28,53,-1]
 boundary_shape = [[subbs, 512, 28, 28], [subbs, 512, 7, 7]]
 boundary_size = [subbs*512*28*28, subbs*512*7*7]
+'''
 
-successors=[2,2,3,-1]
 #VGG19 54
 
 def gen_work_info(partition, sta_lidx, end_lidx, wid, wn, pd, subbs):
@@ -67,10 +70,12 @@ def gen_work_info(partition, sta_lidx, end_lidx, wid, wn, pd, subbs):
         return None
     f= open("./vgg_info.dump", "rb")
     profile_list = pickle.load(f)
+
     cnt  = 0
     for prof in profile_list:
         print(cnt, " ", prof["shape"])
         cnt += 1
+    #exit(0)
     for layer_id in partition:
         if profile_list[layer_id]["type"]== type(nn.ReLU):
             print("layer_id=",layer_id, " Relu") 
@@ -78,14 +83,15 @@ def gen_work_info(partition, sta_lidx, end_lidx, wid, wn, pd, subbs):
     print(partition)
     input_shp = profile_list[sta_lidx]["shape"]
     print("pre input_shp=", input_shp)
-    input_shp[0] *= (subbs / pd)
+    input_shp[0] *= int(subbs / pd)
     if not wid == wn-1:
         output_shp = profile_list[end_lidx]["shape"]
         print("pre output_shp=", output_shp)
-        output_shp[0] *= (subbs / pd)
+        output_shp[0] *= int(subbs / pd)
     else:
         output_shp = None
     print("input_shp=",input_shp, "output_shp=",output_shp)
+    #print("input_shp type=",type(input_shp[0]))
     #exit(0)
     return input_shp, output_shp
 
@@ -130,26 +136,22 @@ def init_processes(rank, size, backend='gloo'):
     os.environ['MASTER_ADDR'] = args.ip
     os.environ['MASTER_PORT'] = args.prt
     dist.init_process_group(backend, rank=rank, world_size=size)
-    conv_ranks_1 = [0,1]
-    conv_ranks_2 = [0,1,2]
-    conv_group_1 = dist.new_group(ranks=conv_ranks_1, backend=backend)
-    conv_group_2 = dist.new_group(ranks=conv_ranks_2, backend=backend)
-    return conv_group_1, conv_group_2
-    '''
-    for i in range(gsz):
-        ranks = []
-        for j in range(gn):
-            ranks.append(base+i+j*gsz)
-        comm_gp = dist.new_group(ranks=ranks, backend='gloo')
-        comm_gp_list.append(comm_gp)
-    return comm_gp_list
-    '''
+    #fp_send:0; fp_recv:1; bp_send:2; bp_recv:3 
+    #wn = 4
+    allreduce_ranks = [16,17]
+    fp_gather_ranks = [0,4,9]
+    bp_scatter_ranks = [3,7,10]
+    allreduce_group = dist.new_group(ranks=allreduce_ranks, backend=backend)
+    fp_gather_group = dist.new_group(ranks=fp_gather_ranks, backend=backend)
+    bp_scatter_group = dist.new_group(ranks=bp_scatter_ranks, backend=backend)
+    return allreduce_group,fp_gather_group,bp_scatter_group
+
 
 
 def fp_send_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid, comm_rank, world_sz, bs, subbs, pd, input_shp, output_shp, fp_tail_list, shared_cnters, sta_lidx, end_lidx):
     #fp_send:0; fp_recv:1; bp_send:2; bp_recv:3 
     iter_thresh = bs/subbs 
-    conv_group_1, conv_group_2 = init_processes(comm_rank, world_sz)
+    allreduce_group,fp_gather_group,bp_scatter_group = init_processes(comm_rank, world_sz)
     print("fp_send_proc comm_rank=", comm_rank)
     #if wid == wn -1:
     if succ_wid == -1:
@@ -166,10 +168,10 @@ def fp_send_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid,
             #print("fp send ", comm_rank, "  -> ", dst_rank)
             #Hard code
             if wid == 0 or wid == 1:
-                dist.gather(tensor= fp_tail_list[local_fp_sent_counter], gather_list = place_tensor_list, dst = dst_rank, group = conv_group_2, async_op=False )
+                dist.gather(tensor= fp_tail_list[local_fp_sent_counter], gather_list = [], dst = dst_rank, group = fp_gather_group, async_op=False )
             elif wid == 2:
                 dist.send(tensor = fp_tail_list[local_fp_sent_counter], dst = dst_rank )
-            #print("fp send ", fp_tail_list[local_fp_sent_counter].numel())
+            print("wid=",wid, " fp send ", fp_tail_list[local_fp_sent_counter].numel())
             #print("fin fp send ", comm_rank, "  -> ", dst_rank)
             local_fp_sent_counter += 1
         else:
@@ -179,13 +181,12 @@ def fp_send_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid,
             local_fp_sent_counter = 0
             shared_cnters[1].zero_()
 
-def bp_send_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid, comm_rank, world_sz, bs, subbs, pd, input_shp, output_shp, fp_tail_list, shared_cnters, sta_lidx, end_lidx):
+def bp_send_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid, comm_rank, world_sz, bs, subbs, pd, input_shp, output_shp, bp_head_list, shared_cnters, sta_lidx, end_lidx):
     #fp_send:0; fp_recv:1; bp_send:2; bp_recv:3 
     iter_thresh = int(bs/subbs) 
-    conv_group_1, conv_group_2 = init_processes(comm_rank, world_sz)
+    allreduce_group,fp_gather_group,bp_scatter_group = init_processes(comm_rank, world_sz)
     print("bp_send_proc comm_rank=", comm_rank)
-    #if wid == 0:
-    if pred_wid == -1:
+    if wid == 0 or wid == 1:
         shared_cnters[2] = 0
         return
     local_bp_sent_counter = 0
@@ -198,9 +199,11 @@ def bp_send_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid,
             if wid == 3:
                 dist.send(tensor = bp_head_list[local_bp_sent_counter], dst = dst_rank )
             elif wid == 2:
-                slist =  bp_head_list[local_bp_sent_counter].chunk(chunks=2, dim=0)
+                slist =  list(bp_head_list[local_bp_sent_counter].chunk(chunks=2, dim=0))
+                place_tensor= slist[0]
                 slist.append(place_tensor)
-                dist.scatter(tensor=place_tensor, scatter_list=slist, src=scatter_src, group=conv_group_2, async_op=False)
+                dist.scatter(tensor=place_tensor, scatter_list=slist, src=scatter_src, group=bp_scatter_group, async_op=False)
+            print("wid=",wid, " bp send ")
             local_bp_sent_counter += 1
         else:
             time.sleep(0.001)
@@ -208,13 +211,12 @@ def bp_send_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid,
             local_bp_sent_counter = 0
             shared_cnters[2].zero_()
 
-def fp_recv_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid, comm_rank, world_sz, bs, subbs, pd, input_shp, output_shp, fp_tail_list, shared_cnters, sta_lidx, end_lidx):
-    world_sz =  nproc * wn *4  #+1
+def fp_recv_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid, comm_rank, world_sz, bs, subbs, pd, input_shp, output_shp, fp_head_list, shared_cnters, sta_lidx, end_lidx):
     #proc fp_send:0; fp_recv:1; bp_send:2; bp_recv:3 
     iter_thresh = int(bs/subbs) 
-    conv_group_1, conv_group_2 = init_processes(comm_rank, world_sz)
+    allreduce_group,fp_gather_group,bp_scatter_group = init_processes(comm_rank, world_sz)
     #print("fp_recv_proc comm_rank=", comm_rank)
-    if pred_wid == -1:
+    if wid == 0 or wid == 1:
         shared_cnters[0] = iter_thresh
         return
     src_rank = pred_wid * 4 
@@ -225,38 +227,39 @@ def fp_recv_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid,
             if wid == 3:
                 dist.recv(tensor = fp_head_list[shared_cnters[0]], src = src_rank)
             elif wid == 2:
-                glist = fp_head_list[shared_cnters[0]].chunks(chunks=2, dim=0)
+                glist = list(fp_head_list[shared_cnters[0]].chunk(chunks=2, dim=0))
+                place_tensor = glist[0]
+                print("place_tensor sz ", place_tensor.size())
                 glist.append(place_tensor)
-                dist.gather(tensor= place_tensor, gather_list = glist, dst = comm_rank, group = conv_group_2, async_op=False )
+                dist.gather(tensor= place_tensor, gather_list = glist, dst = comm_rank, group = fp_gather_group, async_op=False )
             shared_cnters[0] += 1
-            #print("Fin fp recv  ", comm_rank, " <- ", src_rank, " ", shared_cnters[0])
+            print("wid=",wid, " fp recv ")
         else:
             time.sleep(0.001)
 
-def bp_recv_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid, comm_rank, world_sz, bs, subbs, pd, input_shp, output_shp, fp_tail_list, shared_cnters, sta_lidx, end_lidx):
+def bp_recv_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn,  pred_wid, succ_wid, comm_rank, world_sz, bs, subbs, pd, input_shp, output_shp, bp_tail_list, shared_cnters, sta_lidx, end_lidx):
     #fp_send:0; fp_recv:1; bp_send:2; bp_recv:3 
     iter_thresh = int(bs/subbs) 
-    conv_group_1, conv_group_2 = init_processes(comm_rank, world_sz)
+    allreduce_group,fp_gather_group,bp_scatter_group = init_processes(comm_rank, world_sz)
     print("bp_recv_proc comm_rank=", comm_rank)
-    #if wid == wn-1:
-    if succ_wid == -1:
+    if wid == wn-1:
         shared_cnters[3] = iter_thresh
         return
     src_rank = succ_wid * 4 + 2
-    place_tensor_list = [torch.zeros(1)]
     while True:
         if shared_cnters[3] < iter_thresh:
             if wid == 2:
                 dist.recv(tensor = bp_tail_list[shared_cnters[3]], src = src_rank)
             elif wid == 0 or wid == 1:
-                dist.scatter(tensor=bp_tail_list[shared_cnters[3]], scatter_list=place_tensor_list, src=src_rank, group=conv_group_2, async_op=False)
+                dist.scatter(tensor=bp_tail_list[shared_cnters[3]], scatter_list=[], src=src_rank, group=bp_scatter_group, async_op=False)
             shared_cnters[3] += 1
+            print("wid=",wid, " bp_recv")
         else:
             time.sleep(0.001)
 
 
 
-def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, bs, subbs, pd, input_shp, output_shp,  sub_net, sync_lock, fp_head_list, fp_tail_list, bp_head_list, bp_tail_list, shared_cnters, train_step, global_step, sta_lidx, end_lidx):
+def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, pred_wid, succ_wid, bs, subbs, pd, input_shp, output_shp,  sub_net, fp_head_list, fp_tail_list, bp_head_list, bp_tail_list, shared_cnters, train_step, global_step, sta_lidx, end_lidx):
 
     pid = os.getpid()
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -270,7 +273,7 @@ def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, bs, subbs, pd, input_s
         fake_input = torch.randn(input_shp)
         print(fake_input.size())
     if end_lidx == -1:
-        fake_target = torch.from_numpy(np.random.randint(0,999,size=subbs/pd))
+        fake_target = torch.from_numpy(np.random.randint(0,999,size=int(subbs/pd)))
         criterion = nn.CrossEntropyLoss()
         print(fake_target.size())
     qu = Queue.Queue()
@@ -280,8 +283,7 @@ def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, bs, subbs, pd, input_s
         if not (local_step == global_step):
             time.sleep(0.001)
             continue
-        #if wid == 0:
-        if pred_wid == -1:
+        if wid == 0 or wid == 1:
             #先查BP 再 FP
             #fp_head_tensor_list, fp_tail_tensor_list, bp_head_tensor_list, bp_tail_tensor_list
             if bp_iter < fp_iter:
@@ -309,9 +311,8 @@ def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, bs, subbs, pd, input_s
                 qu.put(outputs)
                 shared_cnters[1] += 1
                 fp_iter += 1
-                #print(wid," ", rank, "  fp complete  ", fp_iter, "  ", bp_iter)
-        #elif wid == wn -1:
-        elif succ_wid == -1:
+                print(wid, "  fp complete  ", fp_iter, "  ", bp_iter)
+        elif wid == wn -1:
             #print("last worker")
             #FP has not reached the threshold and can be executed
             if fp_iter < shared_cnters[0]:
@@ -345,7 +346,8 @@ def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, bs, subbs, pd, input_s
                     bp_iter = 0
                     shared_cnters[0].zero_()
                     local_step += 1
-                    #print(wid, " ", sync_iter)
+                    print("wid={:d} global_step={:d}".format( int(wid), int(global_step) ))
+                    
         else:
             #middle
             #print("ff ", fp_iter, "  ", shared_cnters[0], " ", bp_iter)
@@ -379,7 +381,7 @@ def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, bs, subbs, pd, input_s
                     shared_cnters[0].zero_()
                     shared_cnters[3].zero_()
                     local_step += 1
-                    #print(wid, " ", sync_iter)
+                    print("wid={:d} global_step={:d}".format(int(wid), int(global_step)))
 
             #FP has not reached the threshold and can be executed
             #print("ff ", fp_iter, "  ", shared_cnters[0])
@@ -388,17 +390,17 @@ def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, bs, subbs, pd, input_s
                 inputs = fp_head_list[fp_iter].cuda()
                 outputs = sub_net(inputs)
                 qu.put(outputs)
+                print("debug: ", outputs.size(), output_shp)
                 fp_tail_list[fp_iter].copy_(outputs)
                 shared_cnters[1] += 1
                 fp_iter += 1
                 #print(wid,"  fp complete")
 
 
-
-def sync_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, comm_rank, world_sz, bs, subbs, pd,  sub_net, sync_lock, train_step, global_step):
+def sync_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, comm_rank, world_sz, bs, subbs, pd, sub_net,train_step, global_step):
     optimizer = optim.SGD(sub_net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
     print("sync_proc")
-    conv_group_1, conv_group_2 = init_processes(comm_rank, world_sz)
+    allreduce_group,fp_gather_group,bp_scatter_group = init_processes(comm_rank, world_sz)
     sta = 0
     ed = 0
     while True:
@@ -411,7 +413,7 @@ def sync_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, comm_rank, world_sz, bs
                 param.data.div_(2)
             for name,param in sub_net.named_parameters():
                 cpu_tensor = param.data.cpu()
-                dist.all_reduce(tensor=cpu_tensor, op=dist.ReduceOp.SUM, group=conv_group_1, async_op=False)
+                dist.all_reduce(tensor=cpu_tensor, op=dist.ReduceOp.SUM, group=allreduce_group, async_op=False)
                 param.data.copy_(cpu_tensor)
             
             global_step += 1
@@ -439,25 +441,38 @@ def gen_shared_grad(sub_net):
     return grad_dict
 
 if __name__ == '__main__':
-    conv_wid = args.conv_wid
-    conv_wn = args.conv_wn
-    fc_wid = args.fc_wid
-    fc_wn = args.fc_wn
-    pd = args.pd
-    wn = conv_wn + fc_wn
+    wid = args.wid
+    wn = args.wn
+    conv_wn = 3
+    fc_wn = 1
+    if wid == 0 or wid == 1:
+        conv_wid = wid
+        fc_wid = -1
+        succ_wid = 2
+        pred_wid = -1
+        pd = 2
+    elif wid == 2:
+        conv_wid = wid
+        fc_wid = -1
+        succ_wid = 3
+        pred_wid = -1
+        pd = 1
+    elif wid == 3:
+        conv_wid = -1
+        fc_wid = 0
+        succ_wid = -1
+        pred_wid = 2
+        pd =1
+    else:
+        print("wid invalid")
+        exit(0)
+
     # each worker has one send proc and one receive proc, and the first two has one additinal sync proc
     world_size = wn * 4 + 2
     fp_send_rank = wid * 4 
     fp_recv_rank = wid * 4 + 1
     bp_send_rank = wid * 4 + 2
     bp_recv_rank = wid * 4 + 3
-
-    if conv_wid < 0:
-        wid = conv_wn + fc_wid
-    else:
-        wid = conv_wid
-    succ_wid = args.succ
-    pred_wid = args.pred
     bs = args.bs
     subbs = args.subbs
     work_partition = args.partition
@@ -465,55 +480,49 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss()
     sta_lidx = work_partition[wid*2]
     end_lidx = work_partition[wid*2 + 1]
+    print("Work Partition:", work_partition)
+    print("sta_lidx={:d}, end_lidx={:d}".format(int(sta_lidx), int(end_lidx) ))
+    
     input_shp, output_shp = gen_work_info(work_partition, sta_lidx, end_lidx, wid, wn, pd, subbs)
-    print("Work Partition:", work_partition, input_shp, output_shp)
+    print(input_shp, "\t", output_shp)
 
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     sub_net = VGG('VGG19', sta_lidx = sta_lidx, end_lidx = end_lidx)
     sub_net.to(device)
-    train_proc_list = []
-    sync_proc_list = []
-    fp_send_proc_list = []
-    fp_recv_proc_list = []
-    bp_send_proc_list = []
-    bp_recv_proc_list = []
     # fp_to_send, fp_recved, bp_send, bp_recv, grad_aggregated  should be conter auto-increment
     sub_net.share_memory()
+
     #grad_dict = gen_shared_grad(sub_net)
-    sync_lock = mp.Lock()
+    #sync_lock = mp.Lock()
     train_step = torch.zeros(1, dtype=torch.int32)
     train_step = train_step.share_memory_()
     global_step = torch.zeros(1, dtype=torch.int32)
     global_step = global_step.share_memory_()
-
-
     fp_head_list, fp_tail_list, bp_head_list, bp_tail_list= gen_fp_bp_tensor_list(iter_thresh, wid, wn, input_shp, output_shp)
 
     shared_cnters = gen_shared_counter()
     
+ 
     #rank, bs, wid, wn,fp_tail_list, shared_cnters
     fp_send_p = mp.Process(target=fp_send_proc, kwargs={"conv_wid":conv_wid, "conv_wn":conv_wn, "fc_wid": fc_wid, "fc_wn":fc_wn, "wid":wid, "wn": wn, "pred_wid":pred_wid, "succ_wid":succ_wid,  "comm_rank":fp_send_rank, "world_sz":world_size,  "bs":bs, "subbs":subbs, "pd": pd, "input_shp":input_shp, "output_shp": output_shp, "fp_tail_list":fp_tail_list, "shared_cnters":shared_cnters, "sta_lidx": sta_lidx, "end_lidx": end_lidx})
     fp_send_p.start()
-    fp_send_proc_list.append(fp_send_p)
 
-    fp_recv_p = mp.Process(target=fp_recv_proc, kwargs={"conv_wid":conv_wid, "conv_wn":conv_wn, "fc_wid": fc_wid, "fc_wn":fc_wn, "wid":wid, "wn": wn,  "pred_wid":pred_wid, "succ_wid":succ_wid, "comm_rank":fp_recv_rank, "world_sz":world_size,   "bs":bs, "subbs":subbs, "pd": pd, "input_shp":input_shp, "output_shp": output_shp,  "fp_head_list": fp_head_list, "shared_cnters":shared_cnter, "sta_lidx": sta_lidx, "end_lidx": end_lidx})
+
+    fp_recv_p = mp.Process(target=fp_recv_proc, kwargs={"conv_wid":conv_wid, "conv_wn":conv_wn, "fc_wid": fc_wid, "fc_wn":fc_wn, "wid":wid, "wn": wn,  "pred_wid":pred_wid, "succ_wid":succ_wid, "comm_rank":fp_recv_rank, "world_sz":world_size,   "bs":bs, "subbs":subbs, "pd": pd, "input_shp":input_shp, "output_shp": output_shp,  "fp_head_list": fp_head_list, "shared_cnters":shared_cnters, "sta_lidx": sta_lidx, "end_lidx": end_lidx})
     fp_recv_p.start()
-    fp_recv_proc_list.append(fp_recv_p)
+
 
     bp_send_p = mp.Process(target=bp_send_proc, kwargs={"conv_wid":conv_wid, "conv_wn":conv_wn, "fc_wid": fc_wid, "fc_wn":fc_wn, "wid":wid, "wn": wn,  "pred_wid":pred_wid, "succ_wid":succ_wid, "comm_rank":bp_send_rank, "world_sz":world_size,  "bs":bs, "subbs":subbs, "pd": pd, "input_shp":input_shp, "output_shp": output_shp,  "bp_head_list": bp_head_list, "shared_cnters":shared_cnters,"sta_lidx": sta_lidx, "end_lidx": end_lidx})
     bp_send_p.start()
-    bp_send_proc_list.append(bp_send_p)
 
     bp_recv_p = mp.Process(target=bp_recv_proc, kwargs={"conv_wid":conv_wid, "conv_wn":conv_wn, "fc_wid": fc_wid, "fc_wn":fc_wn, "wid":wid, "wn": wn,  "pred_wid":pred_wid, "succ_wid":succ_wid, "comm_rank":bp_recv_rank, "world_sz":world_size,  "bs":bs, "subbs":subbs, "pd": pd, "input_shp":input_shp, "output_shp": output_shp,  "bp_tail_list": bp_tail_list, "shared_cnters":shared_cnters, "sta_lidx": sta_lidx, "end_lidx": end_lidx})
-    bp_recv_p.start()
-    bp_recv_proc_list.append(bp_recv_p)        
+    bp_recv_p.start()      
 
-    train_p = mp.Process(target=train_proc, kwargs={"conv_wid":conv_wid, "conv_wn":conv_wn, "fc_wid": fc_wid, "fc_wn":fc_wn, "wid":wid,  "wn": wn,  "bs":bs, "subbs":subbs, "pd": pd, "input_shp":input_shp, "output_shp": output_shp, "sub_net": sub_net, "sync_lock":sync_lock, "fp_head_list":fp_head_list, "fp_tail_list": fp_tail_list, "bp_head_list":bp_head_list, "bp_tail_list":bp_tail_list, "shared_cnters":shared_cnters,"train_step":train_step,  "global_step": global_step, "sta_lidx": sta_lidx, "end_lidx": end_lidx})
+    train_p = mp.Process(target=train_proc, kwargs={"conv_wid":conv_wid, "conv_wn":conv_wn, "fc_wid": fc_wid, "fc_wn":fc_wn, "wid":wid,  "wn": wn, "pred_wid":pred_wid, "succ_wid":succ_wid,  "bs":bs, "subbs":subbs, "pd": pd, "input_shp":input_shp, "output_shp": output_shp, "sub_net": sub_net, "fp_head_list":fp_head_list, "fp_tail_list": fp_tail_list, "bp_head_list":bp_head_list, "bp_tail_list":bp_tail_list, "shared_cnters":shared_cnters,"train_step":train_step,  "global_step": global_step, "sta_lidx": sta_lidx, "end_lidx": end_lidx})
     train_p.start()
-    train_proc_list.append(train_p)
 
     if wid == 0 or wid == 1:
         sync_rank = wn * 4 + wid
-
         sync_p = mp.Process(target=sync_proc, kwargs={"conv_wid":conv_wid, "conv_wn":conv_wn, "fc_wid": fc_wid, "fc_wn":fc_wn, "wid":wid, "wn": wn, "comm_rank":sync_rank, "world_sz":world_size,  "bs":bs, "subbs":subbs, "pd": pd, "sub_net": sub_net,  "train_step":train_step, "global_step": global_step})
         sync_p.start()
         sync_p.join()
