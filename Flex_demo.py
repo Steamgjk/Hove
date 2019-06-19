@@ -53,10 +53,12 @@ parser.add_argument('--t_iter', default="30", type=int, help='terminal iteration
 parser.add_argument('--partition', default=[0,26, 0, 26, 26, 53, 53,-1], nargs='+', type=int)
 args = parser.parse_args()
 
+'''
 if args.wid == 0:
     os.environ["CUDA_VISIBLE_DEVICES"]='0'
 else:
     os.environ["CUDA_VISIBLE_DEVICES"]='1'
+'''
 '''
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 subbs = args.subbs
