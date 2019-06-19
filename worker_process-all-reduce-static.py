@@ -22,7 +22,7 @@ from ctypes import *
 import pickle
 import time
 import torch.distributed as dist
-
+import numba.cuda as cuda
 # In-place aggregation
 
 #test_net = VGG("VGG19")
@@ -36,8 +36,14 @@ parser.add_argument('--wid', default=0, type=int, help='worker id')
 parser.add_argument('--wn', default=4, type=int, help='worker number')
 parser.add_argument('--pn', default=1, type=int, help='worker id')
 parser.add_argument('--bs', default=1, type=int, help='batch size')
-
+parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Address')
+parser.add_argument('--prt', default="21331", type=str, help='Master Port')
 args = parser.parse_args()
+
+if args.wid == 0:
+    os.environ["CUDA_VISIBLE_DEVICES"]='0'
+else:
+    os.environ["CUDA_VISIBLE_DEVICES"]='1'
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0  # best test accuracy
@@ -63,8 +69,8 @@ sub_optimizer = optim.SGD(sub_net.parameters(), lr=args.lr, momentum=0.9, weight
 
 def init_processes(rank, size, backend='gloo'):
     """ Initialize the distributed environment. """
-    os.environ['MASTER_ADDR'] = '12.12.10.13'
-    os.environ['MASTER_PORT'] = '29500'
+    os.environ['MASTER_ADDR'] = args.ip
+    os.environ['MASTER_PORT'] = args.prt
     dist.init_process_group(backend, rank=rank, world_size=size)
 
 def train():
@@ -72,7 +78,7 @@ def train():
     print("worker_id(rank)",worker_id, "  size:",str(worker_num)," batch_size=",batch_size )
     init_processes(worker_id,worker_num, 'gloo')
 
-    input("Worker End Connection Initialized") 
+    print("Worker End Connection Initialized") 
     global sub_net,sub_optimizer,device
     is_cpu_mode = False
     sub_net.train()
@@ -86,34 +92,34 @@ def train():
     loss = None
     sub_optimizer.zero_grad()
     sta = time.time()
-    #with torch.autograd.profiler.emit_nvtx():
-    while iter_n<= 100:
-        inputs = fake_input.to(device)
-        targets = fake_target.to(device)
-        outputs = sub_net(inputs)
-        loss = criterion(outputs, targets)
-        loss.backward()
-        comm_time_sta = time.time()
-        para_num = 0
-        for name, parameters in sub_net.named_parameters():
-            if(parameters.grad is not None):
-                grad_content = parameters.grad.to("cpu")
-                para_num += grad_content.numel()
-                dist.all_reduce(tensor=grad_content, op = dist.ReduceOp.SUM)
-                grad_content = grad_content/worker_num
-                parameters.grad = grad_content.to(device)
-        comm_time_ed = time.time()
-        sub_optimizer.step()
-        sub_optimizer.zero_grad()
-        #print("iter=",iter_n," comm_time=",str(comm_time_ed-comm_time_ed))
-        iter_n = iter_n + 1
-        
-        if iter_n%10 == 0:
-            ed = time.time()
-            print("iter_n=",iter_n," time=",(ed-sta*1.0), "comm_num=",para_num)
-        if iter_n == iteration_num:
-            exit(0)        
-
+    with torch.autograd.profiler.emit_nvtx():
+        cuda.profile_start()
+        while iter_n<= 10:
+            inputs = fake_input.to(device)
+            targets = fake_target.to(device)
+            outputs = sub_net(inputs)
+            loss = criterion(outputs, targets)
+            loss.backward()
+            comm_time_sta = time.time()
+            for name, parameters in sub_net.named_parameters():
+                if(parameters.grad is not None):
+                    grad_content = parameters.grad.to("cpu")
+                    dist.all_reduce(tensor=grad_content, op = dist.ReduceOp.SUM)
+                    grad_content = grad_content/worker_num
+                    parameters.grad = grad_content.to(device)
+            comm_time_ed = time.time()
+            sub_optimizer.step()
+            sub_optimizer.zero_grad()
+            print("iter=",iter_n )
+            iter_n = iter_n + 1
+            
+            if iter_n == 5:
+                print("Stop")
+                cuda.profile_stop()
+            if iter_n%10 == 0:
+                ed = time.time()
+                print("iter_n=",iter_n," time=",(ed-sta*1.0))  
+        #cuda.profile_stop()
 
 
 train()

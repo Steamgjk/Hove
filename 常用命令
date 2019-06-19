@@ -7,6 +7,22 @@ ps -aux|grep python|cut -c 9-15|xargs kill -9
 
 /usr/local/cuda/bin/nvprof --profile-from-start off --export-profile test.nvvp -f --print-gpu-trace --log-file test.txt  python worker_process-p2p.py --wid 0 --bs 32
 
+/usr/local/cuda/bin/nvprof --profile-from-start off --metrics achieved_occupancy --export-profile "base"${WID}".nvvp" -f --print-gpu-trace --log-file test.txt  python worker-allreduce-baseline.py --wid $WID --wn 4 --bs 4 --nproc 1 --prt 23113
+
+
+/usr/local/cuda/bin/nvprof --profile-from-start off --metrics achieved_occupancy --export-profile myprof.nvvp  -f --print-gpu-trace --log-file test.txt  
+
+
+
+nvprof -o prof.nvvp python worker_process-all-reduce-static.py  --wid $WID --wn 4 --bs 4  --prt 23113
+
+nvprof --profile-child-processes --profile-from-start off --metrics achieved_occupancy  --print-gpu-trace -o baseline-prof-%p.nvvp python worker-allreduce-baseline.py --wid $WID --wn 4 --bs 4 --nproc 1 --prt 23113
+
+
+ nvprof --profile-child-processes --profile-from-start off --metrics achieved_occupancy  --print-gpu-trace --log-file gpu_trace-%p.txt -o baseline-prof-%p.nvvp python worker-allreduce-baseline.py --wid $WID --wn 4 --bs 4 --nproc 1 --prt 23113
+
+
+nvprof --profile-child-processes --profile-from-start off --metrics achieved_occupancy  --print-gpu-trace --log-file flex-gpu_trace-%p.txt -o flex-prof-%p.nvvp python Flex_demo.py --wid $WID --wn 4 --bs 4 --subbs 4 --prt 23112 --ip 12.12.11.11
 
 3.55 ~ 3.56    10ms   
 
@@ -28,7 +44,7 @@ bs1  5.63  6.45  700ms
 IP:
 39/40/97/44
 
-
+https://docs.nvidia.com/cuda/profiler-users-guide/index.html
 
 	
 106.13.68.218
@@ -87,17 +103,33 @@ source activate
 # 退出环境
 source deactivate
 
-interface ethernet 1/25 speed 10G force
+
+ssh admin@192.168.15.24  密码admin， enable，然后configure terminal进入配置界面
+
+interface ethernet 1/5 speed 10G force  10.15
+interface ethernet 1/25 speed 10G force  11.15
+
+interface ethernet 1/21 speed 40G force
+interface ethernet 1/22 speed 40G force
+interface ethernet 1/23 speed 40G force
+interface ethernet 1/24 speed 40G force
+
 
 python MultiPipe.py --wid $WID --wn 9 --bs 4 --subbs 1 --nproc 1 --gn 3 --gsz 3 --prt 23112
 
 python worker-allreduce-baseline.py --wid $WID --wn 9 --bs 4 --nproc 1 --prt 23112
 
+python worker-allreduce-baseline.py --wid $WID --wn 4 --bs 4 --nproc 1 --prt 23112
+
 python MultiPipe_bk.py --wid $WID --wn 3 --bs 4 --subbs 4 --nproc 3 --prt 23112 --ip 12.12.11.11
 
 python Flex_demo.py --wid $WID --wn 4 --bs 4 --subbs 4 --prt 23112 --ip 12.12.11.11
 
+watch -n 0.1 -d nvidia-smi
 
+https://discuss.pytorch.org/t/how-to-call-cudaprofilerstart-cudaprofilerstop/33817
+
+https://z0ngqing.github.io/publication/
 
 export GLOO_SOCKET_IFNAME=eth3
 

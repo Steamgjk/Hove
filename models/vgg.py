@@ -87,7 +87,7 @@ class VGG(nn.Module):
     def __init__(self, vgg_name, sta_lidx = -1, end_lidx=-1, pipe_rank = -1):
         super(VGG, self).__init__()
         self.feature_arr = self._make_layers2(cfg[vgg_name]) 
-        self.total_layer_num = len(self.feature_arr)
+        self.conv_layer_num = len(self.feature_arr)
         self.working_layer_arr = []
         self.head_layer_to_send = []
         self.tail_layer_to_send = []
@@ -104,6 +104,10 @@ class VGG(nn.Module):
         '''
         self.sta_lidx = sta_lidx
         self.end_lidx = end_lidx
+        if self.sta_lidx is None or self.sta_lidx == -1:
+            self.sta_lidx = 0
+        if self.end_lidx is None or self.end_lidx == -1:
+            self.end_lidx = self.conv_layer_num
         self.working_layer_arr = self.feature_arr[self.sta_lidx:self.end_lidx]
         self.virtual_layer = HookLayer()
         self.features = nn.Sequential(*([self.virtual_layer]+self.working_layer_arr))
@@ -113,7 +117,7 @@ class VGG(nn.Module):
         input_dim = 512*7*7
         output_dim = 4096
         class_num = 1000
-        if self.end_lidx == -1:
+        if self.end_lidx == self.conv_layer_num:
             #self.fc_layers = nn.Sequential(nn.Linear(512, 512),nn.Linear(512, 512),nn.Linear(512, 512))
             #self.classifier = nn.Linear(512, 10)
             self.fc_layers = nn.Sequential(nn.Linear(input_dim, output_dim),nn.Linear(output_dim, output_dim),nn.Linear(output_dim, output_dim))
@@ -174,13 +178,14 @@ class VGG(nn.Module):
         for layer in self.features:
             cnt += 1
             out = layer(out)
-            print(type(layer), "size:", out.size())
+            #print(type(layer), "size:", out.size())
 
-        if self.end_lidx == -1:
+        if self.end_lidx == -1 or self.end_lidx == self.conv_layer_num:
             #print("fc")    
             out = out.view(out.size(0), -1)
             out = self.fc_layers(out)
             out = self.classifier(out)
+            #print("out sz:",out.size())
         #print("vgg forward OK")
         return out
 
