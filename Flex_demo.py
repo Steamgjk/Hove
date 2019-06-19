@@ -290,132 +290,132 @@ def train_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, pred_wid, succ_wid, bs
     local_step = 0
     sta = time.time()
     prof_on = False
-    with torch.autograd.profiler.emit_nvtx():
-        while True:
-            if local_step == 5 and prof_on == False:
-                cuda.profile_start()
-                prof_on = True
-                print("Prof Start")
-            if local_step == 10 and prof_on == True:
-                cuda.profile_stop()
-                prof_on = False
-                print("Prof Stop")
+    #with torch.autograd.profiler.emit_nvtx():
+    while True:
+        if local_step == 5 and prof_on == False:
+            cuda.profile_start()
+            prof_on = True
+            print("Prof Start")
+        if local_step == 10 and prof_on == True:
+            cuda.profile_stop()
+            prof_on = False
+            print("Prof Stop")
 
-            if not (local_step == global_step):
-                time.sleep(0.001)
-                continue
-            if wid == 0 or wid == 1:
-                #先查BP 再 FP
-                #fp_head_tensor_list, fp_tail_tensor_list, bp_head_tensor_list, bp_tail_tensor_list
-                if bp_iter < fp_iter:
-                    if bp_iter < shared_cnters[3]:
-                        backward_ctx = bp_tail_list[bp_iter].cuda()
-                        outputs = qu.get()
-                        outputs.backward(backward_ctx)
-                        bp_iter += 1
-                        #print(wid," ", rank, "  bp complete  ", fp_iter, " ", bp_iter)
-                    if bp_iter == iter_thresh:
-                        #bp_to_recv has reached bs, then it is time to update grad and reset cnter
-                        optimizer.step()
-                        optimizer.zero_grad()
-                        train_step += 1
-                        fp_iter = 0
-                        bp_iter = 0
-                        shared_cnters[3].zero_()
-                        local_step += 1
-                        #print(wid, " ", sync_iter)
-                #FP has not reached the threshold and can be executed
-                if fp_iter < shared_cnters[0]:
-                    inputs = fake_input.cuda()
-                    outputs = sub_net(inputs)
-                    fp_tail_list[fp_iter].copy_(outputs)
-                    qu.put(outputs)
-                    shared_cnters[1] += 1
-                    fp_iter += 1
-                    #print(wid, "  fp complete  ", fp_iter, "  ", bp_iter)
-            elif wid == wn -1:
-                #print("last worker")
-                #FP has not reached the threshold and can be executed
-                if fp_iter < shared_cnters[0]:
-                    fp_head_list[fp_iter].requires_grad = True
-                    inputs = fp_head_list[fp_iter].cuda()
-                    outputs = sub_net(inputs)
-                    #shared_cnters[1] += 1
-                    fp_iter += 1
-                    target = fake_target.cuda()
-                    loss = criterion(outputs, target)
-                    loss.backward()
-                    #print(HookFunc.hook_dict)
-                    #time.sleep(5)
+        if not (local_step == global_step):
+            time.sleep(0.001)
+            continue
+        if wid == 0 or wid == 1:
+            #先查BP 再 FP
+            #fp_head_tensor_list, fp_tail_tensor_list, bp_head_tensor_list, bp_tail_tensor_list
+            if bp_iter < fp_iter:
+                if bp_iter < shared_cnters[3]:
+                    backward_ctx = bp_tail_list[bp_iter].cuda()
+                    outputs = qu.get()
+                    outputs.backward(backward_ctx)
+                    bp_iter += 1
+                    #print(wid," ", rank, "  bp complete  ", fp_iter, " ", bp_iter)
+                if bp_iter == iter_thresh:
+                    #bp_to_recv has reached bs, then it is time to update grad and reset cnter
+                    optimizer.step()
+                    optimizer.zero_grad()
+                    train_step += 1
+                    fp_iter = 0
+                    bp_iter = 0
+                    shared_cnters[3].zero_()
+                    local_step += 1
+                    #print(wid, " ", sync_iter)
+            #FP has not reached the threshold and can be executed
+            if fp_iter < shared_cnters[0]:
+                inputs = fake_input.cuda()
+                outputs = sub_net(inputs)
+                fp_tail_list[fp_iter].copy_(outputs)
+                qu.put(outputs)
+                shared_cnters[1] += 1
+                fp_iter += 1
+                #print(wid, "  fp complete  ", fp_iter, "  ", bp_iter)
+        elif wid == wn -1:
+            #print("last worker")
+            #FP has not reached the threshold and can be executed
+            if fp_iter < shared_cnters[0]:
+                fp_head_list[fp_iter].requires_grad = True
+                inputs = fp_head_list[fp_iter].cuda()
+                outputs = sub_net(inputs)
+                #shared_cnters[1] += 1
+                fp_iter += 1
+                target = fake_target.cuda()
+                loss = criterion(outputs, target)
+                loss.backward()
+                #print(HookFunc.hook_dict)
+                #time.sleep(5)
+                #bp_ctx = HookFunc.hook_dict[pid]
+                if HookFunc.hook_dict[pid] is not None:
+                    #should be forked
+                    bp_head_list[bp_iter].copy_(HookFunc.hook_dict[pid])
+                    HookFunc.hook_dict[pid] = None
+                    shared_cnters[2] += 1
+                else:
+                    print("Err")
+                    exit(-1)
+                bp_iter += 1            
+                if bp_iter == iter_thresh:
+                    #bp_to_recv has reached bs, then it is time to update grad and reset cnter
+                    optimizer.step()
+                    optimizer.zero_grad()
+                    train_step += 1
+                    global_step += 1
+                    fp_iter = 0
+                    bp_iter = 0
+                    shared_cnters[0].zero_()
+                    local_step += 1
+                    #print("wid={:d} global_step={:d}".format( int(wid), int(global_step) ))
+                    
+        else:
+            #middle
+            #print("ff ", fp_iter, "  ", shared_cnters[0], " ", bp_iter)
+            if bp_iter < fp_iter:
+                #print("Pre fp vs bp ", fp_iter, " ", bp_iter)
+                if bp_iter < shared_cnters[3]:
+                    backward_ctx = bp_tail_list[bp_iter].cuda()
+                    outputs = qu.get()
+                    outputs.backward(backward_ctx)
                     #bp_ctx = HookFunc.hook_dict[pid]
+                    #exec('bp_ctx = HookFunc_{}.hook_dict["backward_ctx"]'.format(rank))
                     if HookFunc.hook_dict[pid] is not None:
                         #should be forked
                         bp_head_list[bp_iter].copy_(HookFunc.hook_dict[pid])
+                        #exec('HookFunc_{}.hook_dict["backward_ctx"]=None'.format(rank))
                         HookFunc.hook_dict[pid] = None
                         shared_cnters[2] += 1
                     else:
                         print("Err")
                         exit(-1)
-                    bp_iter += 1            
-                    if bp_iter == iter_thresh:
-                        #bp_to_recv has reached bs, then it is time to update grad and reset cnter
-                        optimizer.step()
-                        optimizer.zero_grad()
-                        train_step += 1
-                        global_step += 1
-                        fp_iter = 0
-                        bp_iter = 0
-                        shared_cnters[0].zero_()
-                        local_step += 1
-                        #print("wid={:d} global_step={:d}".format( int(wid), int(global_step) ))
-                        
-            else:
-                #middle
-                #print("ff ", fp_iter, "  ", shared_cnters[0], " ", bp_iter)
-                if bp_iter < fp_iter:
-                    #print("Pre fp vs bp ", fp_iter, " ", bp_iter)
-                    if bp_iter < shared_cnters[3]:
-                        backward_ctx = bp_tail_list[bp_iter].cuda()
-                        outputs = qu.get()
-                        outputs.backward(backward_ctx)
-                        #bp_ctx = HookFunc.hook_dict[pid]
-                        #exec('bp_ctx = HookFunc_{}.hook_dict["backward_ctx"]'.format(rank))
-                        if HookFunc.hook_dict[pid] is not None:
-                            #should be forked
-                            bp_head_list[bp_iter].copy_(HookFunc.hook_dict[pid])
-                            #exec('HookFunc_{}.hook_dict["backward_ctx"]=None'.format(rank))
-                            HookFunc.hook_dict[pid] = None
-                            shared_cnters[2] += 1
-                        else:
-                            print("Err")
-                            exit(-1)
-                        bp_iter += 1
-                        #print("fp vs bp ", fp_iter, " ", bp_iter)
-                    if bp_iter == iter_thresh:
-                        #bp_to_recv has reached bs, then it is time to update grad and reset cnter
-                        optimizer.step()
-                        optimizer.zero_grad()
-                        train_step += 1
-                        global_step += 1
-                        fp_iter = 0
-                        bp_iter = 0
-                        shared_cnters[0].zero_()
-                        shared_cnters[3].zero_()
-                        local_step += 1
-                        #print("wid={:d} global_step={:d}".format(int(wid), int(global_step)))
+                    bp_iter += 1
+                    #print("fp vs bp ", fp_iter, " ", bp_iter)
+                if bp_iter == iter_thresh:
+                    #bp_to_recv has reached bs, then it is time to update grad and reset cnter
+                    optimizer.step()
+                    optimizer.zero_grad()
+                    train_step += 1
+                    global_step += 1
+                    fp_iter = 0
+                    bp_iter = 0
+                    shared_cnters[0].zero_()
+                    shared_cnters[3].zero_()
+                    local_step += 1
+                    #print("wid={:d} global_step={:d}".format(int(wid), int(global_step)))
 
-                #FP has not reached the threshold and can be executed
-                #print("ff ", fp_iter, "  ", shared_cnters[0])
-                if fp_iter < shared_cnters[0]:
-                    fp_head_list[fp_iter].requires_grad = True
-                    inputs = fp_head_list[fp_iter].cuda()
-                    outputs = sub_net(inputs)
-                    qu.put(outputs)
-                    #print("debug: ", outputs.size(), output_shp)
-                    fp_tail_list[fp_iter].copy_(outputs)
-                    shared_cnters[1] += 1
-                    fp_iter += 1
-                    #print(wid,"  fp complete")
+            #FP has not reached the threshold and can be executed
+            #print("ff ", fp_iter, "  ", shared_cnters[0])
+            if fp_iter < shared_cnters[0]:
+                fp_head_list[fp_iter].requires_grad = True
+                inputs = fp_head_list[fp_iter].cuda()
+                outputs = sub_net(inputs)
+                qu.put(outputs)
+                #print("debug: ", outputs.size(), output_shp)
+                fp_tail_list[fp_iter].copy_(outputs)
+                shared_cnters[1] += 1
+                fp_iter += 1
+                #print(wid,"  fp complete")
 
 
 def sync_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, comm_rank, world_sz, bs, subbs, pd, sub_net,train_step, global_step):
