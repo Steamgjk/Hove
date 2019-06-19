@@ -41,6 +41,7 @@ parser.add_argument('--bs', default=1, type=int, help='batch size')
 parser.add_argument('--nproc', default=1, type=int, help='number of procs')
 parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Address')
 parser.add_argument('--prt', default="21331", type=str, help='Master Port')
+parser.add_argument('--t_iter', default="30", type=int, help='terminal iteration')
 args = parser.parse_args()
 
 '''
@@ -104,15 +105,15 @@ def train_proc(rank, bs,  wid, wn, nproc, global_step):
             #print("iter=",iter_n," comm_time=",str(comm_time_ed-comm_time_ed))
             global_step += 1
             
-            if global_step ==10:
+            if global_step ==1:
                 sta = time.time()
                 print("sta(10) = ", sta)
                 cuda.profile_start()
-            if global_step > 10 and global_step%10 == 0:
+            if global_step > 1 :
                 ed = time.time()
-                print("iter_n=",global_step," time=",float(1.0* ed-sta)/(1.0 * global_step-10))
-            if global_step == 20:
-                cuda.profile_stop()
+                print("iter_n=",global_step," time=",float(1.0* ed-sta)/(1.0 * global_step-1))
+            if global_step == args.t_iter:
+                #cuda.profile_stop()
                 print("Break")
                 break
     #print(prof)

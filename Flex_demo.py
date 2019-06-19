@@ -442,13 +442,13 @@ def sync_proc(conv_wid, conv_wn, fc_wid, fc_wn, wid, wn, comm_rank, world_sz, bs
             
             global_step += 1
             #print("sync FIN")
-            if global_step == 10:
+            if global_step == 1:
                 sta = time.time()
                 print("sta  ", sta)
-            if global_step > 10 and global_step % 10 == 0:
+            if global_step > 1 :
                 ed =time.time()
                 ac_time = ed - sta
-                print(global_step.item(), " ", float(ac_time)/(global_step.item()-10))
+                print(global_step.item(), " ", float(ac_time)/(global_step.item()-1))
         else:
             time.sleep(0.001)
         #    print(sync_counter, " == ", nproc)
