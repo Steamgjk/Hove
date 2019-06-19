@@ -43,11 +43,12 @@ parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Add
 parser.add_argument('--prt', default="21331", type=str, help='Master Port')
 args = parser.parse_args()
 
+'''
 if args.wid == 0:
     os.environ["CUDA_VISIBLE_DEVICES"]='0'
 else:
     os.environ["CUDA_VISIBLE_DEVICES"]='1'
-
+'''
 
 def init_processes(comm_rank, wid, wn, nproc, backend='gloo'):
     """ Initialize the distributed environment. """
