@@ -80,42 +80,42 @@ def train_proc(rank, bs,  wid, wn, nproc, global_step):
     sta = time.time()
     ed = None
     #with torch.autograd.profiler.emit_nvtx():
-    with torch.autograd.profiler.profile(use_cuda=True) as prof:
-        while True:
-            
-            inputs = fake_input.to(device)
-            targets = fake_target.to(device)
-            outputs = sub_net(inputs)
-            #print(targets.size())  #4
-            #print(outputs.size())  # [4,1000]
-            #exit(0)
-            loss = criterion(outputs, targets)
-            loss.backward()
-            comm_time_sta = time.time()
-            para_num = 0
-            for name, parameters in sub_net.named_parameters():
-                if(parameters.grad is not None):
-                    grad_content = parameters.grad.to("cpu")
-                    para_num += grad_content.numel()
-                    dist.all_reduce(tensor=grad_content, op = dist.ReduceOp.SUM)
-                    grad_content = grad_content/wn 
-                    parameters.grad.copy_(grad_content)
-            sub_optimizer.step()
-            sub_optimizer.zero_grad()
-            #print("iter=",iter_n," comm_time=",str(comm_time_ed-comm_time_ed))
-            global_step += 1
-            
-            if global_step ==5:
-                sta = time.time()
-                print("sta(10) = ", sta)
-                cuda.profile_start()
-            if global_step > 1 :
-                ed = time.time()
-                print("iter_n=",global_step.item()," time=",float(1.0* ed-sta)/(1.0 * global_step.item()-1))
-            if global_step == 10:
-                cuda.profile_stop()
-                print("Break")
-                break
+    #with torch.autograd.profiler.profile(use_cuda=True) as prof:
+    while True:
+        
+        inputs = fake_input.to(device)
+        targets = fake_target.to(device)
+        outputs = sub_net(inputs)
+        #print(targets.size())  #4
+        #print(outputs.size())  # [4,1000]
+        #exit(0)
+        loss = criterion(outputs, targets)
+        loss.backward()
+        comm_time_sta = time.time()
+        para_num = 0
+        for name, parameters in sub_net.named_parameters():
+            if(parameters.grad is not None):
+                grad_content = parameters.grad.to("cpu")
+                para_num += grad_content.numel()
+                dist.all_reduce(tensor=grad_content, op = dist.ReduceOp.SUM)
+                grad_content = grad_content/wn 
+                parameters.grad.copy_(grad_content)
+        sub_optimizer.step()
+        sub_optimizer.zero_grad()
+        #print("iter=",iter_n," comm_time=",str(comm_time_ed-comm_time_ed))
+        global_step += 1
+        
+        if global_step ==5:
+            sta = time.time()
+            print("sta(10) = ", sta)
+            cuda.profile_start()
+        if global_step > 1 :
+            ed = time.time()
+            print("iter_n=",global_step.item()," time=",float(1.0* ed-sta)/(1.0 * global_step.item()-1))
+        if global_step == 10:
+            cuda.profile_stop()
+            print("Break")
+            break
     #print(prof)
 
 
