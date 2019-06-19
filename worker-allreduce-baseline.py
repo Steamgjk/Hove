@@ -105,15 +105,15 @@ def train_proc(rank, bs,  wid, wn, nproc, global_step):
             #print("iter=",iter_n," comm_time=",str(comm_time_ed-comm_time_ed))
             global_step += 1
             
-            if global_step ==1:
+            if global_step ==5:
                 sta = time.time()
                 print("sta(10) = ", sta)
                 cuda.profile_start()
             if global_step > 1 :
                 ed = time.time()
                 print("iter_n=",global_step.item()," time=",float(1.0* ed-sta)/(1.0 * global_step.item()-1))
-            if global_step == args.t_iter:
-                #cuda.profile_stop()
+            if global_step == 10:
+                cuda.profile_stop()
                 print("Break")
                 break
     #print(prof)
