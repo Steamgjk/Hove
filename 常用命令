@@ -24,6 +24,9 @@ nvprof --profile-child-processes --profile-from-start off --metrics achieved_occ
 
 nvprof --profile-child-processes --profile-from-start off --metrics achieved_occupancy  --print-gpu-trace --log-file flex-gpu_trace-%p.txt -o flex-prof-%p.nvvp python Flex_demo.py --wid $WID --wn 4 --bs 4 --subbs 4 --prt 23112 --ip 12.12.11.11
 
+
+nvprof --profile-child-processes --profile-from-start off --print-gpu-trace --log-file flex-gpu_trace-%p.txt python Flex_demo.py --wid $WID --wn 4 --bs 4 --subbs 4 --prt 23112 --ip 12.12.11.11
+
 3.55 ~ 3.56    10ms   
 
 772ms ~ 782ms  10ms 
@@ -123,7 +126,7 @@ python worker-allreduce-baseline.py --wid $WID --wn 4 --bs 4 --nproc 1 --prt 231
 
 python MultiPipe_bk.py --wid $WID --wn 3 --bs 4 --subbs 4 --nproc 3 --prt 23112 --ip 12.12.11.11
 
-python Flex_demo.py --wid $WID --wn 4 --bs 4 --subbs 4 --prt 23112 --ip 12.12.11.11
+python Flex_demo.py --wid $WID --wn 4 --bs 32 --subbs 8 --prt 23112 --ip 12.12.11.11
 
 watch -n 0.1 -d nvidia-smi
 
@@ -135,6 +138,65 @@ export GLOO_SOCKET_IFNAME=eth3
 
 Relu 层不能开头，因为反向传播时候没有backward_ctx
 Conv, batchNorm, MaxPool，AvgPool 均可以打头
+
+
+
+##Baidu 
+python Flex_demo.py --wid $WID --wn 4 --bs 4 --subbs 4 --prt 23112 --ip 172.16.0.63
+python worker-allreduce-baseline.py --wid $WID --wn 4 --bs 4 --nproc 1 --prt 23112  --ip 172.16.0.63
+
+
+nvprof --profile-child-processes --profile-from-start off --metrics achieved_occupancy -o flex-prof-%p.nvvp python Flex_demo.py --wid $WID --wn 4 --bs 64 --subbs 32 --prt 23112 --ip 172.16.0.63
+
+
+python Flex_demo.py --wid $WID --wn 4 --bs 64 --subbs 32 --prt 23112 --ip 172.16.0.63
+
+
+nvprof --profile-child-processes --profile-from-start off --metrics achieved_occupancy -o base-prof-%p.nvvp python worker-allreduce-baseline.py --wid $WID --wn 4 --bs 32 --nproc 1 --prt 23112  --ip 172.16.0.63
+
+train_proc pid= 12879
+train_proc pid= 17384
+train_proc pid= 30737
+train_proc pid= 5672
+
+
+64-32
+train_proc pid= 15190
+train_proc pid= 19569
+train_proc pid= 2140
+train_proc pid= 7832
+
+
+Base：
+
+train pid =  14487
+train pid =  18922
+train pid =  662
+train pid =  7208
+
+
+####### BEATBAT###############
+export GLOO_SOCKET_IFNAME=eth3
+
+/usr/local/cuda/bin/nvprof --profile-child-processes --profile-from-start off --metrics achieved_occupancy -o flex-prof-%p.nvvp python Flex_demo.py --wid $WID --wn 4 --bs 128 --subbs 32 --prt 23112 --ip 12.12.11.11
+
+python Flex_demo.py --wid $WID --wn 4 --bs 4 --subbs 4 --prt 23112 --ip 12.12.11.11
+python worker-allreduce-baseline.py --wid $WID --wn 4 --bs 64 --nproc 1 --prt 23112  --ip 12.12.11.11
+
+train_proc pid= 27991
+train_proc pid= 685
+train_proc pid= 17638
+train_proc pid= 3853
+
+
+nvidia-smi pmon -i 1 -d 1 -f log
+
+nvidia-smi pmon -i 1 -c 100 -f flex-prof-log
+
+
+nvidia-smi pmon -i 0 -c 100 -f flex-prof-blog.csv
+
+nvidia-smi pmon -i 0 -c 100 -f base32-prof-blog.csv
 
 
 0        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.conv.Conv2d'>
