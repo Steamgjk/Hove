@@ -111,12 +111,14 @@ def train_proc(rank, bs,  wid, wn, nproc, global_step):
         if global_step > 1 :
             ed = time.time()
             print("iter_n=",global_step.item()," time=",float(1.0* ed-sta)/(1.0 * global_step.item()-1))
+        '''
         if global_step == 5:
             print("Profile Start")
             cuda.profile_start()
         if global_step == 10:
             cuda.profile_stop()
             print("Profile Stop")
+        '''
         if global_step == args.t_iter:
             print("Break")
             break
