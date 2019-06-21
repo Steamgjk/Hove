@@ -46,7 +46,7 @@ nvidia-smi pmon -i 0 -c 100 -f base32-prof-blog.csv
 常用命令 参见 [**常用命令**](https://github.com/Steamgjk/Hove/blob/master/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4 "**常用命令**") 文件
 
 
-##参考文献
+## 参考文献
 
  Jinkun Geng, Dan Li, Shuai Wang. [ElasticPipe: An Efficient and Dynamic Model-Parallel Solution to DNN Training.](https://cloud.tsinghua.edu.cn/f/4944219b08644faabe3c/?dl=1 "ElasticPipe: An Efficient and Dynamic Model-Parallel Solution to DNN Training. 10th workshop on Scientific Cloud Computing")  10th workshop on Scientific Cloud Computing ([HPDC](http://www.hpdc.org/2019/ "HPDC") Workshop on[ ScienceCloud'19](https://sites.google.com/view/sciencecloud2019 " ScienceCloud'19")) 
  
