@@ -26,7 +26,7 @@ import operator
 import queue as Queue
 import torch.distributed as dist
 import torch.multiprocessing as mp
-
+import numba.cuda as cuda
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
@@ -58,6 +58,23 @@ class BenchTest(nn.Module):
             out = layer(out)
         out = out.view(out.size(0), -1)
         return out
+class LinearTest(nn.Module):
+    def __init__(self, layer_num=1, dim=4096):
+        super(LinearTest, self).__init__()
+        self.layers = []
+        #self.layers += [nn.Conv2d(3, channels, kernel_size=3, padding=1),nn.BatchNorm2d(channels),nn.ReLU(inplace=True)]
+
+        for i in range(layer_num):
+            self.layers += [nn.Linear(output_dim, output_dim)]
+        self.features = nn.Sequential(*(self.layers))
+
+    def forward(self, sta_input):
+        out = sta_input
+        for layer in self.features:
+            out = layer(out)
+        out = out.view(out.size(0), -1)
+        return out    
+
 def train_proc(rank, bs, btest, sub_optimizer, iter_num, inputs, targets, criterion):
     for i in range(iter_num):
         outputs = btest(inputs)
@@ -67,6 +84,27 @@ def train_proc(rank, bs, btest, sub_optimizer, iter_num, inputs, targets, criter
         sub_optimizer.step()
         sub_optimizer.zero_grad()
 
+if __name__ == '__main__':
+    output_dim = 4096
+    targets = torch.from_numpy(np.random.randint(0,999,size=args.bs))
+    fake_input = torch.randn([args.bs,output_dim])
+    fake_input = fake_input.cuda()
+    targets = targets.cuda()
+    fc_layers = LinearTest(layer_num=args.layern)
+    fc_layers.to("cuda")
+    time_list = []
+    for i in range(args.itern):
+        outputs = fc_layers(fake_input)
+        criterion = nn.CrossEntropyLoss()
+        loss = criterion(outputs, targets)
+        loss.backward()
+        time_list.append(time.time())
+        iter_num = len(time_list) -1
+        if iter_num > 0:
+            print("iter_num=",int(iter_num), "\ttime=", float(time_list[-1]-time_list[0]*1.0)/iter_num)
+
+
+'''
 if __name__ == '__main__':
     bs = args.bs
     layer_num = args.layern
@@ -86,28 +124,18 @@ if __name__ == '__main__':
     targets = torch.from_numpy(np.random.randint(0,999,size=bs))
     targets = targets.cuda()
     criterion = nn.CrossEntropyLoss()
-    #multiprocess
-    '''
-    proc_list = []
-    sta = time.time()
-    for rank in range(num_proc):
-        train_p = mp.Process(target=train_proc, kwargs={"rank":rank, "bs":bs, "btest":btest, "sub_optimizer": sub_optimizer, "iter_num": iter_num, "inputs":inputs, "targets":targets, "criterion":criterion})
-        train_p.start()
-        proc_list.append(train_p)
-
-    for proc in proc_list:
-        proc.join()
-
-    ed = time.time()
-    print("layer_num=",layer_num, " iter_time=", (ed*1.0-sta)/100 )
-    '''
      
     sta = time.time()
     fp_span = 0
     bp_span = 0
     update_span = 0
     fb_span = 0
+    
     for i in range(iter_num):
+        if i == 10:
+            cuda.profile_start()
+        if i == 20:
+            cuda.profile_stop()
         sta = time.time()
         outputs = btest(inputs)
         ed = time.time()
@@ -123,3 +151,4 @@ if __name__ == '__main__':
     ed = time.time()
     print("layer_num=",layer_num, " iter_time=", (1.0*fb_span)/100 )
 
+'''

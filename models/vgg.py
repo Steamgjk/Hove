@@ -40,6 +40,7 @@ class HookFunc(torch.autograd.Function):
         pid = os.getpid()
         #print("pid = ", pid)
         HookFunc.hook_dict[pid] = grad_output
+        print("virtual grad_output ", type(grad_output), " ", grad_output.size())
         return grad_output
 
 
@@ -86,6 +87,7 @@ class VGG_D(nn.Module):
 class VGG(nn.Module):
     def __init__(self, vgg_name, sta_lidx = -1, end_lidx=-1, pipe_rank = -1):
         super(VGG, self).__init__()
+        self.virtual_layer = HookLayer()
         self.feature_arr = self._make_layers2(cfg[vgg_name]) 
         self.conv_layer_num = len(self.feature_arr)
         self.working_layer_arr = []
@@ -109,8 +111,10 @@ class VGG(nn.Module):
         if self.end_lidx is None or self.end_lidx == -1:
             self.end_lidx = self.conv_layer_num
         self.working_layer_arr = self.feature_arr[self.sta_lidx:self.end_lidx]
-        self.virtual_layer = HookLayer()
-        self.features = nn.Sequential(*([self.virtual_layer]+self.working_layer_arr))
+        
+        
+        #self.features = nn.Sequential(*([self.virtual_layer]+self.working_layer_arr))
+        self.features = nn.Sequential(*(self.working_layer_arr))
 
         #print(self.features)
         self.need_repack = False
@@ -192,8 +196,12 @@ class VGG(nn.Module):
     def _make_layers2(self, cfg):
         layers = []
         in_channels = 3
+        one_virtual = False
         for x in cfg:
             if x == 'M':
+                if one_virtual == False:
+                    layers += [self.virtual_layer]
+                    one_virtual = True
                 layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
             else:
                 layers += [nn.Conv2d(in_channels, x, kernel_size=3, padding=1)]
