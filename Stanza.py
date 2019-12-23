@@ -170,9 +170,9 @@ def train_sync_proc(wid):
 			model_sync(wid, fc_model, fc_optim, conv_group,fc_group)
 			time_list.append(time.time())
 			iter_num = len(time_list)-1
-			iter_time = float(time_list[-1]*1.0 - time_list[0])/iter_num
-			thput = args.subbs*conv_n/iter_time
 			if iter_num>0:
+				iter_time = float(time_list[-1]*1.0 - time_list[0])/iter_num
+				thput = args.subbs*conv_n/iter_time
 				print("Iter : ", int(iter_num),"\t", iter_time, "\t", thput)
 
 	else:
@@ -211,9 +211,9 @@ def train_sync_proc(wid):
 			model_sync(wid, conv_model, conv_optim, conv_group, fc_group)
 			time_list.append(time.time())
 			iter_num = len(time_list)-1
-			iter_time =  float(time_list[-1]*1.0 - time_list[0])/iter_num
-			thput = args.subbs*conv_n/convn
 			if iter_num>0:
+				iter_time =  float(time_list[-1]*1.0 - time_list[0])/iter_num
+				thput = args.subbs*conv_n/iter_time
 				print("Iter : ", int(iter_num),"\t", iter_time, "\t", thput)
 			
 
