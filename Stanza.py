@@ -43,7 +43,7 @@ parser.add_argument('--prt', default="21331", type=str, help='Master Port')
 parser.add_argument('--partition', default=[0,26,1, 26,53,1, 53,-1,3, 26,53,2,0,26,2], nargs='+', type=int)
 parser.add_argument('--subitern' , default=1, type=int, help='sub itern')
 parser.add_argument('--itern', default=1000, type=int, help='itern')
-parser.add_argument('--sleepn', default=1, type=int, help='sleep time')
+parser.add_argument('--sleepn', default=0, type=int, help='sleep time')
 args = parser.parse_args()
 
 fake_input = torch.randn([args.subbs,3,224,224], dtype=torch.float)
@@ -180,8 +180,8 @@ def train_sync_proc(wid):
 		conv_optim.zero_grad()
 		for j in range(itern):
 			if j % args.wn == wid:
-				print("I need sleep {:d} s".format(args.sleepn))
 				if args.sleepn > 0:
+					print("I need sleep {:d} s".format(args.sleepn))
 					time.sleep(args.sleepn)
 			for i in range(subitern):
 				req_list = []
