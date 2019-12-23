@@ -245,6 +245,7 @@ def train_sync_proc(wid):
 			'''
 			for i in range(subitern):
 				req_list = []
+				seq_list = []
 				input_list = []
 				output_data = conv_model(fake_input)
 				output_sz = output_data.size()
