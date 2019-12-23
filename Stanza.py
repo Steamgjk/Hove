@@ -143,7 +143,7 @@ def train_sync_proc(wid):
 				input_list = []
 				partition_sz = int(args.subbs/fc_n)
 				if wid == args.wn -1:
-					partition_sz = int(args.subbs - partition * (fc_n -1))
+					partition_sz = int(args.subbs - partition_sz * (fc_n -1))
 				for conv_id in range(conv_n):
 					input_tensor = torch.zeros([partition_sz,512,7,7])
 					#print(int(conv_id), "->", int(wid))
