@@ -41,7 +41,7 @@ parser.add_argument('--subbs', default=1, type=int, help='sub batch size')
 parser.add_argument('--ip', default="12.12.12.101", type=str, help='Master IP Address')
 parser.add_argument('--prt', default="21331", type=str, help='Master Port')
 parser.add_argument('--partition', default=[0,26,1, 26,53,1, 53,-1,3, 26,53,2,0,26,2], nargs='+', type=int)
-parser.add_argument('--subitern', default=1, type=int, help='sub itern')
+parser.add_argument('--subitern' , default=1, type=int, help='sub itern')
 parser.add_argument('--itern', default=1000, type=int, help='itern')
 parser.add_argument('--sleepn', default=1, type=int, help='sleep time')
 args = parser.parse_args()
@@ -83,15 +83,14 @@ def model_sync(wid, mdl, optim, conv_group, fc_group):
 	conv_n = args.convn
 	fc_n = args.wn - args.convn
 	if is_fc(wid):
-		'''
-		for name, parameters in mdl.named_parameters():
-			if(parameters.grad is not None):
-				#print("fc: ", name, "\t", parameters.grad.size())
-				grad_content = parameters.grad.cpu()
-				dist.all_reduce(tensor=grad_content, op = dist.ReduceOp.SUM, group=fc_group)
-				grad_content = grad_content/fc_n
-				parameters.grad.copy_(grad_content.cuda())
-		'''
+		if fc_n>1:
+			for name, parameters in mdl.named_parameters():
+				if(parameters.grad is not None):
+					#print("fc: ", name, "\t", parameters.grad.size())
+					grad_content = parameters.grad.cpu()
+					dist.all_reduce(tensor=grad_content, op = dist.ReduceOp.SUM, group=fc_group)
+					grad_content = grad_content/fc_n
+					parameters.grad.copy_(grad_content.cuda())			
 		optim.step()
 		optim.zero_grad()
 	else:
