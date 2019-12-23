@@ -1,0 +1,1000 @@
+ 1003  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1004  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1005  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1006  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1007  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1008  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1009  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1010  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1011  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1012  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1013  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1014  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1015  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1016  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1017  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1018  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1019  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1020  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1021  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1022  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1023  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1024  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1025  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1026  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1027  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1028  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1029  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1030  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1031  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1032  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1033  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1034  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1035  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1036  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1037  su beatbat
+ 1038  cd /home/beatbat/Hove/
+ 1039  cd /home/beatbat/Hove/
+ 1040  . /home/beatbat/beatbat.sh
+ 1041  source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+ 1042  conda activate py37
+ 1043  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1044  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1045  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1046  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1047  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1048  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1049  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1050  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1051  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1052  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1053  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1054  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1055  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1056  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1057  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1058  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1059  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1060  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1061  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1062  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1063  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1064  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1065  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1066  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1067  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1068  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1069  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1070  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1071  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1072  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1073  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1074  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1075  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1076  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1077  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1078  su beatbat
+ 1079  cd /home/beatbat/Hove/
+ 1080  . /home/beatbat/beatbat.sh
+ 1081  source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+ 1082  conda activate py37
+ 1083  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1084  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1085  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1086  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1087  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1088  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1089  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1090  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1091  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1092  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1093  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1094  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1095  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1096  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1097  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1098  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1099  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1100  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1101  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1102  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1103  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1104  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1105  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1106  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1107  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1108  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1109  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1110  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1111  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1112  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1113  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1114  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1115  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1116  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1117  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1118  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1119  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1120  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1121  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1122  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1123  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1124  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1125  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1126  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1127  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1128  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1129  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1130  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1131  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1132  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1133  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1134  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1135  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1136  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1137  cd /home/beatbat/Hove/
+ 1138  . /home/beatbat/beatbat.sh
+ 1139  source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+ 1140  conda activate py37
+ 1141  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1142  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1143  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1144  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1145  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1146  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1147  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1148  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1149  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1150  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1151  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1152  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1153  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1154  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1155  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1156  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1157  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1158  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1159  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1160  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1161  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1162  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1163  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1164  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1165  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1166  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1167  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1168  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1169  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1170  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1171  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1172  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1173  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1174  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1175  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1176  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1177  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1178  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1179  python
+ 1180  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1181  python
+ 1182  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1183  python
+ 1184  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1185  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1186  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1187  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1188  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1189  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1190  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1191  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1192  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1193  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1194  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1195  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1196  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1197  conda activate py37
+ 1198  source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+ 1199  conda activate py37
+ 1200  echo $WID
+ 1201  . /home/beatbat/beatbat.sh
+ 1202  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1203  cd /home/beatbat/Hove/
+ 1204  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1205  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1206  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1207  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1208  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1209  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1210  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1211  cd /home/beatbat/Hove/
+ 1212  . /home/beatbat/beatbat.sh 
+ 1213  source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+ 1214  conda activate py37
+ 1215  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1216  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1217  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1218  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1219  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1220  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1221  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1222  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1223  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1224  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1225  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1226  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1227  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1228  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1229  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1230  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1231  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1232  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1233  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1234  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1235  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1236  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1237  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1238  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1239  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1240  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1241  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1242  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1243  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1244  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1245  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1246  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1247  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1248  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1249  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1250  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1251  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1252  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1253  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1254  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1255  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1256  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1257  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1258  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1259  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1260  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1261  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1262  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1263  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1264  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1265  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1266  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1267  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1268  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1269  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1270  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1271  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1272  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1273  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1274  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1275  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1276  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1277  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1278  ls
+ 1279  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1280  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1281  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1282  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1283  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1284  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1285  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1286  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1287  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1288  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1289  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1290  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1291  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1292  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1293  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1294  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1295  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1296  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1297  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1298  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1299  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 16 --subitern 4
+ 1300  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 2
+ 1301  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4
+ 1302  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1303  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1304  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1305  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1306  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1307  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1308  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1309  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1310  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1311  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1312  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1313  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1314  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1315  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1316  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1317  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1318  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1319  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1320  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4
+ 1321  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1322  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4
+ 1323  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1324  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1325  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1326  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1
+ 1327  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1328  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4
+ 1329  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1330  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4
+ 1331  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 2
+ 1332  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1
+ 1333  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 2
+ 1334  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --slepn 1
+ 1335  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 1
+ 1336  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 2
+ 1337  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 16 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 2
+ 1338  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 2
+ 1339  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 10
+ 1340  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1341  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 10
+ 1342  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1343  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 10
+ 1344  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1345  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 10
+ 1346  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1347  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 10
+ 1348  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1349  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 10
+ 1350  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1351  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1
+ 1352  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1353  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 5
+ 1354  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1355  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 5
+ 1356  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1357  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 5
+ 1358  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1359  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 5
+ 1360  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1361  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1
+ 1362  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1363  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1
+ 1364  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 0
+ 1365  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 0
+ 1366  iperf -s
+ 1367  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 1
+ 1368  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1
+ 1369  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 2
+ 1370  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 2
+ 1371  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 3
+ 1372  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 3
+ 1373  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 4
+ 1374  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 4
+ 1375  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 5
+ 1376  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 4
+ 1377  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 6
+ 1378  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 5
+ 1379  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 6
+ 1380  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1381  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456
+ 1382  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1383  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456
+ 1384  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1385  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456
+ 1386  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1387  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456
+ 1388  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1389  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456
+ 1390  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 0
+ 1391  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 1
+ 1392  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 2
+ 1393  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 3
+ 1394  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 4
+ 1395  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1396  python GoogleNet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 6
+ 1397  python GoogLeNet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 6
+ 1398  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 6
+ 1399  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1400  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 6
+ 1401  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 0
+ 1402  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1403  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 0
+ 1404  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 0
+ 1405  python GoogleNet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 0
+ 1406  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 0
+ 1407  python GoogLenet-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 0
+ 1408  python GoogLeNet-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 0
+ 1409  python GoogleNet-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 0
+ 1410  python GoogleNet-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 
+ 1411  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 1
+ 1412  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1413  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 1
+ 1414  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 2
+ 1415  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 3
+ 1416  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 0
+ 1417  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 0 --weight 1 2 2 2 1
+ 1418  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 1
+ 1419  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 6
+ 1420  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 1
+ 1421  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 2
+ 1422  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 2
+ 1423  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1424  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 2
+ 1425  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1426  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 2
+ 1427  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 4
+ 1428  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 8
+ 1429  python Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 10
+ 1430  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 8
+ 1431  python worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 10
+ 1432  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 6
+ 1433  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 8
+ 1434  python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 10
+ 1435  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 6
+ 1436  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 8
+ 1437  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 10
+ 1438  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 0
+ 1439  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 1
+ 1440  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 3
+ 1441  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 4
+ 1442  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 5
+ 1443  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 5
+ 1444  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 4
+ 1445  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 2
+ 1446  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 3
+ 1447  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 1
+ 1448  python GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 3
+ 1449  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 3
+ 1450  python GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --sleepn 2
+ 1451  python GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 0
+ 1452  python GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 0
+ 1453  python GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 1
+ 1454  python GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 2
+ 1455  python GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 3
+ 1456  python GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 4
+ 1457  python GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 5
+ 1458  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1459  python PipeDream.py --wid $WID --wn 8  --subbs 16 --subitern 4 --ip 12.12.11.11 --prt 23456 
+ 1460  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1461  python PipeDream.py --wid $WID --wn 8  --subbs 8 --subitern 8 --ip 12.12.11.11 --prt 23456 
+ 1462  python PipeDream.py --wid $WID --wn 8  --subbs 16 --subitern 4 --ip 12.12.11.11 --prt 23456 
+ 1463  python PipeDream.py --wid $WID --wn 8  --subbs 4 --subitern 16 --ip 12.12.11.11 --prt 23456 
+ 1464  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23456 
+ 1465  python PipeDream.py --wid $WID --wn 8  --subbs 1 --subitern 64 --ip 12.12.11.11 --prt 23456 
+ 1466  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23456 
+ 1467  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1468  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23456 
+ 1469  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1470  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23456 
+ 1471  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1472  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23447
+ 1473  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1474  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23448
+ 1475  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1476  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23448
+ 1477  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1478  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23443
+ 1479  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1480  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23443
+ 1481  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1482  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1483  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1484  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1485  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1486  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1487  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1488  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1489  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1490  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1491  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1492  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1493  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1494  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23445
+ 1495  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1496  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23445
+ 1497  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1498  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1499  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1500  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1501  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1502  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1503  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1504  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23443
+ 1505  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1506  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23443
+ 1507  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1508  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23443
+ 1509  python
+ 1510  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1511  python
+ 1512  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23443
+ 1513  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1514  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23443
+ 1515  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1516  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23443
+ 1517  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1518  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1519  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1520  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1521  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1522  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1523  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1524  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1525  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1526  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1527  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1528  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1529  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1530  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1531  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1532  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1533  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1534  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1535  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1536  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1537  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1538  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1539  python PipeDream.py --wid $WID --wn 8  --subbs 2 --subitern 32 --ip 12.12.11.11 --prt 23442
+ 1540  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23442 --sleepn 0
+ 1541  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1542  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23442 --sleepn 0
+ 1543  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1544  htop
+ 1545  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1546  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1547  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1548  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1549  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1550  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1551  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1552  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1553  htop
+ 1554  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1555  htop
+ 1556  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1557  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1558  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1559  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1560  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1561  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1562  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1563  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1564  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1565  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1566  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1567  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1568  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1569  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1570  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1571  conda activate py37
+ 1572  source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+ 1573  conda activate py37
+ 1574  echo $WID
+ 1575  . /home/beatbat/beatbat.sh
+ 1576  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1577  cd /home/beatbat/Hove/
+ 1578  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1579  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1580  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1581  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1582  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1583  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1584  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1585  cp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1586  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1587  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1588  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1589  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1590  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1591  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1592  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1593  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1594  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1595  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1596  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1597  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1598  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1599  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1600  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1601  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1602  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1603  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1604  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1605  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1606  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1607  conda activate py37
+ 1608  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1609  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1610  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1611  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1612  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1613  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1614  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1615  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1616  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1617  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1618  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1619  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1620  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1621  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1622  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1623  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1624  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1625  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1626  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1627  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1628  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1629  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1630  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1631  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1632  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1633  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1634  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1635  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1636  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1637  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1638  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1639  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1640  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1641  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1642  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1643  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1644  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1645  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1646  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1647  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1648  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1649  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1650  ls
+ 1651  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1652  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1653  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1654  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1655  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1656  htop
+ 1657  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1658  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1659  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1660  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1661  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1662  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1663  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1664  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1665  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1666  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1667  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1668  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1669  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1670  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1671  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1672  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1673  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1674  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1675  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1676  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1677  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1678  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1679  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1680  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1681  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1682  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1683  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1684  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1685  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1686  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1687  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1688  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1689  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1690  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1691  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1692  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1693  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1694  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1695  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1696  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1697  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1698  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 10
+ 1699  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1700  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 10
+ 1701  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1702  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 10
+ 1703  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1704  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 10
+ 1705  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1706  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 10
+ 1707  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1708  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 10
+ 1709  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1710  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1711  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1712  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1713  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1714  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1715  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1716  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1717  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1718  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1719  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1720  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1721  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1722  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1723  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1724  iperf -c 12.12.11.13
+ 1725  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1726  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 10
+ 1727  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1728  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1729  python GoogleNet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1730  python GoogLeNet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1731  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1732  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1733  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1734  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1735  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1736  python GoogleNet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1737  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1738  python GoogLenet-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1739  python GoogLeNet-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1740  python GoogleNet-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1741  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1742  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1743  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1744  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1 --weight 1 2 2 2 1
+ 1745  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1746  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1747  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1748  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1749  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1750  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1751  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1752  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1753  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1754  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1755  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1756  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1757  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1758  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1759  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1760  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1761  htop
+ 1762  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1763  source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+ 1764  conda activate py37
+ 1765  cd /home/beatbat/Hove/
+ 1766  . /home/beatbat/beatbat.sh 
+ 1767  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1768  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23443 --sleepn 0
+ 1769  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1770  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1771  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1772  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1773  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1774  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1775  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1776  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1777  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1778  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1779  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1780  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1781  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1782  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1783  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1784  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1785  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1786  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 2 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1787  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1788  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1789  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1790  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1791  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1792  ps -aux|gre
+ 1793  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1794  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1795  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1796  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1797  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1798  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1799  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1800  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 4
+ 1801  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6
+ 1802  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1803  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 8
+ 1804  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1805  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1806  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0 
+ 1807  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1808  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 10
+ 1809  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1810  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1811  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1812  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1813  python GoogleNetPipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1814  python GoogleNet-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1815  python GoogleNet-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1816  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1817  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1818  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1819  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1820  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1821  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1822  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1823  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1824  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1825  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1826  iperf -s
+ 1827  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1828  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1829  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1830  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1831  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1832  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1833  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1834  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1835  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1836  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1837  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1838  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1839  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1840  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1841  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1842  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1843  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1844  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1845  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1846  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446
+ 1847  ssh beatbat@12.12.11.15
+ 1848  ssh beatbat@12.12.10.15
+ 1849  ssh beatbat@12.12.11.15
+ 1850  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1851  echo $GLOO_SOCKET_IFNAME
+ 1852  export GLOO_SOCKET_IFNAME=eth3
+ 1853  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1854  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 3
+ 1855  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 4
+ 1856  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 5
+ 1857  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1858  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 1
+ 1859  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1860  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1861  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1862  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 4
+ 1863  python G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1864  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1865  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 4
+ 1866  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6
+ 1867  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 8
+ 1868  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 10
+ 1869  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 2
+ 1870  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 0
+ 1871  python PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 4
+ 1872  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1873  python Pr-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --prb 10
+ 1874  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1875  python Pr-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --prb 10
+ 1876  python Pr-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --prb 10
+ 1877  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1878  python Pr-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --prb 10
+ 1879  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1880  python Pr-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --prb 10
+ 1881  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1882  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 6 --prb 10
+ 1883  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1884  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 6 --prb 10
+ 1885  python Pr-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6 --prb 10
+ 1886  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1887  python Pr-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6 --prb 10
+ 1888  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1889  python Pr-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6 --prb 10
+ 1890  python Pr-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6 --prb 20
+ 1891  python Pr-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6 --prb 30
+ 1892  python Pr-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6 --prb 40
+ 1893  python Pr-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 6 --prb 50
+ 1894  python Pr-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --prb 20
+ 1895  python Pr-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --prb 30
+ 1896  python Pr-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --prb 40
+ 1897  python Pr-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --prb 50
+ 1898  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 6 --prb 20
+ 1899  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 6 --prb 30
+ 1900  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 6 --prb 40
+ 1901  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 6 --prb 50
+ 1902  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 2 --prb 50
+ 1903  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 2 --prb 40
+ 1904  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 2 --prb 30
+ 1905  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 2 --prb 20
+ 1906  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 2 --prb 10
+ 1907  python Pr-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --prb 10
+ 1908  python Pr-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --prb 20
+ 1909  python Pr-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --prb 30
+ 1910  python Pr-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --prb 40
+ 1911  python Pr-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1  --prb 50
+ 1912  python Pr-GoogleNet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 
+ 1913  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1 --prb 10
+ 1914  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1915  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1 --prb 10
+ 1916  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1 --prb 20
+ 1917  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1 --prb 30
+ 1918  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1 --prb 40
+ 1919  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 1 --prb 50
+ 1920  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1921  python Pr-GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 3 --prb 10
+ 1922  python Pr-GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 3 --prb 20
+ 1923  python Pr-GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 3 --prb 30
+ 1924  python Pr-GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 3 --prb 40
+ 1925  python Pr-GoogleNet-worker_process-all-reduce-static.py  --wid $WID --wn 8   --ip 12.12.11.11 --prt 24563 --subbs 32 --subitern 4 --sleepn 3 --prb 50
+ 1926  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 3 --prb 10
+ 1927  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 3 --prb 20
+ 1928  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1929  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 3 --prb 20
+ 1930  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 3 --prb 30
+ 1931  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 3 --prb 40
+ 1932  c
+ 1933  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1934  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 3 --prb 50
+ 1935  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1936  python Pr-GoogLenet-Dy-FelaWo.py --wid $WID --wn 8 --fcwn 1 --subbs 32 --ip 12.12.11.11 --prt 23479 --replica 1 --sleepn 3 --prb 40
+ 1937  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 10 --prb 10
+ 1938  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 10
+ 1939  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1940  python Pr-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 10
+ 1941  python Pr-GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 10
+ 1942  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1943  chmod -R 777 ./
+ 1944  sudo chmod -R 777 ./
+ 1945  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1946  python Pr-GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 10
+ 1947  python Pr-GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 10
+ 1948  python Pr-GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 20
+ 1949  python Pr-GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 30
+ 1950  python Pr-GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 40
+ 1951  python Pr-GoogleNet-Stanza.py --wid $WID --wn 8 --convn 7 --subbs 73 --subitern 2 --ip 12.12.11.11 --prt 23456 --sleepn 3 --prb 50
+ 1952  python Pr-G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 3 --prb 10
+ 1953  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1954  sudo chmod -R 777 ./
+ 1955  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1956  python Pr-G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 3 --prb 10
+ 1957  python Pr-G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 3 --prb 20
+ 1958  python Pr-G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 3 --prb 30
+ 1959  python Pr-G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 3 --prb 40
+ 1960  python Pr-G-PipeDream.py --wid $WID --wn 8  --subbs 32 --subitern 32 --ip 12.12.11.11 --prt 23446 --sleepn 3 --prb 50
+ 1961  htop
+ 1962  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1963  htop
+ 1964  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1965  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1966  ps -aux|grep python|cut -c 9-15|xargs kill - 
+ 1967  htop
+ 1968  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1969  iperf -c 12.12.11.13
+ 1970  iperf -c 12.12.11.14
+ 1971  ps -aux|grep python|cut -c 9-15|xargs kill - 
+ 1972  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1973  echo $
+ 1974  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1975  python Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1976  source /home/beatbat/anaconda3/etc/profile.d/conda.sh
+ 1977  cd /home/beatbat/Hove/
+ 1978  . /home/beatbat/beatbat.sh 
+ 1979  conda activate py37
+ 1980  python Pr-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1981  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1982  python Pr-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1983  python Pr-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica50
+ 1984  python Pr-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1985  python GoogleNet-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1986  python GoogleNet-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1987  scp -r beatbat@12.12.11.11:/home/beatbat/Hove  /home/beatbat/
+ 1988  python GoogleNet-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1989  python GoogleNet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1990  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1991  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1992  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1993  c
+ 1994  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1995  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1996  ps -aux|grep python|cut -c 9-15|xargs kill -9
+ 1997  python GoogLenet-Dy-TokenS.py --wn 8 --ip 12.12.11.11 --prt 23479 --replica 1
+ 1998  dhclient eth1
+ 1999  sudo su
+ 2000  ls
+ 2001  history
+ 2002  history >sshlog.txt
