@@ -124,6 +124,7 @@ def train_sync_proc(wid):
 				if args.sleepn > 0:
 					print("I need sleep {:d} s".format(args.sleepn))
 					time.sleep(args.sleepn)
+			'''
 			for i in range(subitern):
 				req_list = []
 				input_list = []
@@ -136,9 +137,23 @@ def train_sync_proc(wid):
 						input_list.append(input_tensor)
 				for rq in req_list:
 					rq.wait()
+			'''
+			for i in range(subitern):
+				req_list = []
+				input_list = []
+				partition_sz = args.subbs/fc_n
+				if wid == args.wn -1:
+					partition_sz = args.subbs - partition * (fc_n -1)
+				for conv_id in range(conv_n):
+					input_tensor = torch.zeros([partition_sz,512,7,7])
+					#print(int(conv_id), "->", int(wid))
+					rq = dist.irecv(tensor = input_tensor, src = conv_id)
+					req_list.append(rq)
+					input_list.append(input_tensor)
+				for rq in req_list:
+					rq.wait()
 
-				input_batch = int(args.subbs*conv_n/(fc_n))
-
+				input_batch = int(partition_sz * conv_n)
 				input_data = torch.cat(input_list,0)
 				#print("input_data_sz = ",input_data.size())
 				input_data = input_data.cuda()
@@ -154,6 +169,7 @@ def train_sync_proc(wid):
 				#print("back_ctx sz = ", back_ctx.size())
 				seq_list = []
 				cnt = 0
+				'''
 				for conv_id in range(conv_n):
 					if conv_id % fc_n == wid - conv_n:
 						#print("back: ",int(wid),"->",int(conv_id))
@@ -163,6 +179,14 @@ def train_sync_proc(wid):
 						seq = dist.isend(tensor=send_te, dst = conv_id)
 						seq_list.append(seq)
 						cnt += 1
+				'''
+				for conv_id in range(conv_n):
+					sta = cnt*partition_sz
+					send_te = back_ctx[sta:(sta+partition_sz)]
+					send_te = send_te.cpu()
+					seq = dist.isend(tensor=send_te, dst = conv_id)
+					seq_list.append(seq)
+					cnt += 1
 				#for sq in seq_list:
 				#	sq.wait()
 				print("sub_iter_n=",i)
@@ -187,6 +211,7 @@ def train_sync_proc(wid):
 				if args.sleepn > 0:
 					print("I need sleep {:d} s".format(args.sleepn))
 					time.sleep(args.sleepn)
+			'''
 			for i in range(subitern):
 				req_list = []
 				input_list = []
@@ -207,6 +232,43 @@ def train_sync_proc(wid):
 
 				torecv_data = torecv_data.cuda()
 				output_data.backward(torecv_data, retain_graph=True)
+				seq = dist.isend(tensor =tosend_data, dst = target_fc_wid)
+
+				torecv_data =torch.zeros(tosend_data.size())
+				req = dist.irecv(tensor=torecv_data, src = target_fc_wid)
+
+				seq.wait()
+				req.wait()
+
+				torecv_data = torecv_data.cuda()
+				output_data.backward(torecv_data, retain_graph=True)
+			'''
+			for i in range(subitern):
+				req_list = []
+				input_list = []
+				output_data = conv_model(fake_input)
+				output_sz = output_data.size()
+				tosend_data = output_data.cpu()
+				partition_sz = output_sz[0]/fc_n
+				cnt = 0 
+				for  i in range(fc_n):
+					target_fc_wid = i+conv_n
+					sta = cnt*partition_sz
+					send_te = tosend_data[sta:(sta+partition_sz)]
+					seq = dist.isend(tensor=send_te, dst = target_fc_wid)
+					seq_list.append(seq)
+					input_tensor = torch.zeros(send_te.size())
+					rq = dist.irecv(tensor = input_tensor, src = target_fc_wid)
+					req_list.append(rq)
+					input_list.append(input_tensor)
+					cnt +=1
+				for sq in seq_list:
+					sq.wait()
+				for rq in req_list:
+					rq.wait()
+				input_data = torch.cat(input_list,0)
+				input_data = input_data.cuda()
+				output_data.backward(input_data, retain_graph=True)
 
 			model_sync(wid, conv_model, conv_optim, conv_group, fc_group)
 			time_list.append(time.time())
