@@ -141,9 +141,9 @@ def train_sync_proc(wid):
 			for i in range(subitern):
 				req_list = []
 				input_list = []
-				partition_sz = args.subbs/fc_n
+				partition_sz = int(args.subbs/fc_n)
 				if wid == args.wn -1:
-					partition_sz = args.subbs - partition * (fc_n -1)
+					partition_sz = int(args.subbs - partition * (fc_n -1))
 				for conv_id in range(conv_n):
 					input_tensor = torch.zeros([partition_sz,512,7,7])
 					#print(int(conv_id), "->", int(wid))
@@ -249,11 +249,13 @@ def train_sync_proc(wid):
 				output_data = conv_model(fake_input)
 				output_sz = output_data.size()
 				tosend_data = output_data.cpu()
-				partition_sz = output_sz[0]/fc_n
+				partition_sz = int(output_sz[0]/fc_n)
 				cnt = 0 
 				for  i in range(fc_n):
 					target_fc_wid = i+conv_n
 					sta = cnt*partition_sz
+					if i == fc_n -1:
+						partition_sz = int(output_sz[0]-partition_sz*(fc_n-1))
 					send_te = tosend_data[sta:(sta+partition_sz)]
 					seq = dist.isend(tensor=send_te, dst = target_fc_wid)
 					seq_list.append(seq)
