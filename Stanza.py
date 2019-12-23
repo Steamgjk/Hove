@@ -163,8 +163,8 @@ def train_sync_proc(wid):
 						seq = dist.isend(tensor=send_te, dst = conv_id)
 						seq_list.append(seq)
 						cnt += 1
-				for sq in seq_list:
-					sq.wait()
+				#for sq in seq_list:
+				#	sq.wait()
 				print("sub_iter_n=",i)
 			print("iter=",j)
 			model_sync(wid, fc_model, fc_optim, conv_group,fc_group)
