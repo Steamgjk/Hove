@@ -172,7 +172,7 @@ def train_sync_proc(wid):
 			iter_num = len(time_list)-1
 			if iter_num>0:
 				iter_time = float(time_list[-1]*1.0 - time_list[0])/iter_num
-				thput = args.subbs*conv_n/iter_time
+				thput = args.subbs*conv_n*args.subitern/iter_time
 				print("Iter : ", int(iter_num),"\t", iter_time, "\t", thput)
 
 	else:
@@ -213,7 +213,7 @@ def train_sync_proc(wid):
 			iter_num = len(time_list)-1
 			if iter_num>0:
 				iter_time =  float(time_list[-1]*1.0 - time_list[0])/iter_num
-				thput = args.subbs*conv_n/iter_time
+				thput = args.subbs*conv_n*args.subitern/iter_time
 				print("Iter : ", int(iter_num),"\t", iter_time, "\t", thput)
 			
 
