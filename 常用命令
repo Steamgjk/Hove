@@ -198,6 +198,10 @@ nvidia-smi pmon -i 0 -c 100 -f flex-prof-blog.csv
 
 nvidia-smi pmon -i 0 -c 100 -f base32-prof-blog.csv
 
+Nmap 7.01 ( https://nmap.org ) at 2019-12-22 15:01 CST
+
+beatbat@g4-nasp:~$ arp -a|grep -i 'EC:0D:9A:6B:D5:34'
+
 
 0        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.conv.Conv2d'>
 1        torch.Size([1, 64, 224, 224])   <class 'torch.nn.modules.batchnorm.BatchNorm2d'>
@@ -262,3 +266,20 @@ nvidia-smi pmon -i 0 -c 100 -f base32-prof-blog.csv
 bs=4, channel=[128,128] layer=2    0.22075464487075805
 bs=4, channel=[128,128] layer=3    0.32630832433700563
 
+
+
+python Stanza.py --wid $WID --wn 8 --convn 7 --subbs 37 --subitern 4 --ip 12.12.10.101 --prt 23456
+
+9.980431377887726       25.850586034949878
+10.927093040943145      18.76070783252944
+9.127675199508667       14.023286017768259
+
+
+7.044942617416382       147.05584647897902
+10.55193704366684       97.80194818537089
+11.330711770057679      90.46210165795985
+10.095028126239777      101.43607201433547
+14.808944368362427      68.87729298106558
+
+
+printf("%c")

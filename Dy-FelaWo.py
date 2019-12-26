@@ -114,6 +114,7 @@ def ini_data_storage():
     profile_list = pickle.load(f)
     f.close()
     #profile and initialize the data memory of possible boundary data 
+    print("Weights ", TOKEN_WEIGHT)
     for i in range(TOKEN_LAYERS):
         sta_lidx = MODEL_PARTITION[i*3]
         end_lidx = MODEL_PARTITION[i*3 +1]
@@ -376,8 +377,8 @@ def train_sync_proc(wid):
             print("local_step=",local_step)
             
             if local_step % args.wn == wid:
-                print("I need sleep {:d} s".format(args.sleepn))
                 if args.sleepn > 0:
+                    print("I need sleep {:d} s".format(args.sleepn))
                     time.sleep(args.sleepn)
             
             dist.send(tensor = new_request_tensor, dst = dst_rank)
