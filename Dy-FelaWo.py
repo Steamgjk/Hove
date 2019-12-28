@@ -48,7 +48,7 @@ args = parser.parse_args()
 TOKEN_LAYERS = 5
 #TOKEN_CAPACITY = args.replica * args.tokencap
 TOKEN_CAPACITY = args.tokencap 
-BASE_TOKEN_NUMBER = args.wn* args.subbs/TOKEN_CAPACITY
+BASE_TOKEN_NUMBER = int(args.wn* args.subbs/TOKEN_CAPACITY)
 
 #CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
 CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,BASE_TOKEN_NUMBER], dtype=torch.int32)

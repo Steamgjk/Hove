@@ -37,7 +37,7 @@ args = parser.parse_args()
 TOKEN_LAYERS = 5
 #TOKEN_CAPACITY = args.replica * args.tokencap
 TOKEN_CAPACITY = args.tokencap 
-BASE_TOKEN_NUMBER = args.wn* args.subbs/TOKEN_CAPACITY
+BASE_TOKEN_NUMBER = int(args.wn* args.subbs/TOKEN_CAPACITY)
 WORKER_CAPCITY = args.wn
 #HOLD_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
 #COMPLETE_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
