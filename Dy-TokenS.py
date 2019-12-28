@@ -190,7 +190,7 @@ def init():
 					QUEUE_PTRS[w][1] += 1
 	'''
 	for j in range(TOKEN_LAYERS):
-		UNIT_TOKEN_NO = TOKEN_NUMBER[j]/args.wn
+		UNIT_TOKEN_NO = int(TOKEN_NUMBER[j]/args.wn)
 		for w in range(args.wn):
 			token_base_offset = w * UNIT_TOKEN_NO
 			for i  in range(UNIT_TOKEN_NO):
