@@ -189,7 +189,7 @@ def init():
 					TENSOR_QUEUES[w][tail_ptr][1] = k + base_offset  #token_no
 					QUEUE_PTRS[w][1] += 1
 	'''
-	for j in range(TOKEN_LAYERS)：
+	for j in range(TOKEN_LAYERS):
 		UNIT_TOKEN_NO = TOKEN_NUMBER[j]/args.wn
 		for w in range(args.wn):
 			token_base_offset = w * UNIT_TOKEN_NO
