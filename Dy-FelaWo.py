@@ -69,8 +69,10 @@ TSY_BASE = SY_BASE + args.wn
 WORLD_SIZE = 7 * args.wn
 
 criterion = nn.CrossEntropyLoss()
-fake_input = torch.randn([args.subbs * TOKEN_WEIGHT[0],3,224,224], dtype=torch.float)
-fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*TOKEN_WEIGHT[2])))
+#fake_input = torch.randn([args.subbs * TOKEN_WEIGHT[0],3,224,224], dtype=torch.float)
+#fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*TOKEN_WEIGHT[2])))
+fake_input = torch.randn([args.tokencap * TOKEN_WEIGHT[0],3,224,224], dtype=torch.float)
+fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.tokencap*TOKEN_WEIGHT[2])))
 fake_input = fake_input.share_memory_()
 fake_target = fake_target.share_memory_()
 MODEL_PARTITION = args.partition
