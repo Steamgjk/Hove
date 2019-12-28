@@ -37,21 +37,27 @@ parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
 parser.add_argument('--subbs', default=1, type=int, help='sub batch size')
 parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Address')
 parser.add_argument('--prt', default="21331", type=str, help='Master Port')
-parser.add_argument('--replica', default="1", type=int, help='replica number')
+#parser.add_argument('--replica', default="1", type=int, help='replica number')
 parser.add_argument('--partition', default=[0,26,1, 26,53,1, 53,-1,3, 26,53,2,0,26,2], nargs='+', type=int)
-parser.add_argument('--tokencap', default="32", type=int, help='token capacity')
+parser.add_argument('--tokencap', default="32", type=int, help='token capacity (how many samples one T-1 token represent)')
 parser.add_argument('--weight', default=[1,4,4,4,1], nargs='+', type=int)
 parser.add_argument('--sleepn', default=1, type=int, help='sleep time')
 
 args = parser.parse_args()
 
 TOKEN_LAYERS = 5
-TOKEN_CAPACITY = args.replica * args.tokencap
-CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
+#TOKEN_CAPACITY = args.replica * args.tokencap
+TOKEN_CAPACITY = args.tokencap 
+BASE_TOKEN_NUMBER = args.wn* args.subbs/TOKEN_CAPACITY
+
+#CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
+CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,BASE_TOKEN_NUMBER], dtype=torch.int32)
 CHUNK_HOLD_MAP = CHUNK_HOLD_MAP.share_memory_()
 
 TOKEN_WEIGHT = args.weight
-TOKEN_NUMBER = [ int(TOKEN_CAPACITY/val) for val in TOKEN_WEIGHT]
+#TOKEN_NUMBER = [ int(TOKEN_CAPACITY/val) for val in TOKEN_WEIGHT]
+TOKEN_NUMBER = [ int(BASE_TOKEN_NUMBER/val) for val in TOKEN_WEIGHT]
+
 
 WK_BASE = 0
 TS_BASE = args.wn
@@ -68,7 +74,7 @@ fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*TOKEN
 fake_input = fake_input.share_memory_()
 fake_target = fake_target.share_memory_()
 MODEL_PARTITION = args.partition
-CHUNK_WIDTH = args.subbs
+#CHUNK_WIDTH = args.subbs
 OP_CODES = torch.zeros(TOKEN_LAYERS, dtype = torch.int32)
 OP_CODES = OP_CODES.share_memory_()
 TOKEN_DATA_STORAGE = [None for j in range(TOKEN_LAYERS)]
@@ -130,9 +136,11 @@ def ini_data_storage():
             SUB_OPTIMIZERS[i] = SUB_OPTIMIZERS[TOKEN_LAYERS-1-i]
 
         shp = profile_list[sta_lidx]["shape"]
-        shp[0] = args.subbs * TOKEN_WEIGHT[i]
+        #shp[0] = args.subbs * TOKEN_WEIGHT[i]
+        shp[0] = TOKEN_CAPACITY * TOKEN_WEIGHT[i]
         ed_shp = profile_list[end_lidx]["shape"]
-        ed_shp[0] = args.subbs * TOKEN_WEIGHT[i]
+        #ed_shp[0] = args.subbs * TOKEN_WEIGHT[i]
+        ed_shp[0] = TOKEN_CAPACITY * TOKEN_WEIGHT[i]
         
         OP_CODES[i] = MODEL_PARTITION[i*3+2]
 
@@ -160,13 +168,17 @@ def ini_data_storage():
         total_shp =[]
         for sz in INPUT_SIZE[i+1]:
             total_shp.append(sz)
-        total_shp[0] = TOKEN_CAPACITY * CHUNK_WIDTH
+        #total_shp[0] = TOKEN_CAPACITY * CHUNK_WIDTH
+        total_shp[0] = args.subbs * args.wn 
+
         TOKEN_DATA_STORAGE[i] = torch.zeros(total_shp, dtype=torch.float)
         TOKEN_DATA_STORAGE[i] = TOKEN_DATA_STORAGE[i].share_memory_()
     for i in range(TOKEN_LAYERS):
         print("i=",i," input=",INPUT_SIZE[i], " output=",OUTPUT_SIZE[i])
 
     CHUNK_HOLD_MAP.zero_()
+    print("TOKEN_NUMBER ", TOKEN_NUMBER)
+
 
 def init_processes(rank, size, backend='gloo'):
     """ Initialize the distributed environment. """
@@ -228,7 +240,9 @@ def train_model(depth, token_no, input_data):
         output_data = output_data.cpu()
         #print("FIN FP+BP---  ", type(HookFunc.backward_ctx))
 
-    unit_size = TOKEN_WEIGHT[depth]*CHUNK_WIDTH
+    #unit_size = TOKEN_WEIGHT[depth]*CHUNK_WIDTH
+    unit_size = TOKEN_WEIGHT[depth]*TOKEN_CAPACITY
+
     base_offset = token_no * unit_size
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     if depth < TOKEN_LAYERS-1:
@@ -236,73 +250,6 @@ def train_model(depth, token_no, input_data):
         data_storage_tensor  = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         data_storage_tensor.copy_(output_data.data.cpu())
         CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
-
-def train_model_bk(depth, token_no, input_data):
-    if is_fc_depth(depth) and (not is_fc_worker(args.wid)):
-        dist.send(tensor=input_data, dst = get_fc_rank(token_no))
-        dist.recv(tensor = input_data, src = get_fc_rank(token_no))
-        #print("CONV:", "\t", int(token_no))
-        return
-    elif is_fc_depth(depth) and is_fc_worker(args.wid):
-        conv_rank = get_conv_rank(token_no)
-        if conv_rank == args.wid + WK_BASE:
-            pass
-        else:
-            dist.recv(tensor = input_data, src = conv_rank)
-            #print("FC: recv:",int(conv_rank), "\t", int(token_no))
-        input_data.requires_grad = True
-        #print("opcode=3 ", input_data.requires_grad,"\t", input_data.size())
-        input_data = input_data.cuda()
-        fin_output = SUB_MODEL_LIST[depth](input_data)
-        loss = criterion(fin_output, fake_target.cuda())
-        loss.backward()
-        output_data = HookFunc.backward_ctx
-        output_data = output_data.cpu()
-        if conv_rank == args.wid + WK_BASE:
-            pass
-        else:
-            dist.send(tensor=output_data, dst= conv_rank)
-    else:
-        output_data = None
-        if OP_CODES[depth] == 1:
-            #FP
-            input_data = input_data.cuda()
-            output_data = SUB_MODEL_LIST[depth](input_data)
-            output_data = output_data.cpu()
-            #print("train FP FIn output_sz = ", OUTPUT_PLACEHOLDERS[my_workload_no].size())
-        elif OP_CODES[depth] == 2:
-            #BP
-            #add bp_data
-            bp_data = get_bp_input_data(depth, token_no)
-            #INPUT_PLACEHOLDERS[depth].data.copy_(input_data)
-            INPUT_PLACEHOLDERS[depth].data.copy_(bp_data)
-            #print("opcode=2 ", INPUT_PLACEHOLDERS[my_workload_no].requires_grad)
-            #????? have some problem
-            INPUT_PLACEHOLDERS[depth] = INPUT_PLACEHOLDERS[depth].cuda()
-            input_data = input_data.cuda()
-            INPUT_PLACEHOLDERS[depth].backward(input_data, retain_graph=True)
-            output_data = HookFunc.backward_ctx
-            output_data = output_data.cpu()
-        elif OP_CODES[depth] == 3:
-            #FP+BP
-            #print("FP+BP: my_workload_no=",int(my_workload_no))
-            input_data.requires_grad = True
-            #print("opcode=3 ", input_data.requires_grad,"\t", input_data.size())
-            input_data = input_data.cuda()
-            fin_output = SUB_MODEL_LIST[depth](input_data)
-            loss = criterion(fin_output, fake_target.cuda())
-            loss.backward()
-            output_data = HookFunc.backward_ctx
-            output_data = output_data.cpu()
-            dist.send(tensor=input_data, src=get_conv_rank(token_no))
-            #print("FIN FP+BP---  ", type(HookFunc.backward_ctx))
-
-    unit_size = TOKEN_WEIGHT[depth]*CHUNK_WIDTH
-    base_offset = token_no * unit_size
-    if depth < TOKEN_LAYERS-1:
-        #the output of the last layer does not neded to be stored
-        data_storage_tensor  = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
-        data_storage_tensor.copy_(output_data.data.cpu())
 
 def get_input_data(depth, token_no):
     global fake_input
@@ -312,13 +259,16 @@ def get_input_data(depth, token_no):
         chunk_offset = token_no * TOKEN_WEIGHT[depth]
         while CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
             continue
-        unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH
+        #unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH
+        unit_size = TOKEN_WEIGHT[depth] * TOKEN_CAPACITY
         sta = token_no * unit_size
         return TOKEN_DATA_STORAGE[depth-1][sta:(sta+unit_size)]
 
 def get_bp_input_data(depth, token_no):
     fp_depth = TOKEN_LAYERS - 1 - depth
-    unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH    
+    #unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH    
+    unit_size = TOKEN_WEIGHT[depth] * TOKEN_CAPACITY    
+
     sta = token_no * unit_size
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     while CHUNK_HOLD_MAP[fp_depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
@@ -387,8 +337,9 @@ def train_sync_proc(wid):
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
             input_data = get_input_data(depth, token_no)
-            #print("training self... ", int(depth),"\t", int(token_no))
+            print("training self... ", int(depth),"\t", int(token_no))
             train_model(depth, token_no, input_data)
+            print("train self fin sending")
             #report_progress_tensor[1] = depth
             #report_progress_tensor[2] = token_no
             dist.send(tensor = report_progress_tensor, dst = dst_rank)
@@ -398,18 +349,18 @@ def train_sync_proc(wid):
 
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
-            #print("other token... ", int(depth), " ", int(token_no))
+            print("other token... ", int(depth), " ", int(token_no))
             #print("get other tokens ", int(depth), "\t", int(token_no))
             while check_dependency(depth, token_no) == False:
                 #print("checking dependency false ", int(depth),"\t",int(token_no))
                 #time.sleep(1)
                 continue
             input_data = get_input_data(depth, token_no)
-            #print("training others... ", int(depth),"\t", int(token_no))
+            print("training others... ", int(depth),"\t", int(token_no))
             train_model(depth, token_no, input_data)
             #report_progress_tensor[1] = depth
             #report_progress_tensor[2] = token_no
-            #print("train fin sending")
+            print("train others fin sending")
             dist.send(tensor = report_progress_tensor, dst = dst_rank)
             dist.send(tensor = new_request_tensor, dst = dst_rank) 
             #print("asking new request")
@@ -471,8 +422,10 @@ def coordinate_proc_request(wid):
             request_sender_wid = ts2wc_tensor[1]
             request_depth = ts2wc_tensor[2]
             request_chunk_no = ts2wc_tensor[3]
-            sta = request_chunk_no*CHUNK_WIDTH
-            recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
+            #sta = request_chunk_no*CHUNK_WIDTH
+            #recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
+            sta = request_chunk_no*TOKEN_CAPACITY
+            recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             #print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
             dist.recv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
             CHUNK_HOLD_MAP[request_depth][request_chunk_no] = 1
@@ -492,8 +445,10 @@ def coordinate_proc_response(wid):
             requester_wid = ts2wc_tensor[1]
             request_depth = ts2wc_tensor[2]
             request_chunk_no = ts2wc_tensor[3]
-            sta = request_chunk_no*CHUNK_WIDTH
-            chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
+            #sta = request_chunk_no*CHUNK_WIDTH
+            #chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
+            sta = request_chunk_no*TOKEN_CAPACITY
+            chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             #print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
             dist.send(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
             #print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))

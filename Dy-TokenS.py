@@ -27,7 +27,7 @@ parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--wn', default=4, type=int, help='worker number')
 parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Address')
 parser.add_argument('--prt', default="21331", type=str, help='Master Port')
-parser.add_argument('--replica', default="1", type=int, help='Master Port')
+#parser.add_argument('--replica', default="1", type=int, help='Master Port')
 parser.add_argument('--subbs', default=1, type=int, help='sub batch size')
 parser.add_argument('--tokencap', default="32", type=int, help='token capacity')
 parser.add_argument('--weight', default=[1,4,4,4,1], nargs='+', type=int)
@@ -35,12 +35,19 @@ args = parser.parse_args()
 
 
 TOKEN_LAYERS = 5
-TOKEN_CAPACITY = args.replica * args.tokencap
+#TOKEN_CAPACITY = args.replica * args.tokencap
+TOKEN_CAPACITY = args.tokencap 
+BASE_TOKEN_NUMBER = args.wn* args.subbs/TOKEN_CAPACITY
 WORKER_CAPCITY = args.wn
-HOLD_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
-COMPLETE_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
+#HOLD_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
+#COMPLETE_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
+HOLD_MAP = torch.zeros([TOKEN_LAYERS,BASE_TOKEN_NUMBER], dtype=torch.int32)
+COMPLETE_MAP = torch.zeros([TOKEN_LAYERS,BASE_TOKEN_NUMBER], dtype=torch.int32)
+
 TOKEN_WEIGHT = args.weight
-TOKEN_NUMBER = [ int(TOKEN_CAPACITY/val) for val in TOKEN_WEIGHT]
+#TOKEN_NUMBER = [ int(TOKEN_CAPACITY/val) for val in TOKEN_WEIGHT]
+TOKEN_NUMBER = [ int(BASE_TOKEN_NUMBER/val) for val in TOKEN_WEIGHT]
+
 HOLD_MAP = HOLD_MAP.share_memory_()
 COMPLETE_MAP = COMPLETE_MAP.share_memory_()
 COMPLETE_MAP.zero_()
@@ -51,7 +58,8 @@ QUEUE_LEN = 1000
 #depth, token_no
 TENSOR_QUEUES = torch.zeros([args.wn, QUEUE_LEN, 2], dtype=torch.int32)
 TENSOR_QUEUES = TENSOR_QUEUES.share_memory_()
-CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
+#CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,TOKEN_CAPACITY], dtype=torch.int32)
+CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,BASE_TOKEN_NUMBER], dtype=torch.int32)
 CHUNK_HOLD_MAP = CHUNK_HOLD_MAP.share_memory_()
 # head and tail
 QUEUE_PTRS = torch.zeros([args.wn, 2], dtype=torch.int32)
@@ -128,7 +136,7 @@ def is_fc_worker(wid):
 
 def init():
 	#depth first
-	replica_num = args.replica
+	#replica_num = args.replica
 	QUEUE_PTRS.zero_()
 	fc_worker = args.wn - 1
 	'''
@@ -168,6 +176,7 @@ def init():
 						TENSOR_QUEUES[fc_worker][tail_ptr][1] = k + base_offset
 						QUEUE_PTRS[fc_worker][1] += 1
 	'''
+	'''
 	for i in range(replica_num):
 		for j in range(TOKEN_LAYERS):
 			replica_height = TOKEN_NUMBER[j]/replica_num
@@ -176,10 +185,20 @@ def init():
 				base_offset = w*height +i * replica_height
 				for k in range(height):
 					tail_ptr = QUEUE_PTRS[w][1]
-					TENSOR_QUEUES[w][tail_ptr][0] = j
-					TENSOR_QUEUES[w][tail_ptr][1] = k + base_offset
+					TENSOR_QUEUES[w][tail_ptr][0] = j  #depth
+					TENSOR_QUEUES[w][tail_ptr][1] = k + base_offset  #token_no
 					QUEUE_PTRS[w][1] += 1
-
+	'''
+	for j in range(TOKEN_LAYERS)：
+		UNIT_TOKEN_NO = TOKEN_NUMBER[j]/args.wn
+		for w in range(args.wn):
+			token_base_offset = w * UNIT_TOKEN_NO
+			for i  in range(UNIT_TOKEN_NO):
+				tail_ptr = QUEUE_PTRS[w][1]
+				TENSOR_QUEUES[w][tail_ptr][0] = j    #depth
+				TENSOR_QUEUES[w][tail_ptr][1] = w*UNIT_TOKEN_NO+i   #token_no
+				QUEUE_PTRS[w][1] += 1
+		
 
 	HOLD_MAP.zero_().add_(-1)
 	CHUNK_HOLD_MAP.zero_().add_(-2)
@@ -209,7 +228,6 @@ def reset():
 	READY_RST.zero_()
 	ESTABLISHED_CONN.zero_()
 	connection_lock.release()
-
 
 
 	#HOLD_MAP[2].add(8) #FC worker
@@ -518,8 +536,12 @@ def ms_process(channel_id):
 	while True:
 		for i in range(TOKEN_LAYERS):
 			#print(int(channel_id),"\t round ",int(i))
+			
+			#TODO: if is_fc()
+
 			if i == 0 or i == 1:
 				NEED_SYNC[channel_id][i] = 0
+
 			elif NEED_SYNC[channel_id][i] == 1:
 				if COMPLETE_MAP[i].sum() == TOKEN_NUMBER[i]:
 					#print(int(channel_id),"\tsyncing ",int(i))
