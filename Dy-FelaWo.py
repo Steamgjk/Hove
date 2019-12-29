@@ -330,7 +330,7 @@ def get_fc_input_data(depth):
  
 def train_fc_model(input_data, depth):
     #TODO: 一个一个来 还是 batch？
-    global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target,
+    global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target
     input_data = input_data.cuda()
     fin_output = SUB_MODEL_LIST[depth](input_data)
     loss = criterion(fin_output, fake_target.cuda())
