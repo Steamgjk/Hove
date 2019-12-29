@@ -144,7 +144,7 @@ def init():
 			for i  in range(UNIT_TOKEN_NO):
 				tail_ptr = QUEUE_PTRS[w][1]
 				TENSOR_QUEUES[w][tail_ptr][0] = j    #depth
-				TENSOR_QUEUES[w][tail_ptr][1] = w*UNIT_TOKEN_NO+i   #token_no
+				TENSOR_QUEUES[w][tail_ptr][1] =token_base_offset+i   #token_no
 				QUEUE_PTRS[w][1] += 1
 
 	HOLD_MAP.zero_().add_(-1)
@@ -156,6 +156,7 @@ def init():
 	GLOBAL_STEP.zero_()
 	READY_RST.zero_()
 	print("QUEUE ptrs ", QUEUE_PTRS)
+	exit(0)
 
 def reset():
 	
