@@ -32,7 +32,7 @@ import numba.cuda as cuda
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--wid', default=0, type=int, help='worker id')
 parser.add_argument('--wn', default=8, type=int, help='worker number')
-parser.add_argument('--fcwn', default=8, type=int, help='worker number')
+parser.add_argument('--fcwn', default=8, type=int, help='fc worker number')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
 parser.add_argument('--subbs', default=1, type=int, help='sub batch size')
 parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Address')
@@ -332,6 +332,7 @@ def get_fc_input_data(depth):
 def train_fc_model(input_data, depth):
     #TODO: 一个一个来 还是 batch？
     global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target
+    input_data.requires_grad = True
     input_data = input_data.cuda()
     fin_output = SUB_MODEL_LIST[depth](input_data)
     loss = criterion(fin_output, fake_target.cuda())
