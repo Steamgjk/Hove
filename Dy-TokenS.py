@@ -488,9 +488,6 @@ def ms_process(channel_id):
 	while True:
 		for i in range(TOKEN_LAYERS):
 			#print(int(channel_id),"\t round ",int(i))
-			
-			#TODO: if is_fc()
-
 			if i == 0 or i == 1:
 				NEED_SYNC[channel_id][i] = 0
 

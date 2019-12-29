@@ -73,7 +73,7 @@ criterion = nn.CrossEntropyLoss()
 #fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*TOKEN_WEIGHT[2])))
 fake_input = torch.randn([args.tokencap * TOKEN_WEIGHT[0],3,224,224], dtype=torch.float)
 #fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.tokencap*TOKEN_WEIGHT[2])))
-fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*args.wn/args.fcwn )))
+fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.tokencap*TOKEN_WEIGHT[2]*args.wn/args.fcwn )))
 fake_input = fake_input.share_memory_()
 fake_target = fake_target.share_memory_()
 MODEL_PARTITION = args.partition
@@ -308,17 +308,17 @@ def check_dependency(my_depth, my_token_no):
                 return False
     return True       
 
-def get_fc_input_data(depth):
+def get_fc_input_data(depth, token_no):
     req_list = []
     tensor_list = []
-
     base_wid = args.wid + args.fcwn
-    unit_size  = int(args.subbs)
-    base_tensor = TOKEN_DATA_STORAGE[depth][args.wid*unit_size:(args.wid*unit_size+unit_size)]
+    unit_size = TOKEN_WEIGHT[depth]*TOKEN_CAPACITY
+    base_offset = token_no * unit_size
+    base_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
     tensor_list.append(base_tensor)
     while base_wid < args.wn:
         dst_rank = base_wid + WK_BASE
-        base_offset = base_wid * unit_size
+        base_offset += int(args.subbs)*args.fcwn
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         req = dist.irecv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
@@ -329,8 +329,7 @@ def get_fc_input_data(depth):
     input_data = torch.cat(tensor_list)
     return input_data
  
-def train_fc_model(input_data, depth):
-    #TODO: 一个一个来 还是 batch？
+def train_fc_model(input_data, depth, token_no):
     global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target
     input_data.requires_grad = True
     input_data = input_data.cuda()
@@ -339,37 +338,39 @@ def train_fc_model(input_data, depth):
     loss.backward()
     output_data = HookFunc.backward_ctx
     output_data = output_data.cpu()
-    unit_size = int(TOKEN_WEIGHT[depth]* args.tokencap)
+    unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     base_wid = args.wid
+    base_offset = token_no * unit_size
     while base_wid < args.wn:
-        base_offset = base_wid * unit_size
         data_storage_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         data_storage_tensor.copy_(output_data.data.cpu())
         base_wid += args.fcwn
-def spread_fc_output_data(depth):
+        base_offset += args.fcwn*args.subbs
+def spread_fc_output_data(depth, token_no):
     seq_list = []
     base_wid = args.wid+args.fcwn 
-    unit_size = int(TOKEN_WEIGHT[depth]* args.tokencap)
+    unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
+    base_offset = token_no * unit_size + args.subbs*args.fcwn
     while base_wid < args.wn:
-        base_offset = base_wid * unit_size
         dst_rank = base_wid + WK_BASE
         send_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         seq = dist.isend(tensor=send_tensor, dst = dst_rank)
         seq_list.append(seq)
         base_wid += args.fcwn 
+        base_offset += args.fcwn * args.subbs
     for seq in seq_list:
         seq.wait()
-def send_fc_input_data(depth):
-    unit_size = int(TOKEN_WEIGHT[depth]*args.tokencap)
-    base_offset = args.wid*unit_size
+def send_fc_input_data(depth,token_no):
+    unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
+    base_offset = token_no * unit_size
     send_tensor = TOKEN_DATA_STORAGE[depth-1][base_offset:(base_offset+unit_size)]
     dst_rank = (args.wid%args.fcwn)+WK_BASE
     seq = dist.isend(tensor= send_tensor, dst = dst_rank )
     seq.wait()
 
-def recv_fc_output_data(depth):
-    unit_size = int(TOKEN_WEIGHT[depth]*args.tokencap)
-    base_offset = args.wid*unit_size
+def recv_fc_output_data(depth, token_no):
+    unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
+    base_offset = token_no * unit_size
     recv_tensor =  TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
     src_rank =  (args.wid%args.fcwn)+WK_BASE
     seq = dist.irecv(tensor = recv_tensor, src=src_rank)
@@ -415,17 +416,17 @@ def train_sync_proc(wid):
             if is_fc_depth(depth):
                 if is_fc_worker(args.wid):
                     print("fc depth & fc worker")
-                    input_data = get_fc_input_data(depth)
-                    train_fc_model(input_data, depth)
+                    input_data = get_fc_input_data(depth, token_no)
+                    train_fc_model(input_data, depth, token_no)
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
-                    spread_fc_output_data(depth)
+                    spread_fc_output_data(depth, token_no)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
                 else:
                     print("fc depth NOT fc worker")
                     print("NOT FC  wid=",args.wid)
-                    send_fc_input_data(depth)
+                    send_fc_input_data(depth, token_no)
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
-                    recv_fc_output_data(depth)
+                    recv_fc_output_data(depth, token_no)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
             else: 
                 input_data = get_input_data(depth, token_no)
