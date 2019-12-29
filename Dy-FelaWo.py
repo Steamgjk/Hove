@@ -417,10 +417,15 @@ def train_sync_proc(wid):
                 if is_fc_worker(args.wid):
                     print("fc depth & fc worker")
                     input_data = get_fc_input_data(depth, token_no)
+                    print("FIN: get_fc_input_data")
                     train_fc_model(input_data, depth, token_no)
+                    print("FIN: train_fc_model")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    print("FIN report progress")
                     spread_fc_output_data(depth, token_no)
+                    print("FIN spread_fc_output_data")
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
+                    print("FIN new_request_tensor")
                 else:
                     print("fc depth NOT fc worker")
                     print("NOT FC  wid=",args.wid)
