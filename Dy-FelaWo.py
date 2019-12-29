@@ -346,6 +346,10 @@ def train_fc_model(input_data, depth, token_no):
         data_storage_tensor.copy_(output_data.data.cpu())
         base_wid += args.fcwn
         base_offset += args.fcwn*args.subbs
+
+    chunk_offset = token_no * TOKEN_WEIGHT[depth]
+    CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
+
 def spread_fc_output_data(depth, token_no):
     seq_list = []
     base_wid = args.wid+args.fcwn 
@@ -375,7 +379,9 @@ def recv_fc_output_data(depth, token_no):
     src_rank =  (args.wid%args.fcwn)+WK_BASE
     seq = dist.irecv(tensor = recv_tensor, src=src_rank)
     seq.wait()
-
+    chunk_offset = token_no * TOKEN_WEIGHT[depth]
+    CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
+    
 def train_sync_proc(wid):
     my_rank = wid + WK_BASE
     dst_rank = wid + TS_BASE
