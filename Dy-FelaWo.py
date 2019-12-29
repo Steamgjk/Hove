@@ -341,9 +341,12 @@ def train_fc_model(input_data, depth, token_no):
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     base_wid = args.wid
     base_offset = token_no * unit_size
+    output_data_offset = 0
+    output_data = output_data.data.cpu()
     while base_wid < args.wn:
         data_storage_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
-        data_storage_tensor.copy_(output_data.data.cpu())
+        data_storage_tensor.copy_(output_data[output_data_offset:(output_data_offset+unit_size)])
+        output_data_offset += unit_size
         base_wid += args.fcwn
         base_offset += args.fcwn*args.subbs
 
