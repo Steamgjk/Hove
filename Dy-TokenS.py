@@ -155,7 +155,7 @@ def init():
 	NEED_SYNC.zero_().add_(1)
 	GLOBAL_STEP.zero_()
 	READY_RST.zero_()
-	#print("QUEUE ptrs ", QUEUE_PTRS)
+	print("QUEUE ptrs ", QUEUE_PTRS)
 
 def reset():
 	
@@ -363,7 +363,8 @@ def ts_process(channel_id):
 			connection_lock.release()
 			dist.send(ts2worker_tensor, dst = worker_rank)
 		#print(int(channel_id)," Recved ", worker2ts_tensor)
-		elif worker2ts_tensor[0] == NEW_REQUEST:		
+		elif worker2ts_tensor[0] == NEW_REQUEST:	
+			print("requester_wid=",requester_wid,"\t",QUEUE_PTRS[requester_wid][0], "\t", QUEUE_PTRS[requester_wid][1])	
 			if QUEUE_PTRS[requester_wid][0]<QUEUE_PTRS[requester_wid][1]:
 				front = QUEUE_PTRS[requester_wid][0]
 				depth = TENSOR_QUEUES[requester_wid][front][0]
