@@ -409,6 +409,7 @@ def train_sync_proc(wid):
         elif ts2worker_tensor[0]== DISTRIBUTE_TOKEN:
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
+            print("DISTRIBUTE_TOKEN ", depth,"\t", token_no)
             if is_fc_depth(depth):
                 if is_fc_worker(args.wid):
                     print("fc depth & fc worker")
@@ -474,9 +475,9 @@ def model_sync_process(wid):
         to_sync_layer = ts2ms_tensor[1]
         #print("to_sync_layer=",int(to_sync_layer))
         if is_fc_depth(to_sync_layer):
-            print("fc layer")
+            #print("fc layer")
             if is_fc_worker(wid):
-                print("fc worker")
+                #print("fc worker")
                 req_list = []
                 for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
                     if(parameters.grad is not None):
