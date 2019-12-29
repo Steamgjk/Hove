@@ -136,59 +136,7 @@ def is_fc_worker(wid):
 
 def init():
 	#depth first
-	#replica_num = args.replica
 	QUEUE_PTRS.zero_()
-	fc_worker = args.wn - 1
-	'''
-	for j in range(TOKEN_LAYERS):
-		for i in range(replica_num):
-			replica_height = TOKEN_NUMBER[j]/replica_num
-			height = int(replica_height/args.wn)
-			for w in range(args.wn):
-				base_offset = w*height +i * replica_height
-				for k in range(height):
-					tail_ptr = QUEUE_PTRS[w][1]
-					TENSOR_QUEUES[w][tail_ptr][0] = j
-					TENSOR_QUEUES[w][tail_ptr][1] = k + base_offset
-					QUEUE_PTRS[w][1] += 1
-					if is_fc_depth(j) and (not is_fc_worker(w)):
-						tail_ptr = QUEUE_PTRS[fc_worker][1]
-						TENSOR_QUEUES[fc_worker][tail_ptr][0] = j
-						TENSOR_QUEUES[fc_worker][tail_ptr][1] = k + base_offset
-						QUEUE_PTRS[fc_worker][1] += 1
-	'''
-	'''
-	candidate
-	for i in range(replica_num):
-		for j in range(TOKEN_LAYERS):
-			replica_height = TOKEN_NUMBER[j]/replica_num
-			height = int(replica_height/args.wn)
-			for w in range(args.wn):
-				base_offset = w*height +i * replica_height
-				for k in range(height):
-					tail_ptr = QUEUE_PTRS[w][1]
-					TENSOR_QUEUES[w][tail_ptr][0] = j
-					TENSOR_QUEUES[w][tail_ptr][1] = k + base_offset
-					QUEUE_PTRS[w][1] += 1
-					if is_fc_depth(j) and (not is_fc_worker(w)):
-						tail_ptr = QUEUE_PTRS[fc_worker][1]
-						TENSOR_QUEUES[fc_worker][tail_ptr][0] = j
-						TENSOR_QUEUES[fc_worker][tail_ptr][1] = k + base_offset
-						QUEUE_PTRS[fc_worker][1] += 1
-	'''
-	'''
-	for i in range(replica_num):
-		for j in range(TOKEN_LAYERS):
-			replica_height = TOKEN_NUMBER[j]/replica_num
-			height = int(replica_height/args.wn)
-			for w in range(args.wn):
-				base_offset = w*height +i * replica_height
-				for k in range(height):
-					tail_ptr = QUEUE_PTRS[w][1]
-					TENSOR_QUEUES[w][tail_ptr][0] = j  #depth
-					TENSOR_QUEUES[w][tail_ptr][1] = k + base_offset  #token_no
-					QUEUE_PTRS[w][1] += 1
-	'''
 	for j in range(TOKEN_LAYERS):
 		UNIT_TOKEN_NO = int(TOKEN_NUMBER[j]/args.wn)
 		for w in range(args.wn):
@@ -198,7 +146,6 @@ def init():
 				TENSOR_QUEUES[w][tail_ptr][0] = j    #depth
 				TENSOR_QUEUES[w][tail_ptr][1] = w*UNIT_TOKEN_NO+i   #token_no
 				QUEUE_PTRS[w][1] += 1
-		
 
 	HOLD_MAP.zero_().add_(-1)
 	CHUNK_HOLD_MAP.zero_().add_(-2)

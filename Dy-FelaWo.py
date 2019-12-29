@@ -32,7 +32,7 @@ import numba.cuda as cuda
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--wid', default=0, type=int, help='worker id')
 parser.add_argument('--wn', default=8, type=int, help='worker number')
-parser.add_argument('--fcwn', default=4, type=int, help='worker number')
+parser.add_argument('--fcwn', default=8, type=int, help='worker number')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
 parser.add_argument('--subbs', default=1, type=int, help='sub batch size')
 parser.add_argument('--ip', default="12.12.11.11", type=str, help='Master IP Address')
@@ -72,7 +72,8 @@ criterion = nn.CrossEntropyLoss()
 #fake_input = torch.randn([args.subbs * TOKEN_WEIGHT[0],3,224,224], dtype=torch.float)
 #fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*TOKEN_WEIGHT[2])))
 fake_input = torch.randn([args.tokencap * TOKEN_WEIGHT[0],3,224,224], dtype=torch.float)
-fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.tokencap*TOKEN_WEIGHT[2])))
+#fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.tokencap*TOKEN_WEIGHT[2])))
+fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*args.wn/args.fcwn )))
 fake_input = fake_input.share_memory_()
 fake_target = fake_target.share_memory_()
 MODEL_PARTITION = args.partition
@@ -189,11 +190,15 @@ def init_processes(rank, size, backend='gloo'):
     print("GLOO: ", os.environ['MASTER_ADDR'], " ",  os.environ['MASTER_PORT'])
     dist.init_process_group(backend, rank=rank, world_size=size)
     train_sync_ranks = [SY_BASE]*(args.wn)
+
     train_sync_ranks_fc = [] #TODO
     for i in range(args.wn):
         train_sync_ranks[i] += i
     train_sync_group = dist.new_group(ranks=train_sync_ranks, backend=backend)
-    train_sync_fc_group = None
+    for i in range(args.fcwn):
+        train_sync_ranks_fc.append(train_sync_ranks[i])
+    train_sync_fc_group = dist.new_group(ranks=train_sync_ranks_fc, backend=backend)
+
     return train_sync_group, train_sync_fc_group
 
 def get_fc_rank(token_no):
@@ -201,7 +206,7 @@ def get_fc_rank(token_no):
 def get_conv_rank(token_no):
     return token_no % args.wn + WK_BASE
 def is_fc_worker(wid):
-    if wid == args.wn-1:
+    if wid < args.fcwn:
         return True
     else:
         return False
@@ -302,6 +307,71 @@ def check_dependency(my_depth, my_token_no):
                 return False
     return True       
 
+def get_fc_input_data(depth):
+    req_list = []
+    tensor_list = []
+
+    base_wid = args.wid + args.fcwn
+    unit_size  = int(args.subbs)
+    base_tensor = TOKEN_DATA_STORAGE[depth][args.wid*unit_size:(args.wid*unit_size+unit_size)]
+    tensor_list.append(base_tensor)
+    while base_wid < args.wn:
+        dst_rank = base_wid + WK_BASE
+        base_offset = base_wid * unit_size
+        recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
+        req = dist.irecv(tensor = recv_tensor, src = dst_rank)
+        tensor_list.append(recv_tensor)
+        req_list.append(req)
+        base_wid += args.fcwn
+    for req in req_list:
+        req.wait()
+    input_data = torch.cat(tensor_list)
+    return input_data
+ 
+def train_fc_model(input_data, depth):
+    #TODO: 一个一个来 还是 batch？
+    global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target,
+    input_data = input_data.cuda()
+    fin_output = SUB_MODEL_LIST[depth](input_data)
+    loss = criterion(fin_output, fake_target.cuda())
+    loss.backward()
+    output_data = HookFunc.backward_ctx
+    output_data = output_data.cpu()
+    unit_size = int(TOKEN_WEIGHT[depth]* args.tokencap)
+    base_wid = args.wid
+    while base_wid < args.wn:
+        base_offset = base_wid * unit_size
+        data_storage_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
+        data_storage_tensor.copy_(output_data.data.cpu())
+        base_wid += args.fcwn
+def spread_fc_output_data(depth):
+    seq_list = []
+    base_wid = args.wid+args.fcwn 
+    unit_size = int(TOKEN_WEIGHT[depth]* args.tokencap)
+    while base_wid < args.wn:
+        base_offset = base_wid * unit_size
+        dst_rank = base_wid + WK_BASE
+        send_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
+        seq = dist.isend(tensor=send_tensor, dst = dst_rank)
+        seq_list.append(seq)
+        base_wid += args.fcwn 
+    for seq in seq_list:
+        seq.wait()
+def send_fc_input_data(depth):
+    unit_size = int(TOKEN_WEIGHT[depth]*args.tokencap)
+    base_offset = args.wid*unit_size
+    send_tensor = TOKEN_DATA_STORAGE[depth-1][base_offset:(base_offset+unit_size)]
+    dst_rank = (args.wid%args.fcwn)+WK_BASE
+    seq = dist.isend(tensor= send_tensor, dst = dst_rank )
+    seq.wait()
+
+def recv_fc_output_data(depth):
+    unit_size = int(TOKEN_WEIGHT[depth]*args.tokencap)
+    base_offset = args.wid*unit_size
+    recv_tensor =  TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
+    src_rank =  (args.wid%args.fcwn)+WK_BASE
+    seq = dist.irecv(tensor = recv_tensor, src=src_rank)
+    seq.wait()
 
 def train_sync_proc(wid):
     my_rank = wid + WK_BASE
@@ -339,17 +409,31 @@ def train_sync_proc(wid):
         elif ts2worker_tensor[0]== DISTRIBUTE_TOKEN:
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
-            input_data = get_input_data(depth, token_no)
-            print("training self... ", int(depth),"\t", int(token_no))
-            train_model(depth, token_no, input_data)
-            print("train self fin sending")
-            #report_progress_tensor[1] = depth
-            #report_progress_tensor[2] = token_no
-            dist.send(tensor = report_progress_tensor, dst = dst_rank)
-            dist.send(tensor = new_request_tensor, dst = dst_rank)
+            if is_fc_depth(depth):
+                if is_fc_worker(args.wid):
+                    print("fc depth & fc worker")
+                    input_data = get_fc_input_data(depth)
+                    train_fc_model(input_data, depth)
+                    dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    spread_fc_output_data(depth)
+                    dist.send(tensor = new_request_tensor, dst = dst_rank)
+                else:
+                    print("fc depth NOT fc worker")
+                    send_fc_input_data(depth)
+                    dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    recv_fc_output_data(depth)
+                    dist.send(tensor = new_request_tensor, dst = dst_rank)
+            else: 
+                input_data = get_input_data(depth, token_no)
+                print("training self... ", int(depth),"\t", int(token_no))
+                train_model(depth, token_no, input_data)
+                print("train self fin sending")
+                #report_progress_tensor[1] = depth
+                #report_progress_tensor[2] = token_no
+                dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                dist.send(tensor = new_request_tensor, dst = dst_rank)
         elif ts2worker_tensor[0]== OTHER_TOKENS:
             #need depdencies
-
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
             print("other token... ", int(depth), " ", int(token_no))
@@ -389,23 +473,39 @@ def model_sync_process(wid):
         dist.recv(tensor=ts2ms_tensor, src=ts2ms_rank)
         to_sync_layer = ts2ms_tensor[1]
         #print("to_sync_layer=",int(to_sync_layer))
-        req_list = []
-        for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
-            if(parameters.grad is not None):
-                grad_content = parameters.grad
-                grad_content.div_(args.wn)
-                grad_content = parameters.grad.cpu()
-                req = dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_group, async_op = True)
-                req_list.append(req)
-                parameters.grad.copy_(grad_content)
+        if is_fc_depth(to_sync_layer):
+            print("fc layer")
+            if is_fc_worker(wid):
+                print("fc worker")
+                req_list = []
+                for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
+                    if(parameters.grad is not None):
+                        grad_content = parameters.grad
+                        grad_content.div_(args.wn)
+                        grad_content = parameters.grad.cpu()
+                        req = dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group, async_op = True)
+                        req_list.append(req)
+                        parameters.grad.copy_(grad_content)
+                for req in req_list:
+                    req.wait()
+                SUB_OPTIMIZERS[to_sync_layer].step()                
+        else:
+            req_list = []
+            for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
+                if(parameters.grad is not None):
+                    grad_content = parameters.grad
+                    grad_content.div_(args.wn)
+                    grad_content = parameters.grad.cpu()
+                    req = dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_group, async_op = True)
+                    req_list.append(req)
+                    parameters.grad.copy_(grad_content)
 
-        for req in req_list:
-            req.wait()
-        SUB_OPTIMIZERS[to_sync_layer].step()
+            for req in req_list:
+                req.wait()
+            SUB_OPTIMIZERS[to_sync_layer].step()
         ms2ts_tensor[1] = to_sync_layer
         dist.send(tensor=ms2ts_tensor, dst = ts2ms_rank)
         #print("sync fin ", int(to_sync_layer))
-
         if to_sync_layer == TOKEN_LAYERS - 1:
             CHUNK_HOLD_MAP.zero_()
             
