@@ -381,7 +381,7 @@ def recv_fc_output_data(depth, token_no):
     seq.wait()
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
-    
+
 def train_sync_proc(wid):
     my_rank = wid + WK_BASE
     dst_rank = wid + TS_BASE
@@ -403,7 +403,7 @@ def train_sync_proc(wid):
     while True:
         #print("RECV...")
         dist.recv(tensor = ts2worker_tensor, src = dst_rank)
-        print("RECVED ..", ts2worker_tensor)
+        #print("RECVED ..", ts2worker_tensor)
         if ts2worker_tensor[0]== CONN_ESTABLISH:
             local_step = int(ts2worker_tensor[1])
             print("local_step=",local_step)
@@ -418,33 +418,33 @@ def train_sync_proc(wid):
         elif ts2worker_tensor[0]== DISTRIBUTE_TOKEN:
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
-            print("DISTRIBUTE_TOKEN ", depth,"\t", token_no)
+            #print("DISTRIBUTE_TOKEN ", depth,"\t", token_no)
             if is_fc_depth(depth):
                 if is_fc_worker(args.wid):
-                    print("fc depth & fc worker")
+                    #print("fc depth & fc worker")
                     input_data = get_fc_input_data(depth, token_no)
-                    print("FIN: get_fc_input_data")
+                    #print("FIN: get_fc_input_data")
                     train_fc_model(input_data, depth, token_no)
-                    print("FIN: train_fc_model")
+                    #print("FIN: train_fc_model")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
-                    print("FIN report progress")
+                    #print("FIN report progress")
                     spread_fc_output_data(depth, token_no)
-                    print("FIN spread_fc_output_data")
+                    #print("FIN spread_fc_output_data")
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
-                    print("FIN new_request_tensor")
+                    #print("FIN new_request_tensor")
                 else:
-                    print("fc depth NOT fc worker")
-                    print("NOT FC  wid=",args.wid)
+                    #print("fc depth NOT fc worker")
+                    #print("NOT FC  wid=",args.wid)
                     send_fc_input_data(depth, token_no)
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     recv_fc_output_data(depth, token_no)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
             else: 
-                print("NO FC depth")
+                #print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
-                print("training self... ", int(depth),"\t", int(token_no))
+                #print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
-                print("train self fin sending")
+                #print("train self fin sending")
                 #report_progress_tensor[1] = depth
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
@@ -453,18 +453,18 @@ def train_sync_proc(wid):
             #need depdencies
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
-            print("other token... ", int(depth), " ", int(token_no))
+            #print("other token... ", int(depth), " ", int(token_no))
             #print("get other tokens ", int(depth), "\t", int(token_no))
             while check_dependency(depth, token_no) == False:
                 #print("checking dependency false ", int(depth),"\t",int(token_no))
                 #time.sleep(1)
                 continue
             input_data = get_input_data(depth, token_no)
-            print("training others... ", int(depth),"\t", int(token_no))
+            #print("training others... ", int(depth),"\t", int(token_no))
             train_model(depth, token_no, input_data)
             #report_progress_tensor[1] = depth
             #report_progress_tensor[2] = token_no
-            print("train others fin sending")
+            #print("train others fin sending")
             dist.send(tensor = report_progress_tensor, dst = dst_rank)
             dist.send(tensor = new_request_tensor, dst = dst_rank) 
             #print("asking new request")
