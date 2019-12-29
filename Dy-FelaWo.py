@@ -181,6 +181,7 @@ def ini_data_storage():
 
     CHUNK_HOLD_MAP.zero_()
     print("TOKEN_NUMBER ", TOKEN_NUMBER)
+    print("fcwn=",args.fcwn)
 
 
 def init_processes(rank, size, backend='gloo'):
