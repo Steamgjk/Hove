@@ -434,6 +434,7 @@ def train_sync_proc(wid):
                     recv_fc_output_data(depth, token_no)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
             else: 
+                print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
                 print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
