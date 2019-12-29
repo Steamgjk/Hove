@@ -355,7 +355,7 @@ def ts_process(channel_id):
 	while True:
 		#print(int(channel_id)," Recvinb")
 		dist.recv(tensor = worker2ts_tensor, src = worker_rank)
-		print(int(channel_id)," Recved ", worker2ts_tensor)
+		#print(int(channel_id)," Recved ", worker2ts_tensor)
 		if worker2ts_tensor[0] == CONNECTION_REQUEST:
 			connection_lock.acquire()
 			CONNECTION_ESTABLISHED[channel_id] =1
@@ -366,7 +366,7 @@ def ts_process(channel_id):
 			dist.send(ts2worker_tensor, dst = worker_rank)
 		#print(int(channel_id)," Recved ", worker2ts_tensor)
 		elif worker2ts_tensor[0] == NEW_REQUEST:	
-			print("requester_wid=",requester_wid,"\t",QUEUE_PTRS[requester_wid][0], "\t", QUEUE_PTRS[requester_wid][1])	
+			#print("requester_wid=",requester_wid,"\t",QUEUE_PTRS[requester_wid][0], "\t", QUEUE_PTRS[requester_wid][1])	
 			if QUEUE_PTRS[requester_wid][0]<QUEUE_PTRS[requester_wid][1]:
 				front = QUEUE_PTRS[requester_wid][0]
 				depth = TENSOR_QUEUES[requester_wid][front][0]

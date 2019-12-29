@@ -256,7 +256,7 @@ def train_model(depth, token_no, input_data):
     if depth < TOKEN_LAYERS-1:
         #the output of the last layer does not neded to be stored
         data_storage_tensor  = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
-        print("output_data sz=",output_data.size(), "\t storage size=", data_storage_tensor.size(), "\tdepth=",depth,"\tunit=",unit_size)
+        #print("output_data sz=",output_data.size(), "\t storage size=", data_storage_tensor.size(), "\tdepth=",depth,"\tunit=",unit_size)
         data_storage_tensor.copy_(output_data.data.cpu())
         CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
 
