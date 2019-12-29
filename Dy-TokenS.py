@@ -353,6 +353,7 @@ def ts_process(channel_id):
 	while True:
 		#print(int(channel_id)," Recvinb")
 		dist.recv(tensor = worker2ts_tensor, src = worker_rank)
+		print(int(channel_id)," Recved ", worker2ts_tensor)
 		if worker2ts_tensor[0] == CONNECTION_REQUEST:
 			connection_lock.acquire()
 			CONNECTION_ESTABLISHED[channel_id] =1
@@ -367,6 +368,7 @@ def ts_process(channel_id):
 				front = QUEUE_PTRS[requester_wid][0]
 				depth = TENSOR_QUEUES[requester_wid][front][0]
 				token_no = TENSOR_QUEUES[requester_wid][front][1]
+				print("NEW REQIEST depth=",depth,"\ttoken_no=",token_no)
 				while True:
 					if HOLD_MAP[depth][token_no] > -1:
 						#print("there add 1 ",int(depth),"\t", int(token_no))
