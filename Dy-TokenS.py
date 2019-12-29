@@ -156,6 +156,7 @@ def init():
 	GLOBAL_STEP.zero_()
 	READY_RST.zero_()
 	print("QUEUE ptrs ", QUEUE_PTRS)
+	print("TOKEN_NUMBER:",TOKEN_NUMBER)
 	exit(0)
 
 def reset():
