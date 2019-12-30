@@ -324,8 +324,8 @@ def get_fc_input_data(depth, token_no):
         tensor_list.append(recv_tensor)
         req_list.append(req)
         base_wid += args.fcwn
-    #for req in req_list:
-    #    req.wait()
+    for req in req_list:
+        req.wait()
     input_data = torch.cat(tensor_list)
     return input_data
  
@@ -384,7 +384,7 @@ def recv_fc_output_data(depth, token_no):
     recv_tensor =  TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
     src_rank =  (args.wid%args.fcwn)+WK_BASE
     seq = dist.irecv(tensor = recv_tensor, src=src_rank)
-    #seq.wait()
+    seq.wait()
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
     return seq
@@ -428,21 +428,22 @@ def train_sync_proc(wid):
             #print("DISTRIBUTE_TOKEN ", depth,"\t", token_no)
             if is_fc_depth(depth):
                 if is_fc_worker(args.wid):
-                    #print("fc depth & fc worker")
+                    print("fc depth & fc worker")
                     input_data = get_fc_input_data(depth, token_no)
-                    #print("FIN: get_fc_input_data")
+                    print("FIN: get_fc_input_data")
                     train_fc_model(input_data, depth, token_no)
-                    #print("FIN: train_fc_model")
+                    print("FIN: train_fc_model")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
-                    #print("FIN report progress")
+                    print("FIN report progress")
                     spread_fc_output_data(depth, token_no)
-                    #print("FIN spread_fc_output_data")
+                    print("FIN spread_fc_output_data")
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
-                    #print("FIN new_request_tensor")
+                    print("FIN new_request_tensor")
                 else:
-                    #print("fc depth NOT fc worker")
-                    #print("NOT FC  wid=",args.wid)
+                    print("fc depth NOT fc worker")
+                    print("NOT FC  wid=",args.wid)
                     send_fc_input_data(depth, token_no)
+                    print("send_fc_input_data")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     recv_fc_output_data(depth, token_no)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
