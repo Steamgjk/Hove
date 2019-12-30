@@ -324,8 +324,8 @@ def get_fc_input_data(depth, token_no):
         tensor_list.append(recv_tensor)
         req_list.append(req)
         base_wid += args.fcwn
-    #for req in req_list:
-    #    req.wait()
+    for req in req_list:
+        req.wait()
     input_data = torch.cat(tensor_list)
     return input_data
  
@@ -353,6 +353,7 @@ def train_fc_model(input_data, depth, token_no):
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
 
+
 def spread_fc_output_data(depth, token_no):
     seq_list = []
     base_wid = args.wid+args.fcwn 
@@ -365,6 +366,7 @@ def spread_fc_output_data(depth, token_no):
         seq_list.append(seq)
         base_wid += args.fcwn 
         base_offset += args.fcwn * args.subbs
+    return seq_list
     #for seq in seq_list:
     #    seq.wait()
 def send_fc_input_data(depth,token_no):
@@ -374,6 +376,7 @@ def send_fc_input_data(depth,token_no):
     dst_rank = (args.wid%args.fcwn)+WK_BASE
     seq = dist.isend(tensor= send_tensor, dst = dst_rank )
     #seq.wait()
+    return seq
 
 def recv_fc_output_data(depth, token_no):
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
@@ -384,6 +387,7 @@ def recv_fc_output_data(depth, token_no):
     #seq.wait()
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
+    return seq
 
 def train_sync_proc(wid):
     my_rank = wid + WK_BASE
@@ -429,7 +433,7 @@ def train_sync_proc(wid):
                     #print("FIN: get_fc_input_data")
                     train_fc_model(input_data, depth, token_no)
                     #print("FIN: train_fc_model")
-                    dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    #dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     #print("FIN report progress")
                     spread_fc_output_data(depth, token_no)
                     #print("FIN spread_fc_output_data")
@@ -439,7 +443,7 @@ def train_sync_proc(wid):
                     #print("fc depth NOT fc worker")
                     #print("NOT FC  wid=",args.wid)
                     send_fc_input_data(depth, token_no)
-                    dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    #dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     recv_fc_output_data(depth, token_no)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
             else: 
