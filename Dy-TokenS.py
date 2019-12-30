@@ -499,7 +499,7 @@ def ms_process(channel_id):
 					#print(int(channel_id),"\trecving ",int(i))
 					dist.recv(tensor = ms2ts_tensor, src = ms_rank)
 					NEED_SYNC[channel_id][i] = 0
-					#print(int(channel_id),"\tfin syncing ",int(i))
+					print(int(channel_id),"\tfin syncing layer ",int(i))
 					if i == TOKEN_LAYERS -1:
 						#sync fin, reset
 						SYNC_CNTERS[channel_id] += 1
