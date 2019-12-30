@@ -433,7 +433,7 @@ def train_sync_proc(wid):
                     #print("FIN: get_fc_input_data")
                     train_fc_model(input_data, depth, token_no)
                     #print("FIN: train_fc_model")
-                    #dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     #print("FIN report progress")
                     spread_fc_output_data(depth, token_no)
                     #print("FIN spread_fc_output_data")
@@ -443,7 +443,7 @@ def train_sync_proc(wid):
                     #print("fc depth NOT fc worker")
                     #print("NOT FC  wid=",args.wid)
                     send_fc_input_data(depth, token_no)
-                    #dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     recv_fc_output_data(depth, token_no)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
             else: 
