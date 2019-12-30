@@ -497,17 +497,18 @@ def model_sync_process(wid):
             #print("fc layer")
             if is_fc_worker(wid):
                 #print("fc worker")
-                req_list = []
-                for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
-                    if(parameters.grad is not None):
-                        grad_content = parameters.grad
-                        grad_content.div_(args.wn)
-                        grad_content = parameters.grad.cpu()
-                        req = dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group, async_op = True)
-                        req_list.append(req)
-                        parameters.grad.copy_(grad_content)
-                for req in req_list:
-                    req.wait()
+                if args.fcwn>1:
+                    req_list = []
+                    for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
+                        if(parameters.grad is not None):
+                            grad_content = parameters.grad
+                            grad_content.div_(args.wn)
+                            grad_content = parameters.grad.cpu()
+                            req = dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group, async_op = True)
+                            req_list.append(req)
+                            parameters.grad.copy_(grad_content)
+                    for req in req_list:
+                        req.wait()
                 SUB_OPTIMIZERS[to_sync_layer].step()                
         else:
             req_list = []
