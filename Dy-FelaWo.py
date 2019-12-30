@@ -368,8 +368,8 @@ def spread_fc_output_data(depth, token_no):
         base_wid += args.fcwn 
         base_offset += args.fcwn * args.subbs
     #return seq_list
-    #for seq in seq_list:
-    #    seq.wait()
+    for seq in seq_list:
+        seq.wait()
 def send_fc_input_data(depth,token_no):
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     base_offset = token_no * unit_size
