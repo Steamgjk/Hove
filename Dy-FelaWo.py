@@ -319,6 +319,7 @@ def get_fc_input_data(depth, token_no):
     while base_wid < args.wn:
         dst_rank = base_wid + WK_BASE
         base_offset += int(args.subbs)*args.fcwn
+        #TO Optimize
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         req = dist.irecv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
@@ -367,8 +368,8 @@ def spread_fc_output_data(depth, token_no):
         base_wid += args.fcwn 
         base_offset += args.fcwn * args.subbs
     #return seq_list
-    for seq in seq_list:
-        seq.wait()
+    #for seq in seq_list:
+    #    seq.wait()
 def send_fc_input_data(depth,token_no):
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     base_offset = token_no * unit_size
