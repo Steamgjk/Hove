@@ -215,6 +215,7 @@ def is_fc_depth(depth):
         return False
 
 def train_model(depth, token_no, input_data):
+    global CHUNK_HOLD_MAP
     output_data = None
     if OP_CODES[depth] == 1:
         #FP
@@ -263,7 +264,7 @@ def train_model(depth, token_no, input_data):
     PARA_AGES[depth] += 1
 
 def get_input_data(depth, token_no):
-    global fake_input
+    global fake_input, CHUNK_HOLD_MAP
     if depth == 0:
         return fake_input
     else:
@@ -465,6 +466,10 @@ def train_sync_proc(wid):
                 print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
                 print("train self fin sending")
+                if depth == 3:
+                    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+                    print(CHUNK_HOLD_MAP[3])
+                    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
                 #report_progress_tensor[1] = depth
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
