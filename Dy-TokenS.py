@@ -390,7 +390,7 @@ def ts_process(channel_id):
 						break
 				if depth == -1:
 					ts2worker_tensor[0] = NO_AVAILABLE
-					print(int(channel_id), "front = ",int(front) )
+					#print(int(channel_id), "front = ",int(front) )
 					dist.send(tensor = ts2worker_tensor, dst = worker_rank)
 				else:	
 					#no delay dequeue
@@ -418,6 +418,10 @@ def ts_process(channel_id):
 				while READY_RST[channel_id] == 1:
 					continue
 			else:
+				ts2worker_tensor[0] = NO_AVAILABLE
+				dist.send(tensor=ts2worker_tensor, dst = worker_rank)
+			'''
+			else:
 				#fetch from others
 				other_depth,other_token_no = fetch_other_tokeno(channel_id)
 				#print("mywid=", int(channel_id),"\t other_depth=", (other_depth),"\tother_token_no=",(other_token_no))
@@ -442,6 +446,8 @@ def ts_process(channel_id):
 					#wati for report_progress
 					dist.recv(tensor = worker2ts_tensor, src = worker_rank)
 					update_token_state(channel_id, other_depth, other_token_no )
+			'''
+
 		'''
 		elif worker2ts_tensor[0] == REPORT_PROGRESS:
 			depth = worker2ts_tensor[1]
