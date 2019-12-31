@@ -397,12 +397,14 @@ def ts_process(channel_id):
 					ts2worker_tensor[1] = depth
 					ts2worker_tensor[2] = token_no
 					dependency_list =  check_dependency(channel_id, depth, token_no)
+					print(int(channel_id),"\t","depth=",depth,"\ttoken_no=",token_no)
 					if len(dependency_list) == 0:
 						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 					else:
 						ts2worker_tensor[0] = OTHER_TOKENS
 						fill_cmd(channel_id,dependency_list)
 						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
+
 					#wait for report progress
 					dist.recv(tensor = worker2ts_tensor, src = worker_rank)
 					update_token_state(channel_id, depth, token_no)
