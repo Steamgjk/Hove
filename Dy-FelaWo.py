@@ -603,6 +603,8 @@ def model_sync_process(wid):
                 CHUNK_HOLD_MAP.zero_()
                 TOKEN_CNTER.zero_()
                 dist.send(tensor=ms2ts_tensor, dst = ts2ms_rank)
+        else:
+            print("PARA_AGES[to_sync_layer]=",PARA_AGES[to_sync_layer],"\tto_sync_layer=",to_sync_layer,"\t target_age =", target_age)
 
 
 #depth|chunk_no|sender/receiver
