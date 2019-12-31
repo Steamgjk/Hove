@@ -267,6 +267,7 @@ def train_model(depth, token_no, input_data):
     if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
         #all the tokens in this layer has been finished
         PARA_AGES[depth] += 1
+        print("PARA_AGES=",PARA_AGES[depth], "\t depth=",depth)
 
 def get_input_data(depth, token_no):
     global fake_input, CHUNK_HOLD_MAP
@@ -603,8 +604,8 @@ def model_sync_process(wid):
                 CHUNK_HOLD_MAP.zero_()
                 TOKEN_CNTER.zero_()
                 dist.send(tensor=ms2ts_tensor, dst = ts2ms_rank)
-        else:
-            print("PARA_AGES[to_sync_layer]=",PARA_AGES[to_sync_layer],"\tto_sync_layer=",to_sync_layer,"\t target_age =", target_age)
+        #else:
+        #    print("PARA_AGES[to_sync_layer]=",PARA_AGES[to_sync_layer],"\tto_sync_layer=",to_sync_layer,"\t target_age =", target_age)
 
 
 #depth|chunk_no|sender/receiver
