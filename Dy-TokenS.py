@@ -374,7 +374,7 @@ def ts_process(channel_id):
 				#print("NEW REQIEST depth=",depth,"\ttoken_no=",token_no)
 				while True:
 					if HOLD_MAP[depth][token_no] > -1:
-						#print("there add 1 ",int(depth),"\t", int(token_no))
+						print(int(channel_id),"\tthere add 1 ",int(depth),"\t", int(token_no), int(HOLD_MAP[depth][token_no]))
 						front += 1
 					else:
 						HOLD_MAP_LOCK[depth].acquire()
