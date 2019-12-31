@@ -410,7 +410,7 @@ def train_sync_proc(wid):
 
     dist.send(tensor = connection_request_tensor, dst = dst_rank)
     while True:
-        #print("RECV...")
+        print("RECV...")
         dist.recv(tensor = ts2worker_tensor, src = dst_rank)
         print("RECVED ..", ts2worker_tensor)
         if ts2worker_tensor[0]== CONN_ESTABLISH:
@@ -452,7 +452,7 @@ def train_sync_proc(wid):
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
                     #print("ok")
             else: 
-                #print("NO FC depth")
+                print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
                 #print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
@@ -461,6 +461,7 @@ def train_sync_proc(wid):
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
+                print("Request..")
         elif ts2worker_tensor[0]== OTHER_TOKENS:
             #need depdencies
             depth = ts2worker_tensor[1]
