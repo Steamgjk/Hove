@@ -578,7 +578,7 @@ def model_sync_process(wid):
             model_sync(to_sync_layer,wid, train_sync_group, train_sync_fc_group)
             print("FIN to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
             to_sync_layer += 1
-            if to_sync_layer == TOKEN_LAYERS -1:
+            if to_sync_layer == TOKEN_LAYERS:
                 to_sync_layer = 2
                 target_age += 1
                 CHUNK_HOLD_MAP.zero_()
