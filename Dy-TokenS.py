@@ -286,7 +286,7 @@ def fetch_other_tokeno(request_wid):
 					HOLD_MAP_LOCK[i].acquire()
 					if HOLD_MAP[i][j] == -1:
 						HOLD_MAP[i][j] = request_wid
-						print(int(request_wid),"\tFETCH from others...")
+						#print(int(request_wid),"\tFETCH from others...")
 						depth = i
 						token_no = j
 					HOLD_MAP_LOCK[i].release()
@@ -525,7 +525,7 @@ def ms_process(channel_id):
 	while True:
 		dist.recv(tensor = ms2ts_tensor, src = ms_rank)
 		SYNC_CNTERS[channel_id] += 1
-		print(int(channel_id),"\tfin syncing layer ", int(SYNC_CNTERS[0:args.wn].sum()), "\t", int(SYNC_CNTERS[-1]*args.wn))
+		#print(int(channel_id),"\tfin syncing layer ", int(SYNC_CNTERS[0:args.wn].sum()), "\t", int(SYNC_CNTERS[-1]*args.wn))
 
 
 
