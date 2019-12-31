@@ -474,7 +474,7 @@ def rq_process(channel_id):
 			#print("sended...", int(channel_id),"\t",rc2wc_tensor)
 			front += 1
 	
-
+'''
 def ms_process(channel_id):
 	my_rank = channel_id + TSY_BASE
 	ms_rank = channel_id + SY_BASE
@@ -504,7 +504,18 @@ def ms_process(channel_id):
 						#sync fin, reset
 						SYNC_CNTERS[channel_id] += 1
 
-
+'''
+def ms_process(channel_id):
+	my_rank = channel_id + TSY_BASE
+	ms_rank = channel_id + SY_BASE
+	print("starting ms_process rank=",my_rank)
+	init_processes(my_rank, WORLD_SIZE, 'gloo')
+	print("started ms_process rank=",ms_rank)
+	ms2ts_tensor = torch.zeros(S2TS_MSG_SIZE, dtype=torch.int32)
+	while True:
+		dist.recv(tensor = ms2ts_tensor, src = ms_rank)
+		print(int(channel_id),"\tfin syncing layer ")
+		SYNC_CNTERS[channel_id] += 1
 
 
 

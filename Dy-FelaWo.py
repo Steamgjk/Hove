@@ -88,12 +88,9 @@ SUB_MODEL_LIST = [None for i in range(TOKEN_LAYERS)]
 SUB_OPTIMIZERS = [None for i in range(TOKEN_LAYERS)]
 
 
-NEED_SYNC = torch.zeros(TOKEN_LAYERS, dtype = torch.int32)
-NEED_SYNC = NEED_SYNC.share_memory_()
-CAN_SYNC = torch.zeros(TOKEN_LAYERS, dtype = torch.int32)
-CAN_SYNC = CAN_SYNC.share_memory_()
-GLOBAL_STEP = torch.zeros(1, dtype = torch.int32)
-GLOBAL_STEP = GLOBAL_STEP.share_memory_()
+PARA_AGES = torch.zeros(TOKEN_LAYERS, dtype = torch.int32)
+PARA_AGES = PARA_AGES.share_memory_()
+
 
 W2TS_MSG_SIZE = 1+0
 TS2W_MSG_SIZE = 1+2
@@ -485,7 +482,7 @@ def train_sync_proc(wid):
             dist.send(tensor = connection_request_tensor, dst = dst_rank)
 
 
-
+'''
 def model_sync_process(wid):
     my_rank = wid + SY_BASE
     print("Start model_sync_process init process rank=",my_rank)
@@ -495,6 +492,8 @@ def model_sync_process(wid):
     ts2ms_tensor = torch.zeros(TS2S_MSG_SIZE, dtype=torch.int32)
     ms2ts_tensor = torch.zeros(S2TS_MSG_SIZE, dtype=torch.int32)
     ms2ts_tensor[0] = SYNC_RESPONSE
+
+    target_age = 1
     while True:
         #for recv
         #print("model recving...", wid)
@@ -537,7 +536,48 @@ def model_sync_process(wid):
         #print("sync fin ", int(to_sync_layer))
         if to_sync_layer == TOKEN_LAYERS - 1:
             CHUNK_HOLD_MAP.zero_()
-            
+'''
+def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
+    if is_fc_depth(to_sync_layer) and is_fc_worker(wid):
+        for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
+            if(parameters.grad is not None):
+                grad_content = parameters.grad
+                grad_content.div_(args.wn)
+                grad_content = parameters.grad.cpu()
+                dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group)
+                parameters.grad.copy_(grad_content)
+        SUB_OPTIMIZERS[to_sync_layer].step()
+    elif not is_fc_depth(to_sync_layer):
+        for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
+            if(parameters.grad is not None):
+                grad_content = parameters.grad
+                grad_content.div_(args.wn)
+                grad_content = parameters.grad.cpu()
+                dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_group)
+                parameters.grad.copy_(grad_content) 
+        SUB_OPTIMIZERS[to_sync_layer].step()
+
+
+def model_sync_process(wid):
+    ms2ts_tensor = torch.zeros(S2TS_MSG_SIZE, dtype=torch.int32)
+    ms2ts_tensor[0] = SYNC_RESPONSE
+    my_rank = wid + SY_BASE
+    ts2ms_rank = wid + TSY_BASE
+    print("Start model_sync_process init process rank=",my_rank)
+    train_sync_group, train_sync_fc_group = init_processes(my_rank, WORLD_SIZE, "gloo")
+    print("Started model_sync_process init process rank=",my_rank)
+    target_age = 1
+    to_sync_layer = 2
+    while True:
+        if PARA_AGES[to_sync_layer] == target_age:
+            model_sync(to_sync_layer)
+            to_sync_layer += 1
+            if to_sync_layer == TOKEN_LAYERS -1:
+                to_sync_layer = 0
+                target_age += 1
+                CHUNK_HOLD_MAP.zero_()
+                dist.send(tensor=ms2ts_tensor, dst = ts2ms_rank)
+
 
 #depth|chunk_no|sender/receiver
 def coordinate_proc_request(wid):
