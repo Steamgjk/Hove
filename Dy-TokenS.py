@@ -355,7 +355,7 @@ def ts_process(channel_id):
 	while True:
 		#print(int(channel_id)," Recvinb")
 		dist.recv(tensor = worker2ts_tensor, src = worker_rank)
-		print(int(channel_id)," Recved ", worker2ts_tensor)
+		#print(int(channel_id)," Recved ", worker2ts_tensor)
 		if worker2ts_tensor[0] == CONNECTION_REQUEST:
 			connection_lock.acquire()
 			CONNECTION_ESTABLISHED[channel_id] =1
@@ -389,6 +389,8 @@ def ts_process(channel_id):
 						break
 				if depth == -1:
 					ts2worker_tensor[0] = NO_AVAILABLE
+					if(channel_id == 0):
+						print(int(channel_id), "front = ",int(front) )
 					dist.send(tensor = ts2worker_tensor, dst = worker_rank)
 				else:	
 					#no delay dequeue
@@ -397,7 +399,7 @@ def ts_process(channel_id):
 					ts2worker_tensor[1] = depth
 					ts2worker_tensor[2] = token_no
 					dependency_list =  check_dependency(channel_id, depth, token_no)
-					print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no))
+					print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 					if len(dependency_list) == 0:
 						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 					else:
