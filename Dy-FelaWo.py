@@ -257,6 +257,8 @@ def train_model(depth, token_no, input_data):
         data_storage_tensor.copy_(output_data.data.cpu())
         CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
 
+    PARA_AGES[depth] += 1
+
 def get_input_data(depth, token_no):
     global fake_input
     if depth == 0:
@@ -350,6 +352,8 @@ def train_fc_model(input_data, depth, token_no):
 
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
+
+    PARA_AGES[depth] += 1
 
 
 def spread_fc_output_data(depth, token_no):
@@ -570,10 +574,12 @@ def model_sync_process(wid):
     to_sync_layer = 2
     while True:
         if PARA_AGES[to_sync_layer] == target_age:
+            print("to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
             model_sync(to_sync_layer)
+            print("FIN to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
             to_sync_layer += 1
             if to_sync_layer == TOKEN_LAYERS -1:
-                to_sync_layer = 0
+                to_sync_layer = 2
                 target_age += 1
                 CHUNK_HOLD_MAP.zero_()
                 dist.send(tensor=ms2ts_tensor, dst = ts2ms_rank)
