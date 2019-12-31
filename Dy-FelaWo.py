@@ -259,18 +259,21 @@ def train_model(depth, token_no, input_data):
         #print("output_data sz=",output_data.size(), "\t storage size=", data_storage_tensor.size(), "\tdepth=",depth,"\tunit=",unit_size)
         data_storage_tensor.copy_(output_data.data.cpu())
         CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
+        '''
         print("depth=",depth,"\t chunk_offset=",chunk_offset,"\t ed =", chunk_offset+TOKEN_WEIGHT[depth])
         print("++++++++++++++++++++++++++++++++")
         print(CHUNK_HOLD_MAP[depth])
         print("++++++++++++++++++++++++++++++++")
+        '''
     TOKEN_CNTER[depth] += 1
     if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
         #all the tokens in this layer has been finished
         PARA_AGES[depth] += 1
+    '''    
         print("PARA_AGES=",PARA_AGES[depth], "\t depth=",depth)
     else:
         print("depth=",depth,"\ttoken_no=",token_no,"\tTOKEN_CNTER=",TOKEN_CNTER[depth])
-
+    '''
 def get_input_data(depth, token_no):
     global fake_input, CHUNK_HOLD_MAP
     if depth == 0:
@@ -278,11 +281,13 @@ def get_input_data(depth, token_no):
     else:
         chunk_offset = token_no * TOKEN_WEIGHT[depth]
         while CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
+            '''
             print("input sum =",CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum(), "\tdepth=",depth, "\ttoken_no=",token_no,"\tchunk_offset=",chunk_offset,"\ted=",chunk_offset+TOKEN_WEIGHT[depth])
             print("_________________________________________")
             print(CHUNK_HOLD_MAP[depth-1])
             print("_____________________________________________")
             exit(1)
+            '''
             continue
         #unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH
         unit_size = TOKEN_WEIGHT[depth] * TOKEN_CAPACITY
@@ -427,13 +432,12 @@ def train_sync_proc(wid):
 
     dist.send(tensor = connection_request_tensor, dst = dst_rank)
     while True:
-        print("RECV...")
+        #print("RECV...")
         dist.recv(tensor = ts2worker_tensor, src = dst_rank)
-        print("RECVED ..", ts2worker_tensor)
+        #print("RECVED ..", ts2worker_tensor)
         if ts2worker_tensor[0]== CONN_ESTABLISH:
             local_step = int(ts2worker_tensor[1])
-            print("local_step=",local_step)
-            
+            #print("local_step=",local_step)
             if local_step % args.wn == wid:
                 if args.sleepn > 0:
                     print("I need sleep {:d} s".format(args.sleepn))
@@ -469,20 +473,22 @@ def train_sync_proc(wid):
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
                     #print("ok")
             else: 
-                print("NO FC depth")
+                #print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
-                print("training self... ", int(depth),"\t", int(token_no))
+                #print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
+                '''
                 print("train self fin sending")
                 if depth == 3:
                     print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
                     print(CHUNK_HOLD_MAP[3])
                     print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+                '''
                 #report_progress_tensor[1] = depth
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
-                print("Request..")
+                #print("Request..")
         elif ts2worker_tensor[0]== OTHER_TOKENS:
             #need depdencies
             depth = ts2worker_tensor[1]
@@ -596,9 +602,9 @@ def model_sync_process(wid):
     to_sync_layer = 2
     while True:
         if PARA_AGES[to_sync_layer] == target_age:
-            print("to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
+            #print("to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
             model_sync(to_sync_layer,wid, train_sync_group, train_sync_fc_group)
-            print("FIN to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
+            #print("FIN to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
             to_sync_layer += 1
             if to_sync_layer == TOKEN_LAYERS:
                 to_sync_layer = 2
