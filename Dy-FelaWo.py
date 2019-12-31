@@ -54,10 +54,12 @@ BASE_TOKEN_NUMBER = int(args.wn* args.subbs/TOKEN_CAPACITY)
 CHUNK_HOLD_MAP = torch.zeros([TOKEN_LAYERS,BASE_TOKEN_NUMBER], dtype=torch.int32)
 CHUNK_HOLD_MAP = CHUNK_HOLD_MAP.share_memory_()
 
+TOKEN_CNTER =  torch.zeros(TOKEN_LAYERS, dtype=torch.int32)
+TOKEN_CNTER = TOKEN_CNTER.share_memory_()
+
 TOKEN_WEIGHT = args.weight
 #TOKEN_NUMBER = [ int(TOKEN_CAPACITY/val) for val in TOKEN_WEIGHT]
 TOKEN_NUMBER = [ int(BASE_TOKEN_NUMBER/val) for val in TOKEN_WEIGHT]
-
 
 WK_BASE = 0
 TS_BASE = args.wn
@@ -261,7 +263,10 @@ def train_model(depth, token_no, input_data):
         print("++++++++++++++++++++++++++++++++")
         print(CHUNK_HOLD_MAP[depth])
         print("++++++++++++++++++++++++++++++++")
-    PARA_AGES[depth] += 1
+    TOKEN_CNTER[depth] += 1
+    if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
+        #all the tokens in this layer has been finished
+        PARA_AGES[depth] += 1
 
 def get_input_data(depth, token_no):
     global fake_input, CHUNK_HOLD_MAP
@@ -596,6 +601,7 @@ def model_sync_process(wid):
                 to_sync_layer = 2
                 target_age += 1
                 CHUNK_HOLD_MAP.zero_()
+                TOKEN_CNTER.zero_()
                 dist.send(tensor=ms2ts_tensor, dst = ts2ms_rank)
 
 
