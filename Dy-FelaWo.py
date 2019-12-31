@@ -257,7 +257,9 @@ def train_model(depth, token_no, input_data):
         data_storage_tensor.copy_(output_data.data.cpu())
         CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
         print("depth=",depth,"\t chunk_offset=",chunk_offset,"\t ed =", chunk_offset+TOKEN_WEIGHT[depth])
-
+        print("++++++++++++++++++++++++++++++++")
+        print(CHUNK_HOLD_MAP)
+        print("++++++++++++++++++++++++++++++++")
     PARA_AGES[depth] += 1
 
 def get_input_data(depth, token_no):
@@ -268,6 +270,9 @@ def get_input_data(depth, token_no):
         chunk_offset = token_no * TOKEN_WEIGHT[depth]
         while CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
             print("input sum =",CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum(), "\ttoken_no=",token_no,"\tchunk_offset=",chunk_offset,"\ted=",chunk_offset+TOKEN_WEIGHT[depth])
+            print("_________________________________________")
+            print(CHUNK_HOLD_MAP)
+            print("_____________________________________________")
             exit(1)
             continue
         #unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH
