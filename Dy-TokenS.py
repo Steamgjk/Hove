@@ -514,8 +514,8 @@ def ms_process(channel_id):
 	ms2ts_tensor = torch.zeros(S2TS_MSG_SIZE, dtype=torch.int32)
 	while True:
 		dist.recv(tensor = ms2ts_tensor, src = ms_rank)
-		print(int(channel_id),"\tfin syncing layer ")
 		SYNC_CNTERS[channel_id] += 1
+		print(int(channel_id),"\tfin syncing layer ", int(SYNC_CNTERS[0:args.wn].sum()), "\t", int(SYNC_CNTERS[-1]*args.wn))
 
 
 
