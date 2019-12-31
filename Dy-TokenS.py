@@ -286,6 +286,7 @@ def fetch_other_tokeno(request_wid):
 					HOLD_MAP_LOCK[i].acquire()
 					if HOLD_MAP[i][j] == -1:
 						HOLD_MAP[i][j] = request_wid
+						print(int(request_wid),"\tFETCH from others...")
 						depth = i
 						token_no = j
 					HOLD_MAP_LOCK[i].release()
