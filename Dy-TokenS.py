@@ -389,8 +389,7 @@ def ts_process(channel_id):
 						break
 				if depth == -1:
 					ts2worker_tensor[0] = NO_AVAILABLE
-					if(channel_id == 0):
-						print(int(channel_id), "front = ",int(front) )
+					print(int(channel_id), "front = ",int(front) )
 					dist.send(tensor = ts2worker_tensor, dst = worker_rank)
 				else:	
 					#no delay dequeue
