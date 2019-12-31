@@ -375,7 +375,7 @@ def train_fc_model(input_data, depth, token_no):
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
 
-    PARA_AGES[depth] += 1
+    #PARA_AGES[depth] += 1
 
 
 def spread_fc_output_data(depth, token_no):
@@ -449,12 +449,16 @@ def train_sync_proc(wid):
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
             #print("DISTRIBUTE_TOKEN ", depth,"\t", token_no)
+            
             if is_fc_depth(depth):
+                TOKEN_CNTER[depth] += 1
                 if is_fc_worker(args.wid):
                     #print("fc depth & fc worker")
                     input_data = get_fc_input_data(depth, token_no)
                     #print("FIN: get_fc_input_data")
                     train_fc_model(input_data, depth, token_no)
+                    if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
+                        PARA_AGES[depth] += 1
                     #print("FIN: train_fc_model")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     #print("FIN report progress")
@@ -462,7 +466,10 @@ def train_sync_proc(wid):
                     #print("FIN spread_fc_output_data")
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
                     #print("FIN new_request_tensor")
+
                 else:
+                    if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
+                        PARA_AGES[depth] += 1 
                     #print("fc depth NOT fc worker")
                     #print("NOT FC  wid=",args.wid)
                     send_fc_input_data(depth, token_no)
