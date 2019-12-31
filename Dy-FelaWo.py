@@ -268,6 +268,8 @@ def train_model(depth, token_no, input_data):
         #all the tokens in this layer has been finished
         PARA_AGES[depth] += 1
         print("PARA_AGES=",PARA_AGES[depth], "\t depth=",depth)
+    else:
+        print("depth=",depth,"\ttoken_no=",token_no,"\tTOKEN_CNTER=",TOKEN_CNTER[depth])
 
 def get_input_data(depth, token_no):
     global fake_input, CHUNK_HOLD_MAP
@@ -425,9 +427,9 @@ def train_sync_proc(wid):
 
     dist.send(tensor = connection_request_tensor, dst = dst_rank)
     while True:
-        print("RECV...")
+        #print("RECV...")
         dist.recv(tensor = ts2worker_tensor, src = dst_rank)
-        print("RECVED ..", ts2worker_tensor)
+        #print("RECVED ..", ts2worker_tensor)
         if ts2worker_tensor[0]== CONN_ESTABLISH:
             local_step = int(ts2worker_tensor[1])
             print("local_step=",local_step)
