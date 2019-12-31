@@ -267,7 +267,7 @@ def get_input_data(depth, token_no):
     else:
         chunk_offset = token_no * TOKEN_WEIGHT[depth]
         while CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
-            #print("input sum =",CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum())
+            print("input sum =",CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum(), "\ttoken_no=",token_no,"\tchunk_offset=",chunk_offset,"\ted=",chunk_offset+TOKEN_WEIGHT[depth])
             continue
         #unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH
         unit_size = TOKEN_WEIGHT[depth] * TOKEN_CAPACITY
