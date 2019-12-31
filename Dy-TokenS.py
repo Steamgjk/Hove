@@ -558,6 +558,7 @@ if __name__ == '__main__':
 		if int(SYNC_CNTERS[0:args.wn].sum()) == int(SYNC_CNTERS[-1]*args.wn):
 			time_list.append(time.time())
 			iter_num = len(time_list)-1
+			print("iter_num=",iter_num)
 			if iter_num > 0:
 				print("Iter : ", int(iter_num),"\t", float(time_list[-1]*1.0 - time_list[0])/iter_num)
 			reset()
