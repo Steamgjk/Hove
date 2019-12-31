@@ -575,7 +575,7 @@ def model_sync_process(wid):
     while True:
         if PARA_AGES[to_sync_layer] == target_age:
             print("to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
-            model_sync(to_sync_layer)
+            model_sync(to_sync_layer,wid, train_sync_group, train_sync_fc_group)
             print("FIN to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
             to_sync_layer += 1
             if to_sync_layer == TOKEN_LAYERS -1:
