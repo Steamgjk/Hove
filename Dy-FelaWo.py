@@ -376,6 +376,7 @@ def train_fc_model(input_data, depth, token_no):
     fin_output = SUB_MODEL_LIST[depth](input_data)
     loss = criterion(fin_output, fake_target.cuda())
     loss.backward()
+    '''
     print("after that")
     for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
         print("name=",name, "\t")
@@ -384,6 +385,9 @@ def train_fc_model(input_data, depth, token_no):
         print("name=",name, "\t")
         print("parameters.grad=",parameters.grad)    
     exit(0)
+    '''
+    for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
+        print("name=",name, "\t", (parameters == None))
 
     '''
     output_data = HookFunc.backward_ctx
