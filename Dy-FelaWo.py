@@ -425,14 +425,12 @@ def send_fc_input_data(depth,token_no):
     #return seq
 
 def recv_fc_output_data(depth, token_no):
-    '''
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     base_offset = token_no * unit_size
     recv_tensor =  TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
     src_rank =  (args.wid%args.fcwn)+WK_BASE
     #test:seq = dist.recv(tensor = recv_tensor, src=src_rank)
     #seq.wait()
-    '''
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
     #return seq
@@ -504,9 +502,7 @@ def train_sync_proc(wid):
                     send_fc_input_data(depth, token_no)
                     #print("send_fc_input_data")
                     recv_fc_output_data(depth, token_no)
-                    #print("recv_fc_output_data")
-                    
-                    #print("ok")
+
                     print("non-FC worker FIN new_request_tensor")
             else: 
                 #print("NO FC depth")
