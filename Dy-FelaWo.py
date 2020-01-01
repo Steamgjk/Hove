@@ -206,8 +206,8 @@ def get_fc_rank(token_no):
 def get_conv_rank(token_no):
     return token_no % args.wn + WK_BASE
 def is_fc_worker(wid):
-    #if wid < args.fcwn:
-    if wid > args.wn -1 - args.fcwn:
+    if wid < args.fcwn:
+    #if wid > args.wn -1 - args.fcwn:
         return True
     else:
         return False
