@@ -620,7 +620,7 @@ def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
         print("come here to_sync_layer=",to_sync_layer)
         for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
             if to_sync_layer == 2:
-                print("name=",name, "\t",(parameters.grad == None))
+                print("name=",name, "\t",(parameters.grad is None))
             if(parameters.grad is not None):
                 grad_content = parameters.grad
                 grad_content.div_(args.wn)
