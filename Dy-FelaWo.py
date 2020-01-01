@@ -372,10 +372,16 @@ def train_fc_model(input_data, depth, token_no):
     global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target
     input_data.requires_grad = True
     input_data = input_data.cuda()
-    '''
+    
     fin_output = SUB_MODEL_LIST[depth](input_data)
     loss = criterion(fin_output, fake_target.cuda())
     loss.backward()
+    print("after that")
+    for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
+        print("name=",name, "\t",(parameters.grad == None))
+    exit(0)
+
+    '''
     output_data = HookFunc.backward_ctx
     output_data = output_data.cpu()
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
