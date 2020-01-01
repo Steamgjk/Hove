@@ -182,6 +182,11 @@ def ini_data_storage():
     print("TOKEN_NUMBER ", TOKEN_NUMBER)
     print("fcwn=",args.fcwn)
 
+    #check named_parameters
+    for name, parameters in SUB_MODEL_LIST[2].named_parameters():
+        print("name=",name, "\t",(parameters.grad == None))
+    exit(0)
+
 
 def init_processes(rank, size, backend='gloo'):
     """ Initialize the distributed environment. """
