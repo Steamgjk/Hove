@@ -586,7 +586,7 @@ def model_sync_process(wid):
             CHUNK_HOLD_MAP.zero_()
 '''
 def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
-    if is_fc_depth(to_sync_layer) and is_fc_worker(wid):
+    if is_fc_depth(to_sync_layer) and is_fc_worker(wid) and args.fcwn>1:
         for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
             if(parameters.grad is not None):
                 grad_content = parameters.grad
