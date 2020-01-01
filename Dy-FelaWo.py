@@ -344,7 +344,7 @@ def get_fc_input_data(depth, token_no):
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         #test: req = dist.recv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
-        req_list.append(req)
+        #test:req_list.append(req)
         base_wid += args.fcwn
     #for req in req_list:
     #    req.wait()
