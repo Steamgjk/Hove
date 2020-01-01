@@ -426,6 +426,10 @@ def ts_process(channel_id):
 					#wait for report progress
 					dist.recv(tensor = worker2ts_tensor, src = worker_rank)
 					update_token_state(channel_id, depth, token_no)
+
+			else:
+				ts2worker_tensor[0] = NO_AVAILABLE
+				dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 			'''
 			elif COMPLETE_MAP[TOKEN_LAYERS-1].sum() == TOKEN_NUMBER[TOKEN_LAYERS-1]:
 				ts2worker_tensor[0] = CONNECTION_RST
@@ -434,9 +438,6 @@ def ts_process(channel_id):
 				while READY_RST[channel_id] == 1:
 					continue
 			'''
-			else:
-				ts2worker_tensor[0] = NO_AVAILABLE
-				dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 			'''
 			else:
 				#fetch from others
