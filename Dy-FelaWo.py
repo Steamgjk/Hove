@@ -393,7 +393,7 @@ def train_fc_model(input_data, depth, token_no):
         print("name=",name, "\t", (parameters.grad is None))
 
     '''
-    '''
+    
     output_data = HookFunc.backward_ctx
     output_data = output_data.cpu()
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
@@ -407,7 +407,7 @@ def train_fc_model(input_data, depth, token_no):
         output_data_offset += unit_size
         base_wid += args.fcwn
         base_offset += args.fcwn*args.subbs
-    '''
+
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
 
@@ -621,16 +621,14 @@ def model_sync_process(wid):
 '''
 def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
     if is_fc_depth(to_sync_layer) and is_fc_worker(wid) and args.fcwn>1:
-        print("come here to_sync_layer=",to_sync_layer)
+        #print("come here to_sync_layer=",to_sync_layer)
         for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
-            if to_sync_layer == 2:
-                print("name=",name, "\t",(parameters.grad is None))
+            #if to_sync_layer == 2:
+            #    print("name=",name, "\t",(parameters.grad is None))
             if(parameters.grad is not None):
                 grad_content = parameters.grad
                 grad_content.div_(args.wn)
                 grad_content = parameters.grad.cpu()
-                if to_sync_layer == 2:
-                    print("name=",name, "\t",grad_content.size())
                 dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group)
                 parameters.grad.copy_(grad_content)
         SUB_OPTIMIZERS[to_sync_layer].step()
