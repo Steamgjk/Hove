@@ -468,7 +468,7 @@ def train_sync_proc(wid):
                     spread_fc_output_data(depth, token_no)
                     #print("FIN spread_fc_output_data")
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
-                    #print("FIN new_request_tensor")
+                    print("FC worker FIN new_request_tensor")
 
                 else:
                     if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
@@ -482,6 +482,7 @@ def train_sync_proc(wid):
                     #print("recv_fc_output_data")
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
                     #print("ok")
+                    print("non-FC worker FIN new_request_tensor")
             else: 
                 #print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
@@ -491,7 +492,7 @@ def train_sync_proc(wid):
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
-                #print("Request..")
+                #print("No FC Request..")
         elif ts2worker_tensor[0]== SYNC_CMD:
             #sync
             to_sync_layer = ts2worker_tensor[1]

@@ -382,9 +382,10 @@ def ts_process(channel_id):
 				ts2worker_tensor[0] = SYNC_CMD
 				ts2worker_tensor[1] = to_sync_layer
 				dist.send(ts2worker_tensor, dst = worker_rank)
-				#print(int(channel_id),"\t","to_sync_layer=",int(to_sync_layer) )
+				
 				#sync response
 				dist.recv(worker2ts_tensor, src = worker_rank)
+				print(int(channel_id),"\t","FIN to_sync_layer=",int(to_sync_layer) )
 				NEED_SYNC[channel_id][to_sync_layer] = 0
 				if  to_sync_layer == TOKEN_LAYERS-1:
 					dist.recv(worker2ts_tensor, src = worker_rank)
