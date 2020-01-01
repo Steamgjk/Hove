@@ -379,8 +379,6 @@ def train_fc_model(input_data, depth, token_no):
     print("after that")
     for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
         print("name=",name, "\t")
-        print("pa  ", (parameters== None))
-        print("dd ",(parameters.grad == None))
     exit(0)
 
     '''
