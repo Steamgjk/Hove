@@ -238,10 +238,7 @@ def train_model(depth, token_no, input_data):
         output_data = SUB_MODEL_LIST[depth](input_data)
         output_data = output_data.cpu()
         #print("train FP FIn output_sz = ", OUTPUT_PLACEHOLDERS[my_workload_no].size())
-        print("after that")
-        for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
-            print("name=",name, "\t",(parameters.grad == None))
-        exit(0)
+        
     elif OP_CODES[depth] == 2:
         #BP
         bp_data = get_bp_input_data(depth, token_no)
@@ -262,6 +259,10 @@ def train_model(depth, token_no, input_data):
         loss.backward()
         output_data = HookFunc.backward_ctx
         output_data = output_data.cpu()
+        print("after that")
+        for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
+            print("name=",name, "\t",(parameters.grad == None))
+        exit(0)
         #print("FIN FP+BP---  ", type(HookFunc.backward_ctx))
 
     #unit_size = TOKEN_WEIGHT[depth]*CHUNK_WIDTH
