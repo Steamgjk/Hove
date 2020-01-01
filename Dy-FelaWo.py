@@ -355,6 +355,7 @@ def train_fc_model(input_data, depth, token_no):
     global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target
     input_data.requires_grad = True
     input_data = input_data.cuda()
+    '''
     fin_output = SUB_MODEL_LIST[depth](input_data)
     loss = criterion(fin_output, fake_target.cuda())
     loss.backward()
@@ -371,7 +372,7 @@ def train_fc_model(input_data, depth, token_no):
         output_data_offset += unit_size
         base_wid += args.fcwn
         base_offset += args.fcwn*args.subbs
-
+    '''
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
 
