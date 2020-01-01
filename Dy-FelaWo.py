@@ -380,6 +380,9 @@ def train_fc_model(input_data, depth, token_no):
     for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
         print("name=",name, "\t")
         print("parameters=",parameters)
+    for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
+        print("name=",name, "\t")
+        print("parameters.grad=",parameters.grad)    
     exit(0)
 
     '''
