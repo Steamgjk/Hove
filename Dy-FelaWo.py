@@ -592,6 +592,8 @@ def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
                 grad_content = parameters.grad
                 grad_content.div_(args.wn)
                 grad_content = parameters.grad.cpu()
+                if to_sync_layer == 2:
+                    print("name=",name, "\t",grad_content.size())
                 dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group)
                 parameters.grad.copy_(grad_content)
         SUB_OPTIMIZERS[to_sync_layer].step()
