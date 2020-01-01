@@ -387,7 +387,7 @@ def train_fc_model(input_data, depth, token_no):
     exit(0)
     '''
     for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
-        print("name=",name, "\t", (parameters == None))
+        print("name=",name, "\t", (parameters.grad is None))
 
     '''
     output_data = HookFunc.backward_ctx
