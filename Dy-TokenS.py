@@ -382,7 +382,7 @@ def ts_process(channel_id):
 				ts2worker_tensor[0] = SYNC_CMD
 				ts2worker_tensor[1] = to_sync_layer
 				dist.send(ts2worker_tensor, dst = worker_rank)
-				print(int(channel_id),"\t","to_sync_layer=",int(to_sync_layer) )
+				#print(int(channel_id),"\t","to_sync_layer=",int(to_sync_layer) )
 				#sync response
 				dist.recv(worker2ts_tensor, src = worker_rank)
 				NEED_SYNC[channel_id][to_sync_layer] = 0
@@ -429,7 +429,7 @@ def ts_process(channel_id):
 					ts2worker_tensor[1] = depth
 					ts2worker_tensor[2] = token_no
 					dependency_list =  check_dependency(channel_id, depth, token_no)
-					print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
+					#print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 					if len(dependency_list) == 0:
 						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 					else:
