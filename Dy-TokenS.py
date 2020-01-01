@@ -377,7 +377,7 @@ def ts_process(channel_id):
 		#print(int(channel_id)," Recved ", worker2ts_tensor)
 		elif worker2ts_tensor[0] == NEW_REQUEST:	
 			#print("requester_wid=",requester_wid,"\t",QUEUE_PTRS[requester_wid][0], "\t", QUEUE_PTRS[requester_wid][1])	
-			to_sync_layer = get_sync_layer()
+			to_sync_layer = get_sync_layer(channel_id)
 			if to_sync_layer is not None :
 				ts2worker_tensor[0] = SYNC_CMD
 				ts2worker_tensor[1] = to_sync_layer
@@ -430,7 +430,7 @@ def ts_process(channel_id):
 			else:
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor=ts2worker_tensor, dst = worker_rank)
-				
+
 		elif worker2ts_tensor[0] == SYNC_RESPONSE:
 			synced_layer = worker2ts_tensor[1]
 			NEED_SYNC[channel_id][synced_layer] = 0
