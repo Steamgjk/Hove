@@ -499,13 +499,13 @@ def train_sync_proc(wid):
                         PARA_AGES[depth] += 1 
                     #print("fc depth NOT fc worker")
                     #print("NOT FC  wid=",args.wid)
-
-                    #send_fc_input_data(depth, token_no)
-                    #print("send_fc_input_data")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    dist.send(tensor = new_request_tensor, dst = dst_rank)
+                    send_fc_input_data(depth, token_no)
+                    #print("send_fc_input_data")
                     recv_fc_output_data(depth, token_no)
                     #print("recv_fc_output_data")
-                    dist.send(tensor = new_request_tensor, dst = dst_rank)
+                    
                     #print("ok")
                     print("non-FC worker FIN new_request_tensor")
             else: 
