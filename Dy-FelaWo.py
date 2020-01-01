@@ -595,8 +595,8 @@ def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
                 dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group)
                 parameters.grad.copy_(grad_content)
         SUB_OPTIMIZERS[to_sync_layer].step()
-        print("FCFC sleep...")
-        time.sleep(1)
+        #print("FCFC sleep...")
+        #time.sleep(1)
     elif not is_fc_depth(to_sync_layer):
         for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
             if(parameters.grad is not None):
