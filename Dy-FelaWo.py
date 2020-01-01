@@ -182,10 +182,7 @@ def ini_data_storage():
     print("TOKEN_NUMBER ", TOKEN_NUMBER)
     print("fcwn=",args.fcwn)
 
-    #check named_parameters
-    for name, parameters in SUB_MODEL_LIST[2].named_parameters():
-        print("name=",name, "\t",(parameters.grad == None))
-    exit(0)
+
 
 
 def init_processes(rank, size, backend='gloo'):
@@ -227,10 +224,10 @@ def train_model(depth, token_no, input_data):
     output_data = None
     if OP_CODES[depth] == 1:
         #FP
-        with torch.no_grad():
-            input_data = input_data.cuda()
-            output_data = SUB_MODEL_LIST[depth](input_data)
-            output_data = output_data.cpu()
+        #with torch.no_grad():
+        input_data = input_data.cuda()
+        output_data = SUB_MODEL_LIST[depth](input_data)
+        output_data = output_data.cpu()
         #print("train FP FIn output_sz = ", OUTPUT_PLACEHOLDERS[my_workload_no].size())
     elif OP_CODES[depth] == 2:
         #BP
