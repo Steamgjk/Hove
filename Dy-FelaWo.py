@@ -378,7 +378,9 @@ def train_fc_model(input_data, depth, token_no):
     loss.backward()
     print("after that")
     for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
-        print("name=",name, "\t",(parameters.grad == None))
+        print("name=",name, "\t")
+        print("pa  ", (parameters== None))
+        print("dd ",(parameters.grad == None))
     exit(0)
 
     '''
