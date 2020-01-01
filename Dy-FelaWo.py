@@ -497,6 +497,7 @@ def train_sync_proc(wid):
             model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group)
             #sync_response_tensor[1]=to_sync_layer
             dist.send(tensor = sync_response_tensor, dst = dst_rank)
+            print("SYNC FIN:\t", int(to_sync_layer))
             dist.send(tensor = new_request_tensor, dst = dst_rank)
 
 
