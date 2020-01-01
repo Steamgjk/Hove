@@ -362,7 +362,7 @@ def get_fc_input_data(depth, token_no):
         base_offset += int(args.subbs)*args.fcwn
         #TO Optimize
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
-        req = dist.irecv(tensor = recv_tensor, src = dst_rank)
+        req = dist.recv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
         #test:req_list.append(req)
         base_wid += args.fcwn
@@ -419,7 +419,7 @@ def send_fc_input_data(depth,token_no):
     base_offset = token_no * unit_size
     send_tensor = TOKEN_DATA_STORAGE[depth-1][base_offset:(base_offset+unit_size)]
     dst_rank = (args.wid%args.fcwn)+WK_BASE
-    seq = dist.isend(tensor= send_tensor, dst = dst_rank )
+    seq = dist.send(tensor= send_tensor, dst = dst_rank )
     #seq.wait()
     #return seq
 
