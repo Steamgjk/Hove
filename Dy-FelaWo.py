@@ -365,7 +365,7 @@ def get_fc_input_data(depth, token_no):
         #req = dist.irecv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
         #req_list.append(req)
-        #base_wid += args.fcwn
+        base_wid += args.fcwn
     #for req in req_list:
     #    req.wait()
     input_data = torch.cat(tensor_list)
