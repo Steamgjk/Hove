@@ -425,7 +425,7 @@ def train_sync_proc(wid):
     report_progress_tensor = torch.zeros(W2TS_MSG_SIZE, dtype = torch.int32)
     ts2worker_tensor = torch.zeros(TS2W_MSG_SIZE, dtype = torch.int32)
     rc2wc_tensor = torch.zeros(TS2C_MSG_SIZE, dtype = torch.int32)
-    sync_response_tensor =  torch.zeros(W2TS_MSG_SIZE, dtype = torch.int32)
+    sync_response_tensor =  torch.zeros(TS2S_MSG_SIZE, dtype = torch.int32)
     connection_request_tensor[0] = CONNECTION_REQUEST
     new_request_tensor[0] = NEW_REQUEST
     report_progress_tensor[0] = REPORT_PROGRESS
