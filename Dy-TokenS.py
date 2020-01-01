@@ -338,6 +338,15 @@ def fill_cmd(my_wid, dependency_list):
 		TS2C_MSG_QUEUE_LOCKS[response_wid].release()
 
 
+def get_sync_layer(wid):
+	if (NEED_SYNC[wid][2]==1) and  (COMPLETE_MAP[2].sum() == TOKEN_NUMBER[2]):
+		return 2
+	if (NEED_SYNC[wid][3]==1) and  (COMPLETE_MAP[3].sum() == TOKEN_NUMBER[3]):
+		return 3
+	if (NEED_SYNC[wid][4]==1) and  (COMPLETE_MAP[4].sum() == TOKEN_NUMBER[4]):
+		return 4
+	return None
+	
 
 def ts_process(channel_id):
 	#reset()
@@ -368,6 +377,13 @@ def ts_process(channel_id):
 		#print(int(channel_id)," Recved ", worker2ts_tensor)
 		elif worker2ts_tensor[0] == NEW_REQUEST:	
 			#print("requester_wid=",requester_wid,"\t",QUEUE_PTRS[requester_wid][0], "\t", QUEUE_PTRS[requester_wid][1])	
+			to_sync_layer = get_sync_layer()
+			if to_sync_layer is not None :
+				ts2worker_tensor[0] = SYNC_CMD
+				ts2worker_tensor[1] = to_sync_layer
+				dist.send(ts2worker_tensor, dst = worker_rank)
+				continue 
+
 			if QUEUE_PTRS[requester_wid][0]<QUEUE_PTRS[requester_wid][1]:
 				front = QUEUE_PTRS[requester_wid][0]
 				depth = TENSOR_QUEUES[requester_wid][front][0]
@@ -410,13 +426,14 @@ def ts_process(channel_id):
 					#wait for report progress
 					dist.recv(tensor = worker2ts_tensor, src = worker_rank)
 					update_token_state(channel_id, depth, token_no)
-
+			'''
 			elif COMPLETE_MAP[TOKEN_LAYERS-1].sum() == TOKEN_NUMBER[TOKEN_LAYERS-1]:
 				ts2worker_tensor[0] = CONNECTION_RST
 				dist.send(ts2worker_tensor, dst = worker_rank)
 				READY_RST[channel_id] =1
 				while READY_RST[channel_id] == 1:
 					continue
+			'''
 			else:
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor=ts2worker_tensor, dst = worker_rank)
@@ -459,6 +476,18 @@ def ts_process(channel_id):
 			else:
 				update_token_state(requester_wid,depth,token_no)
 		'''
+		elif worker2ts_tensor[0] == SYNC_RESPONSE:
+			synced_layer = worker2ts_tensor[1]
+			NEED_SYNC[channel_id][synced_layer] = 0
+			if  synced_layer == TOKEN_LAYERS-1:
+				dist.recv(worker2ts_tensor, src = worker_rank)
+				ts2worker_tensor[0] = CONNECTION_RST
+				dist.send(ts2worker_tensor, dst = worker_rank)
+				SYNC_CNTERS[channel_id] += 1
+				#this iteration has finned
+				READY_RST[channel_id] =1
+				while READY_RST[channel_id] == 1:
+					continue 
 
 
 def rq_process(channel_id):

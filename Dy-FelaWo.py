@@ -425,9 +425,11 @@ def train_sync_proc(wid):
     report_progress_tensor = torch.zeros(W2TS_MSG_SIZE, dtype = torch.int32)
     ts2worker_tensor = torch.zeros(TS2W_MSG_SIZE, dtype = torch.int32)
     rc2wc_tensor = torch.zeros(TS2C_MSG_SIZE, dtype = torch.int32)
+    sync_response_tensor =  torch.zeros(W2TS_MSG_SIZE, dtype = torch.int32)
     connection_request_tensor[0] = CONNECTION_REQUEST
     new_request_tensor[0] = NEW_REQUEST
     report_progress_tensor[0] = REPORT_PROGRESS
+    sync_response_tensor[0] = SYNC_RESPONSE
     local_step = 0
 
     dist.send(tensor = connection_request_tensor, dst = dst_rank)
@@ -484,18 +486,20 @@ def train_sync_proc(wid):
                 input_data = get_input_data(depth, token_no)
                 #print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
-                '''
-                print("train self fin sending")
-                if depth == 3:
-                    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-                    print(CHUNK_HOLD_MAP[3])
-                    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-                '''
                 #report_progress_tensor[1] = depth
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
                 #print("Request..")
+        elif ts2worker_tensor[0]== SYNC_CMD:
+            #sync
+            to_sync_layer = ts2worker_tensor[1]
+            model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group)
+            sync_response_tensor[1]=to_sync_layer
+            dist.send(tensor = sync_response_tensor, dst = dst_rank)
+            dist.send(tensor = new_request_tensor, dst = dst_rank)
+
+
         elif ts2worker_tensor[0]== OTHER_TOKENS:
             #need depdencies
             depth = ts2worker_tensor[1]
@@ -519,6 +523,7 @@ def train_sync_proc(wid):
             dist.send(tensor = new_request_tensor, dst = dst_rank)
         elif ts2worker_tensor[0] == CONNECTION_RST:
             dist.send(tensor = connection_request_tensor, dst = dst_rank)
+
 
 
 '''
