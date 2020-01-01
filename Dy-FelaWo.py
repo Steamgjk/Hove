@@ -93,6 +93,11 @@ SUB_OPTIMIZERS = [None for i in range(TOKEN_LAYERS)]
 PARA_AGES = torch.zeros(TOKEN_LAYERS, dtype = torch.int32)
 PARA_AGES = PARA_AGES.share_memory_()
 
+START_GATHER = torch.zeros(1, dtype=torch.int32)
+START_GATHER = START_GATHER.share_memory_()
+
+START_SCATTER = torch.zeros(1, dtype=torch.int32)
+START_SCATTER = START_SCATTER.share_memory_()
 
 W2TS_MSG_SIZE = 1+0
 TS2W_MSG_SIZE = 1+2
@@ -266,18 +271,14 @@ def train_model(depth, token_no, input_data):
 
     base_offset = token_no * unit_size
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
+    #if is_fc_depth(depth+1):
+    #    pass #else
     if depth < TOKEN_LAYERS-1:
         #the output of the last layer does not neded to be stored
         data_storage_tensor  = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         #print("output_data sz=",output_data.size(), "\t storage size=", data_storage_tensor.size(), "\tdepth=",depth,"\tunit=",unit_size)
         data_storage_tensor.copy_(output_data.data.cpu())
         CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
-        '''
-        print("depth=",depth,"\t chunk_offset=",chunk_offset,"\t ed =", chunk_offset+TOKEN_WEIGHT[depth])
-        print("++++++++++++++++++++++++++++++++")
-        print(CHUNK_HOLD_MAP[depth])
-        print("++++++++++++++++++++++++++++++++")
-        '''
     TOKEN_CNTER[depth] += 1
     if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
         #all the tokens in this layer has been finished
@@ -458,11 +459,35 @@ def train_sync_proc(wid):
             
             dist.send(tensor = new_request_tensor, dst = dst_rank)
 
+
         elif ts2worker_tensor[0]== DISTRIBUTE_TOKEN:
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
             #print("DISTRIBUTE_TOKEN ", depth,"\t", token_no)
-            
+            #if is_fc_depth(depth+1):  move ahead
+            if is_fc_depth(depth):
+                TOKEN_CNTER[depth] += 1
+                if is_fc_worker(args.wid):
+                    while START_GATHER == 1:
+                        continue
+
+                    input_data = get_fc_input_data(depth, token_no)
+                    #print("FIN: get_fc_input_data")
+                    output_data =  train_fc_model(input_data, depth, token_no)
+
+                    START_SCATTER = 1
+                    dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    dist.send(tensor = new_request_tensor, dst = dst_rank)
+                    while START_SCATTER == 1:
+                        continue
+
+                else:
+                    START_SCATTER =1
+                    dist.send(tensor = report_progress_tensor, dst = dst_rank)
+                    dist.send(tensor = new_request_tensor, dst = dst_rank)  
+                    while START_SCATTER == 1:
+                        continue                           
+            '''
             if is_fc_depth(depth):
                 TOKEN_CNTER[depth] += 1
                 if is_fc_worker(args.wid):
@@ -481,7 +506,6 @@ def train_sync_proc(wid):
                     print("FC worker FIN new_request_tensor")
 
                 else:
-
                     if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
                         PARA_AGES[depth] += 1 
                     #print("fc depth NOT fc worker")
@@ -491,8 +515,8 @@ def train_sync_proc(wid):
                     send_fc_input_data(depth, token_no)
                     #print("send_fc_input_data")
                     recv_fc_output_data(depth, token_no)
-
                     print("non-FC worker FIN new_request_tensor")
+            '''
             else: 
                 #print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
@@ -503,6 +527,8 @@ def train_sync_proc(wid):
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
                 #print("No FC Request..")
+                if is_fc_depth(depth+1):
+                    START_GATHER = 1
         elif ts2worker_tensor[0]== SYNC_CMD:
             #sync
             to_sync_layer = ts2worker_tensor[1]
@@ -621,17 +647,53 @@ def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
 
 
 def model_sync_process(wid):
+    #async sync
     ms2ts_tensor = torch.zeros(S2TS_MSG_SIZE, dtype=torch.int32)
     ms2ts_tensor[0] = SYNC_RESPONSE
     my_rank = wid + SY_BASE
     ts2ms_rank = wid + TSY_BASE
     print("Start model_sync_process init process rank=",my_rank)
     train_sync_group, train_sync_fc_group = init_processes(my_rank, WORLD_SIZE, "gloo")
+
+    fc_group_sz = int(args.wn/args.fcwn)
+    fc_sync_ranks = [SY_BASE]*(fc_group_sz)
+    for i in range(fc_group_sz):
+        fc_sync_ranks[i] += wid + i*args.fcwn
+    fc_sync_group = dist.new_group(ranks=fc_sync_ranks, backend="gloo")
+
+    t = TOKEN_DATA_STORAGE[2][(wid*args.subbs):((wid+1)*args.subbs)]
+    s = TOKEN_DATA_STORAGE[3][(wid*args.subbs):((wid+1)*args.subbs)]
+    tlist = []
+    slist = []
+    if is_fc_worker(wid):
+        for i in range(args.fcwn):
+            w = wid + i * args.fcwn
+            titm = TOKEN_DATA_STORAGE[2][(w*args.subbs):((w+1)*args.subbs)]
+            sitm = TOKEN_DATA_STORAGE[3][(w*args.subbs):((w+1)*args.subbs)]
+            tlist.append(titm)
+            slist.append(sitm)
+    else:
+        tlist = None
+        slist = None
+    
+    dst_rank = wid % args.fcwn
+    src_rank = wid % args.fcwn
+
     print("Started model_sync_process init process rank=",my_rank)
     target_age = 1
     to_sync_layer = 2
     while True:
-        continue
+        while START_GATHER ==0:
+            continue
+        dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
+        START_GATHER = 0
+        while START_SCATTER == 0:
+            continue
+        dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=False)
+        START_SCATTER = 0
+        CHUNK_HOLD_MAP[3][0:] = 1
+            
+        '''    
         if PARA_AGES[to_sync_layer] == target_age:
             #print("to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
             model_sync(to_sync_layer,wid, train_sync_group, train_sync_fc_group)
@@ -643,6 +705,7 @@ def model_sync_process(wid):
                 CHUNK_HOLD_MAP.zero_()
                 TOKEN_CNTER.zero_()
                 dist.send(tensor=ms2ts_tensor, dst = ts2ms_rank)
+        '''
         #else:
         #    print("PARA_AGES[to_sync_layer]=",PARA_AGES[to_sync_layer],"\tto_sync_layer=",to_sync_layer,"\t target_age =", target_age)
 
