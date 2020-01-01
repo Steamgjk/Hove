@@ -400,7 +400,7 @@ def send_fc_input_data(depth,token_no):
     dst_rank = (args.wid%args.fcwn)+WK_BASE
     #test: seq = dist.send(tensor= send_tensor, dst = dst_rank )
     #seq.wait()
-    return seq
+    #return seq
 
 def recv_fc_output_data(depth, token_no):
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
@@ -411,7 +411,7 @@ def recv_fc_output_data(depth, token_no):
     #seq.wait()
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
-    return seq
+    #return seq
 
 def train_sync_proc(wid):
     my_rank = wid + WK_BASE
