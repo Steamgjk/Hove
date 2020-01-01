@@ -411,8 +411,10 @@ def spread_fc_output_data(depth, token_no, output_data):
     for i in range(1, unit_num):
         dst_rank = (args.wid + args.fcwn * i)
         send_tensor = output_data[i*unit_size:(i+1)*unit_size]
-        #seq = dist.isend(tensor=send_tensor, dst = dst_rank)
-        #test:seq_list.append(seq)
+        seq = dist.isend(tensor=send_tensor, dst = dst_rank)
+        seq_list.append(seq)
+    for seq in seq_list:
+        seq.wait()
 
 
 def send_fc_input_data(depth,token_no):
@@ -430,8 +432,8 @@ def recv_fc_output_data(depth, token_no):
     base_offset = token_no * unit_size
     recv_tensor =  TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
     src_rank =  (args.wid%args.fcwn)+WK_BASE
-    #seq = dist.irecv(tensor = recv_tensor, src=src_rank)
-    #seq.wait()
+    seq = dist.irecv(tensor = recv_tensor, src=src_rank)
+    seq.wait()
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
     #return seq
