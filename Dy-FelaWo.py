@@ -207,8 +207,8 @@ def init_processes(rank, size, backend='gloo'):
         train_sync_ranks[i] += i
     train_sync_group = dist.new_group(ranks=train_sync_ranks, backend=backend)
     for i in range(args.fcwn):
-        #train_sync_ranks_fc.append(train_sync_ranks[i])
-        train_sync_ranks_fc.append(train_sync_ranks[args.wn-1-i])
+        train_sync_ranks_fc.append(train_sync_ranks[i])
+        #train_sync_ranks_fc.append(train_sync_ranks[args.wn-1-i])
     train_sync_fc_group = dist.new_group(ranks=train_sync_ranks_fc, backend=backend)
 
     return train_sync_group, train_sync_fc_group
@@ -218,8 +218,8 @@ def get_fc_rank(token_no):
 def get_conv_rank(token_no):
     return token_no % args.wn + WK_BASE
 def is_fc_worker(wid):
-    #if wid < args.fcwn:
-    if wid > args.wn -1 - args.fcwn:
+    if wid < args.fcwn:
+    #if wid > args.wn -1 - args.fcwn:
         return True
     else:
         return False
