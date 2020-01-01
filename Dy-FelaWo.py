@@ -259,10 +259,12 @@ def train_model(depth, token_no, input_data):
         loss.backward()
         output_data = HookFunc.backward_ctx
         output_data = output_data.cpu()
+        '''
         print("after that")
         for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
             print("name=",name, "\t",(parameters.grad == None))
         exit(0)
+        '''
         #print("FIN FP+BP---  ", type(HookFunc.backward_ctx))
 
     #unit_size = TOKEN_WEIGHT[depth]*CHUNK_WIDTH
@@ -386,9 +388,11 @@ def train_fc_model(input_data, depth, token_no):
         print("parameters.grad=",parameters.grad)    
     exit(0)
     '''
+    '''
     for name, parameters in SUB_MODEL_LIST[depth].named_parameters():
         print("name=",name, "\t", (parameters.grad is None))
 
+    '''
     '''
     output_data = HookFunc.backward_ctx
     output_data = output_data.cpu()
