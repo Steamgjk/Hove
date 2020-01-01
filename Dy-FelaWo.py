@@ -613,6 +613,7 @@ def model_sync_process(wid):
     target_age = 1
     to_sync_layer = 2
     while True:
+        continue
         if PARA_AGES[to_sync_layer] == target_age:
             #print("to_sync_layer=",to_sync_layer,"\t target_age =", target_age)
             model_sync(to_sync_layer,wid, train_sync_group, train_sync_fc_group)

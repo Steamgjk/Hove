@@ -382,6 +382,7 @@ def ts_process(channel_id):
 				ts2worker_tensor[0] = SYNC_CMD
 				ts2worker_tensor[1] = to_sync_layer
 				dist.send(ts2worker_tensor, dst = worker_rank)
+				print(int(channel_id),"\t","to_sync_layer=",int(to_sync_layer) )
 				#sync response
 				dist.recv(worker2ts_tensor, src = worker_rank)
 				NEED_SYNC[channel_id][to_sync_layer] = 0
@@ -394,6 +395,8 @@ def ts_process(channel_id):
 					READY_RST[channel_id] =1
 					while READY_RST[channel_id] == 1:
 						continue 
+				continue
+
 
 			if QUEUE_PTRS[requester_wid][0]<QUEUE_PTRS[requester_wid][1]:
 				front = QUEUE_PTRS[requester_wid][0]
@@ -426,7 +429,7 @@ def ts_process(channel_id):
 					ts2worker_tensor[1] = depth
 					ts2worker_tensor[2] = token_no
 					dependency_list =  check_dependency(channel_id, depth, token_no)
-					#print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
+					print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 					if len(dependency_list) == 0:
 						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 					else:
@@ -554,6 +557,7 @@ def ms_process(channel_id):
 	print("started ms_process rank=",ms_rank)
 	ms2ts_tensor = torch.zeros(S2TS_MSG_SIZE, dtype=torch.int32)
 	while True:
+		continue
 		dist.recv(tensor = ms2ts_tensor, src = ms_rank)
 		SYNC_CNTERS[channel_id] += 1
 		#print(int(channel_id),"\tfin syncing layer ", int(SYNC_CNTERS[0:args.wn].sum()), "\t", int(SYNC_CNTERS[-1]*args.wn))
