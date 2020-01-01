@@ -233,6 +233,7 @@ def train_model(depth, token_no, input_data):
     output_data = None
     if OP_CODES[depth] == 1:
         #FP
+        input_data.requires_grad = True
         input_data = input_data.cuda()
         output_data = SUB_MODEL_LIST[depth](input_data)
         output_data = output_data.cpu()
