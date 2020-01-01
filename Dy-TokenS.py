@@ -382,7 +382,18 @@ def ts_process(channel_id):
 				ts2worker_tensor[0] = SYNC_CMD
 				ts2worker_tensor[1] = to_sync_layer
 				dist.send(ts2worker_tensor, dst = worker_rank)
-				continue 
+				#sync response
+				dist.recv(worker2ts_tensor, src = worker_rank)
+				NEED_SYNC[channel_id][to_sync_layer] = 0
+				if  to_sync_layer == TOKEN_LAYERS-1:
+					dist.recv(worker2ts_tensor, src = worker_rank)
+					ts2worker_tensor[0] = CONNECTION_RST
+					dist.send(ts2worker_tensor, dst = worker_rank)
+					SYNC_CNTERS[channel_id] += 1
+					#this iteration has finned
+					READY_RST[channel_id] =1
+					while READY_RST[channel_id] == 1:
+						continue 
 
 			if QUEUE_PTRS[requester_wid][0]<QUEUE_PTRS[requester_wid][1]:
 				front = QUEUE_PTRS[requester_wid][0]
@@ -431,18 +442,6 @@ def ts_process(channel_id):
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 
-		elif worker2ts_tensor[0] == SYNC_RESPONSE:
-			synced_layer = worker2ts_tensor[1]
-			NEED_SYNC[channel_id][synced_layer] = 0
-			if  synced_layer == TOKEN_LAYERS-1:
-				dist.recv(worker2ts_tensor, src = worker_rank)
-				ts2worker_tensor[0] = CONNECTION_RST
-				dist.send(ts2worker_tensor, dst = worker_rank)
-				SYNC_CNTERS[channel_id] += 1
-				#this iteration has finned
-				READY_RST[channel_id] =1
-				while READY_RST[channel_id] == 1:
-					continue 
 			'''
 			elif COMPLETE_MAP[TOKEN_LAYERS-1].sum() == TOKEN_NUMBER[TOKEN_LAYERS-1]:
 				ts2worker_tensor[0] = CONNECTION_RST
