@@ -407,7 +407,7 @@ def spread_fc_output_data(depth, token_no, output_data):
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     unit_num = int(args.wn/args.fcwn)
     for i in range(1, unit_num):
-        dst_rank = (args.wid + args.fcwn)
+        dst_rank = (args.wid + args.fcwn * i)
         send_tensor = output_data[i*unit_size:(i+1)*unit_size]
 
         #test:seq = dist.send(tensor=send_tensor, dst = dst_rank)
@@ -497,10 +497,10 @@ def train_sync_proc(wid):
                     #print("fc depth NOT fc worker")
                     #print("NOT FC  wid=",args.wid)
 
-                    #send_fc_input_data(depth, token_no)
+                    send_fc_input_data(depth, token_no)
                     #print("send_fc_input_data")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
-                    #recv_fc_output_data(depth, token_no)
+                    recv_fc_output_data(depth, token_no)
                     #print("recv_fc_output_data")
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
                     #print("ok")
