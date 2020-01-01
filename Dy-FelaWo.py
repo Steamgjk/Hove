@@ -396,6 +396,7 @@ def train_fc_model(input_data, depth, token_no):
     
     output_data = HookFunc.backward_ctx
     output_data = output_data.cpu()
+    '''
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     base_wid = args.wid
     base_offset = token_no * unit_size
@@ -407,13 +408,13 @@ def train_fc_model(input_data, depth, token_no):
         output_data_offset += unit_size
         base_wid += args.fcwn
         base_offset += args.fcwn*args.subbs
-
+    '''
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
     CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
-
+    return output_data
     #PARA_AGES[depth] += 1
 
-
+'''
 def spread_fc_output_data(depth, token_no):
     seq_list = []
     base_wid = args.wid+args.fcwn 
@@ -429,6 +430,20 @@ def spread_fc_output_data(depth, token_no):
     #return seq_list
     #for seq in seq_list:
     #    seq.wait()
+'''
+def spread_fc_output_data(depth, token_no, output_data):
+    seq_list = []
+    base_wid = args.wid+args.fcwn 
+    unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
+    unit_num = int(args.wn/args.fcwn)
+    for i in range(1, unit_num):
+        dst_rank = (args.wid + args.fcwn)
+        send_tensor = output_data[i*unit_size:(i+1)*unit_size]
+
+        #test:seq = dist.send(tensor=send_tensor, dst = dst_rank)
+        #test:seq_list.append(seq)
+
+
 def send_fc_input_data(depth,token_no):
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     base_offset = token_no * unit_size
@@ -494,13 +509,13 @@ def train_sync_proc(wid):
                     #print("fc depth & fc worker")
                     input_data = get_fc_input_data(depth, token_no)
                     #print("FIN: get_fc_input_data")
-                    train_fc_model(input_data, depth, token_no)
+                    output_data =  train_fc_model(input_data, depth, token_no)
                     if TOKEN_CNTER[depth] == (TOKEN_NUMBER[depth]/args.wn):
                         PARA_AGES[depth] += 1
                     #print("FIN: train_fc_model")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     #print("FIN report progress")
-                    spread_fc_output_data(depth, token_no)
+                    spread_fc_output_data(depth, token_no, output_data)
                     #print("FIN spread_fc_output_data")
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
                     print("FC worker FIN new_request_tensor")
