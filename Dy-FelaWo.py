@@ -447,9 +447,9 @@ def train_sync_proc(wid):
 
     dist.send(tensor = connection_request_tensor, dst = dst_rank)
     while True:
-        print("RECV...")
+        #print("RECV...")
         dist.recv(tensor = ts2worker_tensor, src = dst_rank)
-        print("RECVED ..", ts2worker_tensor)
+        #print("RECVED ..", ts2worker_tensor)
         if ts2worker_tensor[0]== CONN_ESTABLISH:
             local_step = int(ts2worker_tensor[1])
             #print("local_step=",local_step)
@@ -499,7 +499,8 @@ def train_sync_proc(wid):
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
                 #print("No FC Request..")
                 if is_fc_depth(depth+1):
-                    START_GATHER = 1                         
+                    START_GATHER = 1 
+                    print("SET START_GATHER 1")                        
             '''
             if is_fc_depth(depth):
                 TOKEN_CNTER[depth] += 1
@@ -698,7 +699,10 @@ def model_sync_process(wid):
     target_age = 1
     to_sync_layer = 2
     while True:
+        print("enter here")
         while START_GATHER ==0:
+            print("START_GATHER=",START_GATHER)
+            time.sleep(1)
             continue
         print("start gather")
         dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
