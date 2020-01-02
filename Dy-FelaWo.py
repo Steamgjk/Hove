@@ -294,7 +294,6 @@ def get_input_data(depth, token_no):
         return fake_input
     else:
         chunk_offset = token_no * TOKEN_WEIGHT[depth]
-        print("")
         while CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
             continue
         #unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH
@@ -714,7 +713,7 @@ def model_sync_process(wid):
             continue
         
         print("start gather dst_rank=",dst_rank, "\t", (t.size()))
-        dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
+        dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=True)
         
         START_GATHER[0] = 0
         print("gather fin")
@@ -722,7 +721,7 @@ def model_sync_process(wid):
         while START_SCATTER[0] == 0:
             continue
         print("start scatter src_rank=",src_rank)
-        dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=False)
+        dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=True)
         START_SCATTER[0] = 0
         print("scatter fin")
         CHUNK_HOLD_MAP[2][0:] = 1
