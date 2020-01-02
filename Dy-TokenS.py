@@ -139,9 +139,16 @@ def init():
 	QUEUE_PTRS.zero_()
 	for j in range(TOKEN_LAYERS):
 		UNIT_TOKEN_NO = int(TOKEN_NUMBER[j]/args.wn)
-		for w in range(args.wn):
-			token_base_offset = w * UNIT_TOKEN_NO
-			for i  in range(UNIT_TOKEN_NO):
+		if UNIT_TOKEN_NO > 0:
+			for w in range(args.wn):
+				token_base_offset = w * UNIT_TOKEN_NO
+				for i  in range(UNIT_TOKEN_NO):
+					tail_ptr = QUEUE_PTRS[w][1]
+					TENSOR_QUEUES[w][tail_ptr][0] = j    #depth
+					TENSOR_QUEUES[w][tail_ptr][1] =token_base_offset+i   #token_no
+					QUEUE_PTRS[w][1] += 1
+		else:
+			for i in range(TOKEN_NUMBER[j]):
 				tail_ptr = QUEUE_PTRS[w][1]
 				TENSOR_QUEUES[w][tail_ptr][0] = j    #depth
 				TENSOR_QUEUES[w][tail_ptr][1] =token_base_offset+i   #token_no
@@ -157,7 +164,7 @@ def init():
 	READY_RST.zero_()
 	print("QUEUE ptrs ", QUEUE_PTRS)
 	print("TOKEN_NUMBER:",TOKEN_NUMBER)
-	#exit(0)
+	exit(0)
 
 def reset():
 	
