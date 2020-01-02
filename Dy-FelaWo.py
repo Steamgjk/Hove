@@ -654,6 +654,7 @@ def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
                 grad_content = parameters.grad.cpu()
                 seq = dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group, async_op=True)
                 seq_arr.append(seq)
+                print("seq is None? ", (seq is None))
                 grad_arr.append(grad_content)
                 para_arr.append(parameters)
         for i in range(len(seq_arr)):
