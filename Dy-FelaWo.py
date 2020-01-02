@@ -494,13 +494,14 @@ def train_sync_proc(wid):
                 input_data = get_input_data(depth, token_no)
                 #print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
+                if is_fc_depth(depth+1):
+                    START_GATHER[0]=1
                 #report_progress_tensor[1] = depth
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
                 #print("No FC Request..")
-                if is_fc_depth(depth+1):
-                    START_GATHER[0]=1
+                
                     #print("SET START_GATHER 1")                        
             '''
             if is_fc_depth(depth):
@@ -704,7 +705,7 @@ def model_sync_process(wid):
             continue
         
         print("start gather dst_rank=",dst_rank, "\t", (t.size()))
-        #dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
+        dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
         
         START_GATHER[0] = 0
         print("gather fin")
