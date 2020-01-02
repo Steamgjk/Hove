@@ -150,9 +150,9 @@ def init():
 		else:
 			for i in range(TOKEN_NUMBER[j]):
 				tail_ptr = QUEUE_PTRS[w][1]
-				TENSOR_QUEUES[w][tail_ptr][0] = j    #depth
-				TENSOR_QUEUES[w][tail_ptr][1] =token_base_offset+i   #token_no
-				QUEUE_PTRS[w][1] += 1
+				TENSOR_QUEUES[i][tail_ptr][0] = j    #depth
+				TENSOR_QUEUES[i][tail_ptr][1] = i   #token_no
+				QUEUE_PTRS[i][1] += 1
 
 	HOLD_MAP.zero_().add_(-1)
 	CHUNK_HOLD_MAP.zero_().add_(-2)
