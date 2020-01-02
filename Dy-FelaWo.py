@@ -681,7 +681,7 @@ def model_sync_process(wid):
     tlist = []
     slist = []
     if is_fc_worker(wid):
-        for i in range(args.fcwn):
+        for i in range(fc_group_sz):
             w = wid + i * args.fcwn
             titm = TOKEN_DATA_STORAGE[2][(w*args.subbs):((w+1)*args.subbs)]
             sitm = TOKEN_DATA_STORAGE[3][(w*args.subbs):((w+1)*args.subbs)]
@@ -698,10 +698,7 @@ def model_sync_process(wid):
     target_age = 1
     to_sync_layer = 2
     while True:
-        print("enter here")
         while START_GATHER[0] ==0:
-            print("START_GATHER=",START_GATHER)
-            time.sleep(1)
             continue
         print("start gather dst_rank=",dst_rank, "\t", (tlist is None))
         dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
