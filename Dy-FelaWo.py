@@ -500,11 +500,12 @@ def train_sync_proc(wid):
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
+                '''
                 if is_fc_depth(depth+1):
                     time.sleep(1)
                     print("delay")
                 print("New request..")
-                
+                '''
                     #print("SET START_GATHER 1")                        
             '''
             if is_fc_depth(depth):
@@ -716,7 +717,7 @@ def model_sync_process(wid):
         while START_SCATTER[0] == 0:
             continue
         print("start scatter src_rank=",src_rank)
-        #dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=False)
+        dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=False)
         START_SCATTER[0] = 0
         print("scatter fin")
         CHUNK_HOLD_MAP[2][0:] = 1
