@@ -703,7 +703,7 @@ def model_sync_process(wid):
         while START_GATHER[0] ==0:
             continue
         
-        print("start gather dst_rank=",dst_rank, "\t", (tlist is None))
+        print("start gather dst_rank=",dst_rank, "\t", (t.size()))
         #dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
         
         START_GATHER[0] = 0
