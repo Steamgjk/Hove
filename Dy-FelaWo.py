@@ -349,12 +349,12 @@ def get_fc_input_data(depth, token_no):
         base_offset += int(args.subbs)*args.fcwn
         #TO Optimize
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
-        req = dist.irecv(tensor = recv_tensor, src = dst_rank)
+        req = dist.recv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
         req_list.append(req)
         base_wid += args.fcwn
-    for req in req_list:
-        req.wait()
+    #for req in req_list:
+    #    req.wait()
     input_data = torch.cat(tensor_list)
     return input_data
  
@@ -372,23 +372,6 @@ def train_fc_model(input_data, depth, token_no):
     return output_data
     #PARA_AGES[depth] += 1
 
-'''
-def spread_fc_output_data(depth, token_no):
-    seq_list = []
-    base_wid = args.wid+args.fcwn 
-    unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
-    base_offset = token_no * unit_size + args.subbs*args.fcwn
-    while base_wid < args.wn:
-        dst_rank = base_wid + WK_BASE
-        send_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
-        #test:seq = dist.send(tensor=send_tensor, dst = dst_rank)
-        #test:seq_list.append(seq)
-        base_wid += args.fcwn 
-        base_offset += args.fcwn * args.subbs
-    #return seq_list
-    #for seq in seq_list:
-    #    seq.wait()
-'''
 def spread_fc_output_data(depth, token_no, output_data):
     seq_list = []
     base_wid = args.wid+args.fcwn 
@@ -397,8 +380,8 @@ def spread_fc_output_data(depth, token_no, output_data):
     for i in range(1, unit_num):
         dst_rank = (args.wid + args.fcwn * i)
         send_tensor = output_data[i*unit_size:(i+1)*unit_size]
-        seq = dist.isend(tensor=send_tensor, dst = dst_rank)
-        seq_list.append(seq)
+        seq = dist.send(tensor=send_tensor, dst = dst_rank)
+        #seq_list.append(seq)
     '''
     for seq in seq_list:
         seq.wait()
@@ -411,7 +394,7 @@ def send_fc_input_data(depth,token_no):
     dst_rank = (args.wid%args.fcwn)+WK_BASE
     seq = dist.isend(tensor= send_tensor, dst = dst_rank )
     #print("send to ", dst_rank)
-    seq.wait()
+    #seq.wait()
     #return seq
 
 def recv_fc_output_data(depth, token_no):
