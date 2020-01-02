@@ -468,24 +468,24 @@ def train_sync_proc(wid):
             if is_fc_depth(depth):
                 TOKEN_CNTER[depth] += 1
                 if is_fc_worker(args.wid):
-                    while START_GATHER == 1:
+                    while START_GATHER[0] == 1:
                         continue
 
                     input_data = get_fc_input_data(depth, token_no)
                     #print("FIN: get_fc_input_data")
                     output_data =  train_fc_model(input_data, depth, token_no)
 
-                    START_SCATTER = 1
+                    START_SCATTER[0] = 1
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
-                    while START_SCATTER == 1:
+                    while START_SCATTER[0] == 1:
                         continue
 
                 else:
-                    START_SCATTER =1
+                    START_SCATTER[0] =1
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)  
-                    while START_SCATTER == 1:
+                    while START_SCATTER[0] == 1:
                         continue  
             else: 
                 #print("NO FC depth")
@@ -498,7 +498,7 @@ def train_sync_proc(wid):
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
                 #print("No FC Request..")
                 if is_fc_depth(depth+1):
-                    START_GATHER.add_(1) 
+                    START_GATHER[0]=1
                     print("SET START_GATHER 1")                        
             '''
             if is_fc_depth(depth):
@@ -703,13 +703,13 @@ def model_sync_process(wid):
             print("START_GATHER=",START_GATHER)
             time.sleep(1)
             continue
-        print("start gather")
+        print("start gather dst_rank=",dst_rank, "\t", (tlist is None))
         dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
         START_GATHER[0] = 0
         print("gather fin")
         while START_SCATTER[0] == 0:
             continue
-        print("start scatter")
+        print("start scatter src_rank=",src_rank)
         dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=False)
         START_SCATTER[0] = 0
         print("scatter fin")
