@@ -717,7 +717,7 @@ def model_sync_process(wid):
         seq= dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=True)
         
         print("gather fin")
-        seq.wait()
+        #seq.wait()
         START_GATHER[0] = 0
         while START_SCATTER[0] == 0:
             continue
