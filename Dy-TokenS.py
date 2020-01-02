@@ -452,6 +452,7 @@ def ts_process(channel_id):
 					#wait for report progress
 					dist.recv(tensor = worker2ts_tensor, src = worker_rank)
 					update_token_state(channel_id, depth, token_no)
+					print("updated ", int(channel_id),"\t",int(depth), "\t", int(token_no))
 
 			else:
 				ts2worker_tensor[0] = NO_AVAILABLE
