@@ -500,7 +500,7 @@ def train_sync_proc(wid):
                 #report_progress_tensor[2] = token_no
                 dist.send(tensor = report_progress_tensor, dst = dst_rank)
                 dist.send(tensor = new_request_tensor, dst = dst_rank)
-                #print("No FC Request..")
+                print("New request..")
                 
                     #print("SET START_GATHER 1")                        
             '''
