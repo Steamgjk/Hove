@@ -699,19 +699,19 @@ def model_sync_process(wid):
     to_sync_layer = 2
     while True:
         print("enter here")
-        while START_GATHER ==0:
+        while START_GATHER[0] ==0:
             print("START_GATHER=",START_GATHER)
             time.sleep(1)
             continue
         print("start gather")
         dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=False)
-        START_GATHER = 0
+        START_GATHER[0] = 0
         print("gather fin")
-        while START_SCATTER == 0:
+        while START_SCATTER[0] == 0:
             continue
         print("start scatter")
         dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=False)
-        START_SCATTER = 0
+        START_SCATTER[0] = 0
         print("scatter fin")
         CHUNK_HOLD_MAP[3][0:] = 1
             
