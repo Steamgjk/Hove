@@ -351,10 +351,10 @@ def get_fc_input_data(depth, token_no):
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         req = dist.irecv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
-        #req_list.append(req)
+        req_list.append(req)
         base_wid += args.fcwn
-    #for req in req_list:
-    #    req.wait()
+    for req in req_list:
+        req.wait()
     input_data = torch.cat(tensor_list)
     return input_data
  
@@ -411,7 +411,7 @@ def send_fc_input_data(depth,token_no):
     dst_rank = (args.wid%args.fcwn)+WK_BASE
     seq = dist.isend(tensor= send_tensor, dst = dst_rank )
     #print("send to ", dst_rank)
-    #seq.wait()
+    seq.wait()
     #return seq
 
 def recv_fc_output_data(depth, token_no):
