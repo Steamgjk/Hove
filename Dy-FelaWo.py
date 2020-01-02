@@ -713,15 +713,14 @@ def model_sync_process(wid):
             continue
         
         print("start gather dst_rank=",dst_rank, "\t", (t.size()))
-        dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=True)
-        
+        seq= dist.gather(tensor=t, gather_list=tlist, dst=dst_rank, group=fc_sync_group, async_op=True)
         START_GATHER[0] = 0
         print("gather fin")
-
+        seq.wait()
         while START_SCATTER[0] == 0:
             continue
         print("start scatter src_rank=",src_rank)
-        dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=True)
+        seq=dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=True)
         START_SCATTER[0] = 0
         print("scatter fin")
         CHUNK_HOLD_MAP[2][0:] = 1
