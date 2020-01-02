@@ -294,6 +294,7 @@ def get_input_data(depth, token_no):
         return fake_input
     else:
         chunk_offset = token_no * TOKEN_WEIGHT[depth]
+        print("")
         while CHUNK_HOLD_MAP[depth-1][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
             continue
         #unit_size = TOKEN_WEIGHT[depth] * CHUNK_WIDTH
@@ -308,7 +309,6 @@ def get_bp_input_data(depth, token_no):
 
     sta = token_no * unit_size
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
-    print("check fp chunk ", fp_depth,"\t", CHUNK_HOLD_MAP[fp_depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum())
     while CHUNK_HOLD_MAP[fp_depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
         continue
     return TOKEN_DATA_STORAGE[fp_depth][sta:(sta+unit_size)]
@@ -712,7 +712,7 @@ def model_sync_process(wid):
         dist.scatter(tensor=s, scatter_list=slist, src=src_rank, group=fc_sync_group, async_op=False)
         START_SCATTER[0] = 0
         print("scatter fin")
-        CHUNK_HOLD_MAP[3][0:] = 1
+        CHUNK_HOLD_MAP[2][0:] = 1
             
         '''    
         if PARA_AGES[to_sync_layer] == target_age:
