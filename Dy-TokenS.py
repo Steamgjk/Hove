@@ -256,6 +256,9 @@ def check_dependency(request_wid, request_depth, request_token_no):
 			else:
 				dependency_item = [0 for row in range(3)]
 				dependency_item[0] = int(CHUNK_HOLD_MAP[pre_depth][chunk_id])
+				if dependency_item[0]<0:
+					return None
+
 				dependency_item[1] = pre_depth 
 				dependency_item[2]=  chunk_id
 				dependency_list.append(dependency_item)
@@ -443,7 +446,10 @@ def ts_process(channel_id):
 					ts2worker_tensor[2] = token_no
 					dependency_list =  check_dependency(channel_id, depth, token_no)
 					print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
-					if len(dependency_list) == 0:
+					if dependency_list is None:
+						ts2worker_tensor[0] = NO_AVAILABLE
+						dist.send(tensor = ts2worker_tensor, dst = worker_rank)
+					elif len(dependency_list) == 0:
 						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 					else:
 						ts2worker_tensor[0] = OTHER_TOKENS
