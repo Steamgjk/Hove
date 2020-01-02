@@ -308,6 +308,7 @@ def get_bp_input_data(depth, token_no):
 
     sta = token_no * unit_size
     chunk_offset = token_no * TOKEN_WEIGHT[depth]
+    print("check fp chunk ", fp_depth,"\t", CHUNK_HOLD_MAP[fp_depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum())
     while CHUNK_HOLD_MAP[fp_depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])].sum() < TOKEN_WEIGHT[depth]:
         continue
     return TOKEN_DATA_STORAGE[fp_depth][sta:(sta+unit_size)]
