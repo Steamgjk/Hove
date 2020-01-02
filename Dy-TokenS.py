@@ -440,27 +440,28 @@ def ts_process(channel_id):
 					dist.send(tensor = ts2worker_tensor, dst = worker_rank)
 				else:	
 					#no delay dequeue
-					QUEUE_PTRS[requester_wid][0] += 1
-					ts2worker_tensor[0] = DISTRIBUTE_TOKEN
-					ts2worker_tensor[1] = depth
-					ts2worker_tensor[2] = token_no
+					
 					dependency_list =  check_dependency(channel_id, depth, token_no)
 					print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 					if dependency_list is None:
 						ts2worker_tensor[0] = NO_AVAILABLE
 						dist.send(tensor = ts2worker_tensor, dst = worker_rank)
-					elif len(dependency_list) == 0:
-						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 					else:
-						ts2worker_tensor[0] = OTHER_TOKENS
-						fill_cmd(channel_id,dependency_list)
-						print(int(channel_id), "\tAfter fill cmd ", int(TS2C_MSG_PTRS[channel_id][0]),"\t", int(TS2C_MSG_PTRS[channel_id][1]))
-						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
-
-					#wait for report progress
-					dist.recv(tensor = worker2ts_tensor, src = worker_rank)
-					update_token_state(channel_id, depth, token_no)
-					print("updated ", int(channel_id),"\t",int(depth), "\t", int(token_no))
+						QUEUE_PTRS[requester_wid][0] += 1
+						ts2worker_tensor[0] = DISTRIBUTE_TOKEN
+						ts2worker_tensor[1] = depth
+						ts2worker_tensor[2] = token_no
+						if len(dependency_list) == 0:
+							dist.send(tensor=ts2worker_tensor, dst = worker_rank)
+						else:
+							ts2worker_tensor[0] = OTHER_TOKENS
+							fill_cmd(channel_id,dependency_list)
+							print(int(channel_id), "\tAfter fill cmd ", int(TS2C_MSG_PTRS[channel_id][0]),"\t", int(TS2C_MSG_PTRS[channel_id][1]))
+							dist.send(tensor=ts2worker_tensor, dst = worker_rank)
+						#wait for report progress
+						dist.recv(tensor = worker2ts_tensor, src = worker_rank)
+						update_token_state(channel_id, depth, token_no)
+						print("updated ", int(channel_id),"\t",int(depth), "\t", int(token_no))
 
 			else:
 				ts2worker_tensor[0] = NO_AVAILABLE
