@@ -645,6 +645,7 @@ def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
         #print("come here to_sync_layer=",to_sync_layer)
         for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
             if(parameters.grad is not None):
+                print("name=",name, "\tparasz = ", parameters.grad.size())
                 grad_content = parameters.grad
                 #grad_content.div_(args.wn)
                 grad_content = parameters.grad.cpu()
