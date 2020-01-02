@@ -691,8 +691,8 @@ def model_sync_process(wid):
         tlist = None
         slist = None
     
-    dst_rank = wid % args.fcwn
-    src_rank = wid % args.fcwn
+    dst_rank = wid % args.fcwn + SY_BASE
+    src_rank = wid % args.fcwn + SY_BASE
 
     print("Started model_sync_process init process rank=",my_rank)
     target_age = 1
