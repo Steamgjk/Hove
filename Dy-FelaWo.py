@@ -643,24 +643,15 @@ def model_sync_process(wid):
 def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
     if is_fc_depth(to_sync_layer) and is_fc_worker(wid) and args.fcwn>1:
         #print("come here to_sync_layer=",to_sync_layer)
-        grad_arr = []
-        seq_arr = []
-        para_arr = []
         for name, parameters in SUB_MODEL_LIST[to_sync_layer].named_parameters():
             if(parameters.grad is not None):
-                print("name=",name, "\tparasz = ", parameters.grad.size())
+                #print("name=",name, "\tparasz = ", parameters.grad.size())
                 grad_content = parameters.grad
                 #grad_content.div_(args.wn)
                 grad_content = parameters.grad.cpu()
-                seq = dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group, async_op=True)
-                seq_arr.append(seq)
-                print("seq is None? ", (seq is None))
-                grad_arr.append(grad_content)
-                para_arr.append(parameters)
-        for i in range(len(seq_arr)):
-            seq_arr[i].wait()
-            grad_arr[i].div_(args.wn)
-            para_arr[i].grad.copy_(grad_arr[i])
+                dist.all_reduce(grad_content, op=dist.ReduceOp.SUM, group=train_sync_fc_group)
+                grad_content.div_(args.wn)
+                parameters.grad.copy_(grad_content)
         SUB_OPTIMIZERS[to_sync_layer].step()
         #print("FCFC sleep...")
         #time.sleep(1)
