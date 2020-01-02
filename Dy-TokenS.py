@@ -345,6 +345,7 @@ def fill_cmd(my_wid, dependency_list):
 		#print("CHUNK_RESPONSE:",TS2C_MSG_QUEUES[response_wid][tail])
 		tail += 1
 		TS2C_MSG_QUEUE_LOCKS[response_wid].release()
+		print("add dependency_list ", len(dependency_list))
 
 
 def get_sync_layer(wid):
@@ -445,6 +446,7 @@ def ts_process(channel_id):
 					else:
 						ts2worker_tensor[0] = OTHER_TOKENS
 						fill_cmd(channel_id,dependency_list)
+						print(nt(channel_id), "\tAfter fill cmd ", int(TS2C_MSG_PTRS[channel_id][0]),"\t", int(TS2C_MSG_PTRS[channel_id][1]))
 						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 
 					#wait for report progress
