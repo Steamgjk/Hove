@@ -426,6 +426,7 @@ def recv_fc_output_data(depth, token_no):
     #return seq
 
 def train_sync_proc(wid):
+    global START_GATHER,START_SCATTER
     my_rank = wid + WK_BASE
     dst_rank = wid + TS_BASE
     print("Start train_sync_proc init process rank=",my_rank)
@@ -660,6 +661,7 @@ def model_sync(to_sync_layer, wid, train_sync_group, train_sync_fc_group):
 
 
 def model_sync_process(wid):
+    global START_GATHER,START_SCATTER
     #async sync
     ms2ts_tensor = torch.zeros(S2TS_MSG_SIZE, dtype=torch.int32)
     ms2ts_tensor[0] = SYNC_RESPONSE
