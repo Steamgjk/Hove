@@ -688,8 +688,8 @@ def model_sync_process(wid):
             tlist.append(titm)
             slist.append(sitm)
     else:
-        tlist = None
-        slist = None
+        tlist = []
+        slist = []
     
     dst_rank = wid % args.fcwn + SY_BASE
     src_rank = wid % args.fcwn + SY_BASE
