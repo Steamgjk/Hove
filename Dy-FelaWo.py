@@ -677,12 +677,17 @@ def model_sync_process(wid):
     train_sync_group, train_sync_fc_group = init_processes(my_rank, WORLD_SIZE, "gloo")
 
     fc_group_sz = int(args.wn/args.fcwn)
-    fc_sync_ranks = [SY_BASE]*(fc_group_sz)
-    for i in range(fc_group_sz):
-        fc_sync_ranks[i] += (wid%args.fcwn)  + i*args.fcwn
-    print("newing group ", fc_sync_ranks)
-    fc_sync_group = dist.new_group(ranks=fc_sync_ranks, backend='gloo')
+    print("newing group ")
+    fc_groups = []
+    for j in range(args.fcwn):
+        fc_sync_ranks = [SY_BASE]*(fc_group_sz)
+        for i in range(fc_group_sz):
+            fc_sync_ranks[i] += (j%args.fcwn)  + i*args.fcwn
+        fc_sync_group = dist.new_group(ranks=fc_sync_ranks, backend='gloo')
+        fc_groups.append(fc_sync_group)
     print("ok ")
+    fc_sync_group = fc_groups[wid%args.fcwn]
+
     t = TOKEN_DATA_STORAGE[2][(wid*args.subbs):((wid+1)*args.subbs)]
     s = TOKEN_DATA_STORAGE[3][(wid*args.subbs):((wid+1)*args.subbs)]
     tlist = []

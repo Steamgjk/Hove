@@ -555,7 +555,6 @@ def ms_process(channel_id):
 	ms_rank = channel_id + SY_BASE
 	print("starting ms_process rank=",my_rank)
 	init_processes(my_rank, WORLD_SIZE, 'gloo')
-	print("started ms_process rank=",ms_rank)
 	ms2ts_tensor = torch.zeros(S2TS_MSG_SIZE, dtype=torch.int32)
 	while True:
 		continue
