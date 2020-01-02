@@ -675,8 +675,8 @@ def model_sync_process(wid):
     fc_sync_ranks = [SY_BASE]*(fc_group_sz)
     for i in range(fc_group_sz):
         fc_sync_ranks[i] += wid + i*args.fcwn
-    print("newing group")
-    fc_sync_group = dist.new_group(ranks=fc_sync_ranks, backend="gloo")
+    print("newing group ", fc_sync_ranks)
+    fc_sync_group = dist.new_group(ranks=fc_sync_ranks, backend='gloo')
     print("ok ")
     t = TOKEN_DATA_STORAGE[2][(wid*args.subbs):((wid+1)*args.subbs)]
     s = TOKEN_DATA_STORAGE[3][(wid*args.subbs):((wid+1)*args.subbs)]
