@@ -568,7 +568,7 @@ def coordinate_proc_request(wid):
     ts2wc_tensor = torch.zeros(TS2C_MSG_SIZE, dtype=torch.int32)
     while True:
         dist.recv(tensor = ts2wc_tensor, src = src_rank)
-        #print("WC recved..", ts2wc_tensor)
+        print("WC recved..", ts2wc_tensor)
         if ts2wc_tensor[0] == CHUNK_REQUEST:
             request_sender_wid = ts2wc_tensor[1]
             request_depth = ts2wc_tensor[2]
@@ -580,7 +580,7 @@ def coordinate_proc_request(wid):
             #print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
             dist.recv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
             CHUNK_HOLD_MAP[request_depth][request_chunk_no] = 1
-            #print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
+            print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
 
 def coordinate_proc_response(wid):
     my_rank = wid + WCS_BASE
@@ -591,7 +591,7 @@ def coordinate_proc_response(wid):
     ts2wc_tensor = torch.zeros(TS2C_MSG_SIZE, dtype=torch.int32)
     while True:
         dist.recv(tensor = ts2wc_tensor, src = src_rank)
-        #print("WC recved..", ts2wc_tensor)
+        print("WC recved..", ts2wc_tensor)
         if ts2wc_tensor[0] == CHUNK_RESPONSE:
             requester_wid = ts2wc_tensor[1]
             request_depth = ts2wc_tensor[2]

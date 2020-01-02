@@ -520,12 +520,12 @@ def rq_process(channel_id):
 		if front < tail:
 			idx = int(front% QUEUE_LEN)
 			rc2wc_tensor = TS2C_MSG_QUEUES[channel_id][idx]
-			#print("sending...", int(channel_id),"\t",rc2wc_tensor)
+			print("sending...", int(channel_id),"\t",rc2wc_tensor)
 			if rc2wc_tensor[0] == CHUNK_REQUEST:
 				dist.send(tensor = rc2wc_tensor, dst = wcr_rank)
 			elif rc2wc_tensor[0] == CHUNK_RESPONSE:
 				dist.send(tensor = rc2wc_tensor, dst = wcs_rank)
-			#print("sended...", int(channel_id),"\t",rc2wc_tensor)
+			print("sended...", int(channel_id),"\t",rc2wc_tensor)
 			front += 1
 	
 '''
