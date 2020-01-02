@@ -449,7 +449,7 @@ def train_sync_proc(wid):
     while True:
         #print("RECV...")
         dist.recv(tensor = ts2worker_tensor, src = dst_rank)
-        print("RECVED ..", ts2worker_tensor)
+        #print("RECVED ..", ts2worker_tensor)
         if ts2worker_tensor[0]== CONN_ESTABLISH:
             local_step = int(ts2worker_tensor[1])
             #print("local_step=",local_step)
@@ -488,7 +488,7 @@ def train_sync_proc(wid):
                     dist.send(tensor = new_request_tensor, dst = dst_rank)  
                     while START_SCATTER[0] == 1:
                         continue  
-                print("FIN FC depth")
+                #print("FIN FC depth")
             else: 
                 #print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
@@ -501,7 +501,7 @@ def train_sync_proc(wid):
                 #print("No FC Request..")
                 if is_fc_depth(depth+1):
                     START_GATHER[0]=1
-                    print("SET START_GATHER 1")                        
+                    #print("SET START_GATHER 1")                        
             '''
             if is_fc_depth(depth):
                 TOKEN_CNTER[depth] += 1
