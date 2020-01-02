@@ -674,7 +674,7 @@ def model_sync_process(wid):
     fc_group_sz = int(args.wn/args.fcwn)
     fc_sync_ranks = [SY_BASE]*(fc_group_sz)
     for i in range(fc_group_sz):
-        fc_sync_ranks[i] += wid + i*args.fcwn
+        fc_sync_ranks[i] += (wid%args.fcwn)  + i*args.fcwn
     print("newing group ", fc_sync_ranks)
     fc_sync_group = dist.new_group(ranks=fc_sync_ranks, backend='gloo')
     print("ok ")
