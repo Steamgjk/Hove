@@ -462,7 +462,7 @@ def train_sync_proc(wid):
             #if is_fc_depth(depth+1):  move ahead
             if is_fc_depth(depth):
                 if is_fc_worker(args.wid):
-                    #print("fc depth & fc worker")
+                    print("fc depth & fc worker")
                     input_data = get_fc_input_data(depth, token_no)
                     #print("FIN: get_fc_input_data")
                     output_data =  train_fc_model(input_data, depth, token_no)
@@ -474,7 +474,7 @@ def train_sync_proc(wid):
                     print("FC worker FIN new_request_tensor")
 
                 else:
-                    #print("NOT FC  wid=",args.wid)
+                    print("NOT FC  wid=",args.wid)
                     send_fc_input_data(depth, token_no)
                     #print("send_fc_input_data")
                     recv_fc_output_data(depth, token_no)
@@ -487,7 +487,7 @@ def train_sync_proc(wid):
             else: 
                 #print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
-                #print("training self... ", int(depth),"\t", int(token_no))
+                print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
                 #report_progress_tensor[1] = depth
                 #report_progress_tensor[2] = token_no
