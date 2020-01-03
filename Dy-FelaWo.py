@@ -247,6 +247,7 @@ def is_fc_depth(depth):
 def train_model(depth, token_no, input_data):
     global CHUNK_HOLD_MAP
     output_data = None
+    print("train depth=",int(depth)," token_no=",int(token_no)," opcode=",OP_CODES[depth])
     if OP_CODES[depth] == 1:
         #FP
         input_data.requires_grad = True
@@ -271,7 +272,7 @@ def train_model(depth, token_no, input_data):
         #print("opcode=3 ", input_data.requires_grad,"\t", input_data.size())
         input_data = input_data.cuda()
         fin_output = SUB_MODEL_LIST[depth](input_data)
-        print("fin_output sz=",fin_output.size(),"\tfake_target sz=",fake_target.size())
+        #print("fin_output sz=",fin_output.size(),"\tfake_target sz=",fake_target.size())
         loss = criterion(fin_output, fake_target.cuda())
         loss.backward()
         output_data = HookFunc.backward_ctx
