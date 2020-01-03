@@ -76,10 +76,11 @@ criterion = nn.CrossEntropyLoss()
 fake_input = torch.randn([args.tokencap * TOKEN_WEIGHT[0],3,224,224], dtype=torch.float)
 #fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.tokencap*TOKEN_WEIGHT[2])))
 #args.tokencap*TOKEN_WEIGHT[2]*args.wn/args.fcwn
-fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*args.wn/TOKEN_NUMBER[2])))
+#args.subbs*args.wn/TOKEN_NUMBER[2]
+fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.subbs*args.wn/TOKEN_NUMBER[2] * (args.wn/args.fcwn) )))
 print(TOKEN_NUMBER)
 print(fake_target.size())
-exit(0)
+
 fake_input = fake_input.share_memory_()
 fake_target = fake_target.share_memory_()
 MODEL_PARTITION = args.partition
