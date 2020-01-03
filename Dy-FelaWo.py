@@ -456,11 +456,14 @@ def train_sync_proc(wid):
             dist.send(tensor = new_request_tensor, dst = dst_rank)
 
 
-        elif ts2worker_tensor[0]== DISTRIBUTE_TOKEN:
+        elif ts2worker_tensor[0]== DISTRIBUTE_TOKEN or ts2worker_tensor[0]== OTHER_TOKENS:
             depth = ts2worker_tensor[1]
             token_no = ts2worker_tensor[2]
             #print("DISTRIBUTE_TOKEN ", depth,"\t", token_no)
             #if is_fc_depth(depth+1):  move ahead
+            if ts2worker_tensor[0]== OTHER_TOKENS:
+                while check_dependency(depth, token_no) == False:
+                    continue 
             if is_fc_depth(depth):
                 if is_fc_worker(args.wid):
                     print("fc depth & fc worker")
@@ -486,7 +489,6 @@ def train_sync_proc(wid):
                     print("non-FC worker FIN new_request_tensor")
             
             else: 
-                #print("NO FC depth")
                 input_data = get_input_data(depth, token_no)
                 print("training self... ", int(depth),"\t", int(token_no))
                 train_model(depth, token_no, input_data)
@@ -506,25 +508,6 @@ def train_sync_proc(wid):
             dist.send(tensor = new_request_tensor, dst = dst_rank)
 
 
-        elif ts2worker_tensor[0]== OTHER_TOKENS:
-            #need depdencies
-            depth = ts2worker_tensor[1]
-            token_no = ts2worker_tensor[2]
-            #print("other token... ", int(depth), " ", int(token_no))
-            #print("get other tokens ", int(depth), "\t", int(token_no))
-            while check_dependency(depth, token_no) == False:
-                #print("checking dependency false ", int(depth),"\t",int(token_no))
-                #time.sleep(1)
-                continue
-            input_data = get_input_data(depth, token_no)
-            #print("training others... ", int(depth),"\t", int(token_no))
-            train_model(depth, token_no, input_data)
-            #report_progress_tensor[1] = depth
-            #report_progress_tensor[2] = token_no
-            #print("train others fin sending")
-            dist.send(tensor = report_progress_tensor, dst = dst_rank)
-            dist.send(tensor = new_request_tensor, dst = dst_rank) 
-            #print("asking new request")
         elif ts2worker_tensor[0]== NO_AVAILABLE:
             dist.send(tensor = new_request_tensor, dst = dst_rank)
         elif ts2worker_tensor[0] == CONNECTION_RST:
