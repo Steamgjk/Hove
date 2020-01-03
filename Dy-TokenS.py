@@ -256,7 +256,7 @@ def check_dependency(request_wid, request_depth, request_token_no):
 				dependency_item = [0 for row in range(3)]
 				dependency_item[0] = int(CHUNK_HOLD_MAP[pre_depth][chunk_id])
 				if dependency_item[0]<0:
-					print("Intended ", "request_depth=",int(request_depth),"\t request_token_no=",int(request_token_no), "pre_depth=", int(pre_depth), " chunk_id=", chunk_id)
+					#print("Intended ", "request_depth=",int(request_depth),"\t request_token_no=",int(request_token_no), "pre_depth=", int(pre_depth), " chunk_id=", chunk_id)
 					return None
 
 				dependency_item[1] = pre_depth 
@@ -421,7 +421,7 @@ def ts_process(channel_id):
 				#print("NEW REQIEST depth=",depth,"\ttoken_no=",token_no)
 				while True:
 					if HOLD_MAP[depth][token_no] > -1:
-						print(int(channel_id),"\tthere add 1 ",int(depth),"\t", int(token_no), int(HOLD_MAP[depth][token_no]))
+						#print(int(channel_id),"\tthere add 1 ",int(depth),"\t", int(token_no), int(HOLD_MAP[depth][token_no]))
 						front += 1
 					else:
 						HOLD_MAP_LOCK[depth].acquire()
@@ -436,15 +436,15 @@ def ts_process(channel_id):
 						break
 				if depth == -1:
 					ts2worker_tensor[0] = NO_AVAILABLE
-					print("Another\t",int(channel_id), "front = ",int(front) )
+					#print("Another\t",int(channel_id), "front = ",int(front) )
 					dist.send(tensor = ts2worker_tensor, dst = worker_rank)
 				else:	
 					#no delay dequeue
 					
 					dependency_list =  check_dependency(channel_id, depth, token_no)
-					print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
+					#print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 					if dependency_list is None:
-						print("Intended ",int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
+						#print("Intended ",int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 						HOLD_MAP[depth][token_no]=-1  #recover for the next fetch
 						ts2worker_tensor[0] = NO_AVAILABLE
 						dist.send(tensor = ts2worker_tensor, dst = worker_rank)
@@ -453,18 +453,18 @@ def ts_process(channel_id):
 						ts2worker_tensor[0] = DISTRIBUTE_TOKEN
 						ts2worker_tensor[1] = depth
 						ts2worker_tensor[2] = token_no
-						print("Distributed ",int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
+						#print("Distributed ",int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 						if len(dependency_list) == 0:
 							dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 						else:
 							ts2worker_tensor[0] = OTHER_TOKENS
 							fill_cmd(channel_id,dependency_list)
-							print(int(channel_id), "\tAfter fill cmd ", int(TS2C_MSG_PTRS[channel_id][0]),"\t", int(TS2C_MSG_PTRS[channel_id][1]))
+							#print(int(channel_id), "\tAfter fill cmd ", int(TS2C_MSG_PTRS[channel_id][0]),"\t", int(TS2C_MSG_PTRS[channel_id][1]))
 							dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 						#wait for report progress
 						dist.recv(tensor = worker2ts_tensor, src = worker_rank)
 						update_token_state(channel_id, depth, token_no)
-						print("updated ", int(channel_id),"\t",int(depth), "\t", int(token_no))
+						#print("updated ", int(channel_id),"\t",int(depth), "\t", int(token_no))
 
 			else:
 				#print("Theother\t",int(channel_id))
