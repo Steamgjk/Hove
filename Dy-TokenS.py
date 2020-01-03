@@ -350,7 +350,7 @@ def fill_cmd(my_wid, dependency_list):
 		#print("CHUNK_RESPONSE:",TS2C_MSG_QUEUES[response_wid][tail])
 		tail += 1
 		TS2C_MSG_QUEUE_LOCKS[response_wid].release()
-		print("add dependency_list ", len(dependency_list))
+		#print("add dependency_list ", len(dependency_list))
 
 
 def get_sync_layer(wid):
@@ -400,7 +400,7 @@ def ts_process(channel_id):
 				
 				#sync response
 				dist.recv(worker2ts_tensor, src = worker_rank)
-				print(int(channel_id),"\t","FIN to_sync_layer=",int(to_sync_layer) )
+				#print(int(channel_id),"\t","FIN to_sync_layer=",int(to_sync_layer) )
 				NEED_SYNC[channel_id][to_sync_layer] = 0
 				if  to_sync_layer == TOKEN_LAYERS-1:
 					dist.recv(worker2ts_tensor, src = worker_rank)
@@ -536,12 +536,12 @@ def rq_process(channel_id):
 		if front < tail:
 			idx = int(front% QUEUE_LEN)
 			rc2wc_tensor = TS2C_MSG_QUEUES[channel_id][idx]
-			print("sending...", int(channel_id),"\t",rc2wc_tensor)
+			#print("sending...", int(channel_id),"\t",rc2wc_tensor)
 			if rc2wc_tensor[0] == CHUNK_REQUEST:
 				dist.send(tensor = rc2wc_tensor, dst = wcr_rank)
 			elif rc2wc_tensor[0] == CHUNK_RESPONSE:
 				dist.send(tensor = rc2wc_tensor, dst = wcs_rank)
-			print("sended...", int(channel_id),"\t",rc2wc_tensor)
+			#print("sended...", int(channel_id),"\t",rc2wc_tensor)
 			front += 1
 	
 '''
