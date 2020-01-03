@@ -453,6 +453,7 @@ def ts_process(channel_id):
 						ts2worker_tensor[0] = DISTRIBUTE_TOKEN
 						ts2worker_tensor[1] = depth
 						ts2worker_tensor[2] = token_no
+						print("Distributed ",int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 						if len(dependency_list) == 0:
 							dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 						else:
