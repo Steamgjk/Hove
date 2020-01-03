@@ -248,7 +248,6 @@ def check_dependency(request_wid, request_depth, request_token_no):
 	else:
 		pre_depth = request_depth -1
 		sta = request_token_no * TOKEN_WEIGHT[request_depth]
-		print("request_depth=",int(request_depth),"\t request_token_no=",int(request_token_no))
 		for chunk_id in range(sta, sta+TOKEN_WEIGHT[request_depth]):
 			#print("chunk_id=",int(chunk_id), "\t pre_depth=",int(pre_depth))
 			if request_wid == CHUNK_HOLD_MAP[pre_depth][chunk_id]:
@@ -257,7 +256,7 @@ def check_dependency(request_wid, request_depth, request_token_no):
 				dependency_item = [0 for row in range(3)]
 				dependency_item[0] = int(CHUNK_HOLD_MAP[pre_depth][chunk_id])
 				if dependency_item[0]<0:
-					print("Intended ", "pre_depth=", int(pre_depth), " chunk_id=", chunk_id)
+					print("Intended ", "request_depth=",int(request_depth),"\t request_token_no=",int(request_token_no), "pre_depth=", int(pre_depth), " chunk_id=", chunk_id)
 					return None
 
 				dependency_item[1] = pre_depth 
