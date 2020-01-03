@@ -580,7 +580,7 @@ def coordinate_proc_request(wid):
             #print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
             dist.recv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
             CHUNK_HOLD_MAP[request_depth][request_chunk_no] = 1
-            print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
+            #print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
 
 def coordinate_proc_response(wid):
     my_rank = wid + WCS_BASE
