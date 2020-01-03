@@ -365,6 +365,7 @@ def train_fc_model(input_data, depth, token_no):
     input_data.requires_grad = True
     input_data = input_data.cuda()
     fin_output = SUB_MODEL_LIST[depth](input_data)
+    print("fin sz=",fin_output.size(),"\tfake_target sz=",fake_target.size())
     loss = criterion(fin_output, fake_target.cuda())
     loss.backward()
     output_data = HookFunc.backward_ctx
