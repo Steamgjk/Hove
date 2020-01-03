@@ -421,7 +421,7 @@ def ts_process(channel_id):
 				#print("NEW REQIEST depth=",depth,"\ttoken_no=",token_no)
 				while True:
 					if HOLD_MAP[depth][token_no] > -1:
-						#print(int(channel_id),"\tthere add 1 ",int(depth),"\t", int(token_no), int(HOLD_MAP[depth][token_no]))
+						print(int(channel_id),"\tthere add 1 ",int(depth),"\t", int(token_no), int(HOLD_MAP[depth][token_no]))
 						front += 1
 					else:
 						HOLD_MAP_LOCK[depth].acquire()
@@ -445,6 +445,7 @@ def ts_process(channel_id):
 					print(int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
 					if dependency_list is None:
 						print("Intended ",int(channel_id),"\t","depth=",int(depth),"\ttoken_no=",int(token_no),"\tfront=",int(front))
+						HOLD_MAP[depth][token_no]=-1  #recover for the next fetch
 						ts2worker_tensor[0] = NO_AVAILABLE
 						dist.send(tensor = ts2worker_tensor, dst = worker_rank)
 					else:
@@ -466,7 +467,7 @@ def ts_process(channel_id):
 						print("updated ", int(channel_id),"\t",int(depth), "\t", int(token_no))
 
 			else:
-				print("Theother\t",int(channel_id))
+				#print("Theother\t",int(channel_id))
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 
