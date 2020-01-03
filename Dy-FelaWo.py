@@ -568,7 +568,7 @@ def coordinate_proc_request(wid):
     ts2wc_tensor = torch.zeros(TS2C_MSG_SIZE, dtype=torch.int32)
     while True:
         dist.recv(tensor = ts2wc_tensor, src = src_rank)
-        print("WC recved..", ts2wc_tensor)
+        #print("WC recved..", ts2wc_tensor)
         if ts2wc_tensor[0] == CHUNK_REQUEST:
             request_sender_wid = ts2wc_tensor[1]
             request_depth = ts2wc_tensor[2]
