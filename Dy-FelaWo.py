@@ -78,10 +78,10 @@ fake_input = torch.randn([args.tokencap * TOKEN_WEIGHT[0],3,224,224], dtype=torc
 #args.tokencap*TOKEN_WEIGHT[2]*args.wn/args.fcwn
 #args.subbs*args.wn/TOKEN_NUMBER[2]
 fake_target_sz = int(args.subbs*args.wn/TOKEN_NUMBER[2] * (args.wn/args.fcwn) )
-if TOKEN_NUMBER[2]>args.fcwn:
-    fake_target_sz = int(args.subbs*args.wn/TOKEN_NUMBER[2])
-else:
+if TOKEN_NUMBER[2]<args.fcwn:
     fake_target_sz = int(args.subbs*args.wn/TOKEN_NUMBER[2] * (args.wn/args.fcwn) )
+else:
+    fake_target_sz = int(args.subbs*args.wn/TOKEN_NUMBER[2])
 fake_target = torch.from_numpy(np.random.randint(0,999,size=fake_target_sz))
 print(TOKEN_NUMBER)
 print(fake_target.size())
