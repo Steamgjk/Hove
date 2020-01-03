@@ -468,11 +468,11 @@ def train_sync_proc(wid):
                 if is_fc_worker(args.wid):
                     print("fc depth & fc worker")
                     input_data = get_fc_input_data(depth, token_no)
-                    #print("FIN: get_fc_input_data")
+                    print("FIN: get_fc_input_data")
                     output_data =  train_fc_model(input_data, depth, token_no)
-                    #print("FIN report progress")
+                    print("FIN report progress")
                     spread_fc_output_data(depth, token_no, output_data)
-                    #print("FIN spread_fc_output_data")
+                    print("FIN spread_fc_output_data")
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
                     dist.send(tensor = new_request_tensor, dst = dst_rank)
                     print("FC worker FIN new_request_tensor")
@@ -480,7 +480,7 @@ def train_sync_proc(wid):
                 else:
                     print("NOT FC  wid=",args.wid)
                     send_fc_input_data(depth, token_no)
-                    #print("send_fc_input_data")
+                    print("send_fc_input_data")
                     recv_fc_output_data(depth, token_no)
 
                     dist.send(tensor = report_progress_tensor, dst = dst_rank)
