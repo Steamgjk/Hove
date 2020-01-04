@@ -424,6 +424,7 @@ def spread_fc_output_data(depth, token_no, output_data):
     for seq in seq_list:
         seq.wait()
     '''
+    unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
     wunit = 1
     if args.wn > TOKEN_NUMBER[depth]:
         wunit = int(args.wn/TOKEN_NUMBER[depth])
