@@ -359,7 +359,24 @@ def get_fc_input_data(depth, token_no):
     w_offset = args.fcwn
     chunk_offset = int(args.subbs)*args.fcwn
 
+    wunit = 1
+    if args.wn > TOKEN_NUMBER[depth]:
+        wunit = args.wn/TOKEN_NUMBER[depth]
+    if wunit < args.fcwn:
+        wunit = args.fcwn
+    tidx = token_no+1
+    for i in range(args.wid+wunit, args.wn, wunit):
+        dst_rank = i + WK_BASE
+        offset = tidx * unit_size
+        recv_tensor = TOKEN_DATA_STORAGE[depth][offset:(offset+unit_size)]
+        dist.recv(tensor = recv_tensor, src = dst_rank)
+        tensor_list.append(recv_tensor)
+        tidx += 1
+
+
+    '''
     while base_wid < args.wn:
+
         dst_rank = base_wid + WK_BASE
         base_offset += chunk_offset
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
@@ -370,6 +387,7 @@ def get_fc_input_data(depth, token_no):
         base_wid += w_offset
     #for req in req_list:
     #    req.wait()
+    '''
     input_data = torch.cat(tensor_list)
     return input_data
 
@@ -390,6 +408,7 @@ def train_fc_model(input_data, depth, token_no):
     #PARA_AGES[depth] += 1
 
 def spread_fc_output_data(depth, token_no, output_data):
+    '''
     seq_list = []
     base_wid = args.wid+args.fcwn 
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
@@ -400,9 +419,22 @@ def spread_fc_output_data(depth, token_no, output_data):
         seq = dist.send(tensor=send_tensor, dst = dst_rank)
         #seq_list.append(seq)
     '''
+    '''
     for seq in seq_list:
         seq.wait()
     '''
+    wunit = 1
+    if args.wn > TOKEN_NUMBER[depth]:
+        wunit = args.wn/TOKEN_NUMBER[depth]
+    if wunit < args.fcwn:
+        wunit = args.fcwn
+    tidx = 1
+    for i in range(args.wid+wunit, args.wn, wunit):
+        dst_rank = i + WK_BASE
+        offset = tidx * unit_size
+        send_tensor = output_data[offset:(offset+unit_size)]
+        dist.send(tensor=send_tensor, dst = dst_rank)
+        tidx += 1
 
 def send_fc_input_data(depth,token_no):
     unit_size = int(TOKEN_WEIGHT[depth]* TOKEN_CAPACITY)
