@@ -363,6 +363,7 @@ def get_fc_input_data(depth, token_no):
         dst_rank = base_wid + WK_BASE
         base_offset += chunk_offset
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
+        print("recv from ", base_wid)
         req = dist.recv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
         #req_list.append(req)
