@@ -426,7 +426,7 @@ def spread_fc_output_data(depth, token_no, output_data):
     '''
     wunit = 1
     if args.wn > TOKEN_NUMBER[depth]:
-        wunit = args.wn/TOKEN_NUMBER[depth]
+        wunit = int(args.wn/TOKEN_NUMBER[depth])
     if wunit < args.fcwn:
         wunit = args.fcwn
     tidx = 1
