@@ -95,7 +95,7 @@ if args.wn>TOKEN_NUMBER[2]:
         wcnt[temp[i]] += 1
     fake_target_sz = max(wcnt) * args.tokencap*TOKEN_WEIGHT[2] 
 else:
-    fake_target_sz = args.wn*args.tokencap*TOKEN_WEIGHT[2]
+    fake_target_sz = int(args.wn*args.tokencap*TOKEN_WEIGHT[2]/args.fcwn)
 
 
 
