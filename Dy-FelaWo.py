@@ -356,20 +356,23 @@ def get_fc_input_data(depth, token_no):
     base_offset = token_no * unit_size
     base_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
     tensor_list.append(base_tensor)
+    w_offset = args.fcwn
+    chunk_offset = int(args.subbs)*args.fcwn
+
     while base_wid < args.wn:
         dst_rank = base_wid + WK_BASE
-        base_offset += int(args.subbs)*args.fcwn
-        #TO Optimize
+        base_offset += chunk_offset
         recv_tensor = TOKEN_DATA_STORAGE[depth][base_offset:(base_offset+unit_size)]
         req = dist.recv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
         #req_list.append(req)
-        base_wid += args.fcwn
+        base_wid += w_offset
     #for req in req_list:
     #    req.wait()
     input_data = torch.cat(tensor_list)
     return input_data
- 
+
+
 def train_fc_model(input_data, depth, token_no):
     global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target
     input_data.requires_grad = True
