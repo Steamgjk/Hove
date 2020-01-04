@@ -77,10 +77,27 @@ fake_input = torch.randn([args.tokencap * TOKEN_WEIGHT[0],3,224,224], dtype=torc
 #fake_target = torch.from_numpy(np.random.randint(0,999,size=int(args.tokencap*TOKEN_WEIGHT[2])))
 #args.tokencap*TOKEN_WEIGHT[2]*args.wn/args.fcwn
 #args.subbs*args.wn/TOKEN_NUMBER[2]
-partition_n = TOKEN_NUMBER[2]
-if args.fcwn < TOKEN_NUMBER[2]:
-    partition_n = args.fcwn
-fake_target_sz = int(args.subbs*args.wn/partition_n )
+
+temp = [0 for i in range(TOKEN_NUMBER[2])]
+wcnt = [0 for i in range(args.wn)]
+fake_target_sz = 0
+if args.wn>TOKEN_NUMBER[2]:
+    mystep = int(args.wn/TOKEN_NUMBER[2])
+    for i in range(TOKEN_NUMBER[2]):
+        temp[i] = i*mystep
+    for i in range(TOKEN_NUMBER[2]):
+        if temp[i]<args.fcwn:
+            continue
+        else:
+            temp[i] = temp[i]%args.fcwn
+
+    for i in range(TOKEN_NUMBER[2]):
+        wcnt[temp[i]] += 1
+    fake_target_sz = max(wcnt) * args.tokencap*TOKEN_WEIGHT[2] 
+else:
+    fake_target_sz = args.wn*args.tokencap*TOKEN_WEIGHT[2]
+
+
 
 fake_target = torch.from_numpy(np.random.randint(0,999,size=fake_target_sz))
 print(TOKEN_NUMBER)
