@@ -369,6 +369,7 @@ def get_fc_input_data(depth, token_no):
         dst_rank = i + WK_BASE
         offset = tidx * unit_size
         recv_tensor = TOKEN_DATA_STORAGE[depth][offset:(offset+unit_size)]
+        print("Recv from ", int(i))
         dist.recv(tensor = recv_tensor, src = dst_rank)
         tensor_list.append(recv_tensor)
         tidx += 1
@@ -441,6 +442,7 @@ def send_fc_input_data(depth,token_no):
     base_offset = token_no * unit_size
     send_tensor = TOKEN_DATA_STORAGE[depth-1][base_offset:(base_offset+unit_size)]
     dst_rank = (args.wid%args.fcwn)+WK_BASE
+    print("send to", int(args.wid%args.fcwn))
     seq = dist.send(tensor= send_tensor, dst = dst_rank )
     #print("send to ", dst_rank)
     #seq.wait()
