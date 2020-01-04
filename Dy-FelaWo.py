@@ -361,7 +361,7 @@ def get_fc_input_data(depth, token_no):
 
     wunit = 1
     if args.wn > TOKEN_NUMBER[depth]:
-        wunit = args.wn/TOKEN_NUMBER[depth]
+        wunit = int(args.wn/TOKEN_NUMBER[depth])
     if wunit < args.fcwn:
         wunit = args.fcwn
     tidx = token_no+1
