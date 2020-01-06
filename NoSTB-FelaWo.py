@@ -501,7 +501,7 @@ def coordinate_proc_request(wid):
             #print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
             req= dist.irecv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
             idx = request_sender_wid*1000+request_depth*100+request_chunk_no
-            heap_push(req_heap, (idx, req))
+            heappush(req_heap, (idx, req))
             req_n += 1
 
         if req_n == 100:
@@ -540,7 +540,7 @@ def coordinate_proc_response(wid):
             seq = dist.isend(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
             #print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
             idx = request_wid*1000+request_depth*100+request_chunk_no
-            heap_push(seq_heap, (idx, seq))
+            heappush(seq_heap, (idx, seq))
             seq_n += 1
         if seq_n == 100:
             while seq_heap:
