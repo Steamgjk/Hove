@@ -196,6 +196,8 @@ def get_token(wid):
 	for i in range(TOKEN_LAYERS-1,0,-1):
 		for j in range(TOKEN_NUMBER[i]):
 			dependency_list = check_dependency(wid, i, j)
+			if i ==0:
+				print("three  ", HOLD_MAP[i][j],"\t", OCCUPY_MAP[i][j], "\t",dependency_list )
 			if HOLD_MAP[i][j] <0 and OCCUPY_MAP[i][j]<0 and dependency_list is not None:
 				depth= i 
 				token_no = j
