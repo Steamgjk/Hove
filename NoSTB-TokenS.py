@@ -198,8 +198,11 @@ def get_token(wid):
 				depth= i 
 				token_no = j
 				OCCUPY_MAP[i][j]=wid
+				break
 			else:
 				print("i=",i,"\tj=",j,"\t",int(HOLD_MAP[i][j]),"\t",int(OCCUPY_MAP[i][j]) )
+		if depth is not None:
+			break
 	QUEUE_LOCKS[0].release()
 	return None, None
 
@@ -368,8 +371,6 @@ def ts_process(channel_id):
 					while READY_RST[channel_id] == 1:
 						continue 
 				continue
-			print(OCCUPY_MAP)
-			exit(0)
 			depth, token_no = get_token(channel_id)
 			print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
 			if depth is None:
