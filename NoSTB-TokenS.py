@@ -204,7 +204,7 @@ def get_token(wid):
 		if depth is not None:
 			break
 	QUEUE_LOCKS[0].release()
-	return None, None
+	return depth, token_no
 
 def update_token_state(wid, depth, token_no):
 	sta = token_no * TOKEN_WEIGHT[depth]
