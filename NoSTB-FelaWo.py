@@ -27,6 +27,7 @@ import queue as Queue
 import torch.distributed as dist
 import torch.multiprocessing as mp
 import numba.cuda as cuda
+from heapq import heappush, heappop
 # In-place aggregation
 #os.environ["CUDA_VISIBLE_DEVICES"]='1'
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
@@ -483,9 +484,12 @@ def coordinate_proc_request(wid):
     init_processes(my_rank, WORLD_SIZE, "gloo")
     print("coordinate_proc init process rank = ", my_rank)
     ts2wc_tensor = torch.zeros(TS2C_MSG_SIZE, dtype=torch.int32)
+    req_heap = []
+    req_n = 0
     while True:
         dist.recv(tensor = ts2wc_tensor, src = src_rank)
         #print("WC recved..", ts2wc_tensor)
+        
         if ts2wc_tensor[0] == CHUNK_REQUEST:
             request_sender_wid = ts2wc_tensor[1]
             request_depth = ts2wc_tensor[2]
@@ -495,8 +499,21 @@ def coordinate_proc_request(wid):
             sta = request_chunk_no*TOKEN_CAPACITY
             recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             #print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
-            dist.recv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
-            CHUNK_HOLD_MAP[request_depth][request_chunk_no] = 1
+            req= dist.irecv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
+            idx = request_sender_wid*1000+request_depth*100+request_chunk_no
+            heap_push(req_heap, (idx, req))
+            req_n += 1
+
+        if req_n == 100:
+            while req_heap:
+                itm = heappop(req_heap)
+                request_depth = int((itm[0]%1000)/10)
+                request_chunk_no = int(itm[0]%100)
+                print("recv from ", int(itm[0]))
+                itm[1].wait()
+                print("FIN recv from ", int(itm[0]))
+                CHUNK_HOLD_MAP[request_depth][request_chunk_no] = 1
+            req_n = 0
             #print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
 
 def coordinate_proc_response(wid):
@@ -506,6 +523,8 @@ def coordinate_proc_response(wid):
     init_processes(my_rank, WORLD_SIZE, "gloo")
     print("coordinate_proc init process rank = ", my_rank)
     ts2wc_tensor = torch.zeros(TS2C_MSG_SIZE, dtype=torch.int32)
+    seq_n = 0
+    seq_heap = []
     while True:
         dist.recv(tensor = ts2wc_tensor, src = src_rank)
         #print("WC recved..", ts2wc_tensor)
@@ -518,8 +537,23 @@ def coordinate_proc_response(wid):
             sta = request_chunk_no*TOKEN_CAPACITY
             chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             #print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
-            dist.send(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
+            seq = dist.isend(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
             #print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
+            idx = request_wid*1000+request_depth*100+request_chunk_no
+            heap_push(seq_heap, (idx, seq))
+            seq_n += 1
+        if seq_n == 100:
+            while seq_heap:
+                itm = heappop(seq_heap)
+                print("send to ", int(itm[0]))
+                itm[1].wait()
+                print("FIN send to ", int(itm[0]))
+            seq_n = 0
+
+
+
+
+
 
 if __name__ == '__main__':
     ini_data_storage()
