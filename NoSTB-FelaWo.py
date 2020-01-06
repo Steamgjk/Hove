@@ -539,7 +539,7 @@ def coordinate_proc_response(wid):
             #print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
             seq = dist.isend(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
             #print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
-            idx = request_wid*1000+request_depth*100+request_chunk_no
+            idx = requester_wid*1000+request_depth*100+request_chunk_no
             heappush(seq_heap, (idx, seq))
             seq_n += 1
         if seq_n == 100:
