@@ -533,7 +533,7 @@ def coordinate_proc_response(wid):
             chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             #print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
             dist.send(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
-            #print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
+            print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
 
 if __name__ == '__main__':
     ini_data_storage()
