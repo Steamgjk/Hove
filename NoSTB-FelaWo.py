@@ -499,21 +499,7 @@ def coordinate_proc_request(wid):
             sta = request_chunk_no*TOKEN_CAPACITY
             recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             #print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
-            req= dist.irecv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
-            idx = request_sender_wid*1000+request_depth*100+request_chunk_no
-            heappush(req_heap, (idx, req))
-            req_n += 1
-
-        if req_n == 100:
-            while req_heap:
-                itm = heappop(req_heap)
-                request_depth = int((itm[0]%1000)/10)
-                request_chunk_no = int(itm[0]%100)
-                print("recv from ", int(itm[0]))
-                itm[1].wait()
-                print("FIN recv from ", int(itm[0]))
-                CHUNK_HOLD_MAP[request_depth][request_chunk_no] = 1
-            req_n = 0
+            dist.recv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
             #print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
 
 def coordinate_proc_response(wid):
@@ -537,18 +523,9 @@ def coordinate_proc_response(wid):
             sta = request_chunk_no*TOKEN_CAPACITY
             chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             #print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
-            seq = dist.isend(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
+            dist.send(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
             #print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
-            idx = requester_wid*1000+request_depth*100+request_chunk_no
-            heappush(seq_heap, (idx, seq))
-            seq_n += 1
-        if seq_n == 100:
-            while seq_heap:
-                itm = heappop(seq_heap)
-                print("send to ", int(itm[0]))
-                itm[1].wait()
-                print("FIN send to ", int(itm[0]))
-            seq_n = 0
+
 
 
 
