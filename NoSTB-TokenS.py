@@ -332,7 +332,8 @@ def ts_process(channel_id):
 	worker2ts_tensor[0] = NEW_REQUEST
 	requester_wid = channel_id
 	local_cnt = 0
-
+	print(OCCUPY_MAP)
+	exit(0)
 	while True:
 		#print(int(channel_id)," Recvinb")
 		dist.recv(tensor = worker2ts_tensor, src = worker_rank)
