@@ -194,7 +194,7 @@ def get_token(wid):
 	QUEUE_LOCKS[0].acquire()
 	for i in range(TOKEN_LAYERS-1,0,-1):
 		for j in range(TOKEN_NUMBER[i]):
-			if HOLD_MAP[i][j] <0 and OCCUPY_MAP[i][j]<0:
+			if HOLD_MAP[i][j] <0 and OCCUPY_MAP[i][j]<0 and check_dependency(wid, i, j) is not None:
 				depth= i 
 				token_no = j
 				OCCUPY_MAP[i][j]=wid
@@ -377,28 +377,22 @@ def ts_process(channel_id):
 				dist.send(tensor = ts2worker_tensor, dst = worker_rank)	
 			else:
 				print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
-				dependency_list =  check_dependency(channel_id, depth, token_no)
-				if dependency_list is None:
-					OCCUPY_MAP[depth][token_no] = -1
-					ts2worker_tensor[0] = NO_AVAILABLE
-					dist.send(tensor = ts2worker_tensor, dst = worker_rank)
+				ts2worker_tensor[0] = DISTRIBUTE_TOKEN
+				ts2worker_tensor[1] = depth
+				ts2worker_tensor[2] = token_no
+				if len(dependency_list) == 0:
+					dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 				else:
-					ts2worker_tensor[0] = DISTRIBUTE_TOKEN
-					ts2worker_tensor[1] = depth
-					ts2worker_tensor[2] = token_no
-					if len(dependency_list) == 0:
-						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
-					else:
-						ts2worker_tensor[0] = OTHER_TOKENS
-						fill_cmd(channel_id,dependency_list)
-						dist.send(tensor=ts2worker_tensor, dst = worker_rank)
-						#wait for report progress
-						dist.recv(tensor = worker2ts_tensor, src = worker_rank)
-						update_token_state(channel_id, depth, token_no)	
-
+					ts2worker_tensor[0] = OTHER_TOKENS
+					fill_cmd(channel_id,dependency_list)
+					dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 					#wait for report progress
 					dist.recv(tensor = worker2ts_tensor, src = worker_rank)
-					update_token_state(channel_id, depth, token_no)
+					update_token_state(channel_id, depth, token_no)	
+
+				#wait for report progress
+				dist.recv(tensor = worker2ts_tensor, src = worker_rank)
+				update_token_state(channel_id, depth, token_no)
 
 
 
