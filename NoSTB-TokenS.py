@@ -323,7 +323,7 @@ def fill_cmd(my_wid, dependency_list):
 	TS2C_MSG_QUEUE_LOCKS[my_wid].release()
 	for dependency_item in dependency_list:
 		response_wid =  dependency_item[0]
-		#print("response_wid=",int(response_wid))
+		print("response_wid=",int(response_wid), "\t",dependency_item)
 		TS2C_MSG_QUEUE_LOCKS[response_wid].acquire()
 		tail = TS2C_MSG_PTRS[response_wid][1]
 		idx = 0
