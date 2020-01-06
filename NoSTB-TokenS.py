@@ -317,9 +317,9 @@ def fill_cmd(my_wid, dependency_list):
 		TS2C_MSG_QUEUES[my_wid][idx][2] = dependency_item[1] # depth
 		TS2C_MSG_QUEUES[my_wid][idx][3] = dependency_item[2] # chunk_id
 		
-		#print("CHUNK_REQUEST:",TS2C_MSG_QUEUES[my_wid][tail])
+		print("CHUNK_REQUEST:",TS2C_MSG_QUEUES[my_wid][tail])
 		tail += 1
-	#print(dependency_list)
+	
 	TS2C_MSG_QUEUE_LOCKS[my_wid].release()
 	for dependency_item in dependency_list:
 		response_wid =  dependency_item[0]
@@ -336,7 +336,7 @@ def fill_cmd(my_wid, dependency_list):
 		TS2C_MSG_QUEUES[response_wid][idx][1] = my_wid #work id
 		TS2C_MSG_QUEUES[response_wid][idx][2] = dependency_item[1] # depth
 		TS2C_MSG_QUEUES[response_wid][idx][3] = dependency_item[2] # chunk_id
-		#print("CHUNK_RESPONSE:",TS2C_MSG_QUEUES[response_wid][tail])
+		print("CHUNK_RESPONSE:",TS2C_MSG_QUEUES[response_wid][tail])
 		tail += 1
 		TS2C_MSG_QUEUE_LOCKS[response_wid].release()
 		#print("add dependency_list ", len(dependency_list))
