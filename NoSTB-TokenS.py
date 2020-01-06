@@ -31,6 +31,7 @@ parser.add_argument('--prt', default="21331", type=str, help='Master Port')
 parser.add_argument('--subbs', default=1, type=int, help='sub batch size')
 parser.add_argument('--tokencap', default="32", type=int, help='token capacity')
 parser.add_argument('--weight', default=[1,4,4,4,1], nargs='+', type=int)
+parser.add_argument('--depth', default=1,  type=int, help = "depth first")
 args = parser.parse_args()
 
 
@@ -400,7 +401,10 @@ def ts_process(channel_id):
 					while READY_RST[channel_id] == 1:
 						continue 
 				continue
-			depth, token_no,dependency_list = get_token(channel_id)
+			if args.depth == 1:
+				depth, token_no,dependency_list = get_token1(channel_id)
+			else:
+				depth, token_no,dependency_list = get_token(channel_id)
 			#print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
 			if depth is None:
 				ts2worker_tensor[0] = NO_AVAILABLE
