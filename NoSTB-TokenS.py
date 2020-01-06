@@ -332,8 +332,8 @@ def ts_process(channel_id):
 	worker2ts_tensor[0] = NEW_REQUEST
 	requester_wid = channel_id
 	local_cnt = 0
-	print(OCCUPY_MAP)
-	exit(0)
+	#print(OCCUPY_MAP)
+	#exit(0)
 	while True:
 		#print(int(channel_id)," Recvinb")
 		dist.recv(tensor = worker2ts_tensor, src = worker_rank)
@@ -368,6 +368,8 @@ def ts_process(channel_id):
 					while READY_RST[channel_id] == 1:
 						continue 
 				continue
+			print(OCCUPY_MAP)
+			exit(0)
 			depth, token_no = get_token(channel_id)
 			print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
 			if depth is None:
