@@ -193,12 +193,10 @@ def get_token(wid):
 	token_no = None
 	dependency_list = None
 	QUEUE_LOCKS[0].acquire()
-	for i in range(TOKEN_LAYERS-1,0,-1):
+	for i in range(TOKEN_LAYERS-1,-1,-1):
 		for j in range(TOKEN_NUMBER[i]):
 			dependency_list = check_dependency(wid, i, j)
-			print("three-1  ", i,"\t", j, "\t",dependency_list )
-			if i ==0:
-				print("three  ", HOLD_MAP[i][j],"\t", OCCUPY_MAP[i][j], "\t",dependency_list )
+			#print("three-1  ", i,"\t", j, "\t",dependency_list )
 			if HOLD_MAP[i][j] <0 and OCCUPY_MAP[i][j]<0 and dependency_list is not None:
 				depth= i 
 				token_no = j
@@ -207,7 +205,7 @@ def get_token(wid):
 		if depth is not None:
 			break
 	QUEUE_LOCKS[0].release()
-	#print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
+	print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
 	return depth, token_no,dependency_list
 
 def update_token_state(wid, depth, token_no):
