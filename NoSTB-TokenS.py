@@ -187,8 +187,30 @@ def reset():
 	READY_RST.zero_()
 	ESTABLISHED_CONN.zero_()
 	connection_lock.release()
-
+	
 def get_token(wid):
+	depth = None
+	token_no = None
+	dependency_list = None
+	
+	QUEUE_LOCKS[0].acquire()
+
+	for i in range(TOKEN_LAYERS):
+		for j in range(TOKEN_NUMBER[i]):
+			if OCCUPY_MAP[i][j] < 0:
+				dependency_list= check_dependency(wid, j, j)
+				if dependency_list is not None:
+					depth = i 
+					token_no = j 
+					OCCUPY_MAP[depth][token_no]=wid
+					break 
+		if depth is not None:
+			break
+	QUEUE_LOCKS[0].release()
+	#print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
+	return depth, token_no,dependency_list
+
+def get_token1(wid):
 	depth = None
 	token_no = None
 	dependency_list = None
