@@ -418,7 +418,7 @@ def ts_process(channel_id):
 					dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 				else:
 					ts2worker_tensor[0] = OTHER_TOKENS
-					print("OTHER_TOKENS\t", int(channel_id),"\t", ts2worker_tensor, "\t", dependency_list)
+					#print("OTHER_TOKENS\t", int(channel_id),"\t", ts2worker_tensor, "\t", dependency_list)
 					fill_cmd(channel_id,dependency_list)
 					dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 
@@ -444,12 +444,12 @@ def rq_process(channel_id):
 		if front < tail:
 			idx = int(front% QUEUE_LEN)
 			rc2wc_tensor = TS2C_MSG_QUEUES[channel_id][idx]
-			print("sending...", int(channel_id),"\t",rc2wc_tensor)
+			#print("sending...", int(channel_id),"\t",rc2wc_tensor)
 			if rc2wc_tensor[0] == CHUNK_REQUEST:
 				dist.send(tensor = rc2wc_tensor, dst = wcr_rank)
 			elif rc2wc_tensor[0] == CHUNK_RESPONSE:
 				dist.send(tensor = rc2wc_tensor, dst = wcs_rank)
-			print("sended...", int(channel_id),"\t",rc2wc_tensor,"\tfront=",int(front), "\ttail=",int(tail))
+			#print("sended...", int(channel_id),"\t",rc2wc_tensor,"\tfront=",int(front), "\ttail=",int(tail))
 			front += 1
 
 def ms_process(channel_id):

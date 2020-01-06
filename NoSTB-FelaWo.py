@@ -264,7 +264,7 @@ def is_fc_depth(depth):
 def train_model(depth, token_no, input_data):
     global CHUNK_HOLD_MAP
     output_data = None
-    print("train depth=",int(depth)," token_no=",int(token_no)," opcode=",OP_CODES[depth])
+    #print("train depth=",int(depth)," token_no=",int(token_no)," opcode=",OP_CODES[depth])
     if OP_CODES[depth] == 1:
         #FP
         input_data.requires_grad = True
@@ -355,32 +355,18 @@ def check_dependency(my_depth, my_token_no):
     pre_depth = my_depth -1
     for i in range(sta, sta+TOKEN_WEIGHT[my_depth]):
         if CHUNK_HOLD_MAP[pre_depth][i] == 0:
-            print("fp no :", int(my_depth),"\t",int(my_token_no),"\t", int(pre_depth),"\t", int(i) )
+            #print("fp no :", int(my_depth),"\t",int(my_token_no),"\t", int(pre_depth),"\t", int(i) )
             return False
     if is_bp_depth(my_depth):
         fp_depth = TOKEN_LAYERS-1 - my_depth
         for i in range(sta, sta+TOKEN_WEIGHT[my_depth]):
             if CHUNK_HOLD_MAP[fp_depth][i] == 0:
-                print("bp no :", int(my_depth),"\t",int(my_token_no),"\t", int(fp_depth),"\t", int(i) )
+                #print("bp no :", int(my_depth),"\t",int(my_token_no),"\t", int(fp_depth),"\t", int(i) )
                 return False
     return True       
 
 
 
-def train_fc_model(input_data, depth, token_no):
-    global TOKEN_DATA_STORAGE,  SUB_MODEL_LIST, fake_target
-    input_data.requires_grad = True
-    input_data = input_data.cuda()
-    fin_output = SUB_MODEL_LIST[depth](input_data)
-    print("fin sz=",fin_output.size(),"\tfake_target sz=",fake_target.size())
-    loss = criterion(fin_output, fake_target.cuda())
-    loss.backward()
-    output_data = HookFunc.backward_ctx
-    output_data = output_data.cpu()
-    chunk_offset = token_no * TOKEN_WEIGHT[depth]
-    CHUNK_HOLD_MAP[depth][chunk_offset:(chunk_offset+TOKEN_WEIGHT[depth])] = 1
-    return output_data
-    #PARA_AGES[depth] += 1
 
 
 def train_sync_proc(wid):
@@ -406,7 +392,7 @@ def train_sync_proc(wid):
     while True:
         #print("RECV...")
         dist.recv(tensor = ts2worker_tensor, src = dst_rank)
-        print("RECVED ..", ts2worker_tensor)
+        #print("RECVED ..", ts2worker_tensor)
         if ts2worker_tensor[0]== CONN_ESTABLISH:
             local_step = int(ts2worker_tensor[1])
             #print("local_step=",local_step)
@@ -426,9 +412,9 @@ def train_sync_proc(wid):
                 while check_dependency(depth, token_no) == False:
                     continue 
             input_data = get_input_data(depth, token_no)
-            print("training self... ", int(depth),"\t", int(token_no))
+            #print("training self... ", int(depth),"\t", int(token_no))
             train_model(depth, token_no, input_data)
-            print("FIN training self... ", int(depth),"\t", int(token_no))
+            #print("FIN training self... ", int(depth),"\t", int(token_no))
             dist.send(tensor = report_progress_tensor, dst = dst_rank)
             dist.send(tensor = new_request_tensor, dst = dst_rank)
 
@@ -508,10 +494,10 @@ def coordinate_proc_request(wid):
             #recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
             sta = request_chunk_no*TOKEN_CAPACITY
             recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
-            print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
+            #print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
             dist.recv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
             CHUNK_HOLD_MAP[request_depth][request_chunk_no] = 1
-            print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
+            #print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
 
 def coordinate_proc_response(wid):
     my_rank = wid + WCS_BASE
@@ -531,9 +517,9 @@ def coordinate_proc_response(wid):
             #chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
             sta = request_chunk_no*TOKEN_CAPACITY
             chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
-            print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
+            #print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
             dist.send(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
-            print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
+            #print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
 
 if __name__ == '__main__':
     ini_data_storage()
