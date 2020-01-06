@@ -177,6 +177,7 @@ def reset():
 		continue
 
 	HOLD_MAP.zero_().add_(-1)
+	OCCUPY_MAP.zero_().add_(-1)
 	CHUNK_HOLD_MAP.zero_().add_(-2)
 	for i in range(args.wn):
 		QUEUE_PTRS[i][0] = 0
@@ -191,12 +192,14 @@ def get_token(wid):
 	depth = None
 	token_no = None
 	QUEUE_LOCKS[0].acquire()
-	for i in range(TOKEN_LAYERS):
+	for i in range(TOKEN_LAYERS-1,0,-1):
 		for j in range(TOKEN_NUMBER[i]):
 			if HOLD_MAP[i][j] <0 and OCCUPY_MAP[i][j]<0:
 				depth= i 
 				token_no = j
 				OCCUPY_MAP[i][j]=wid
+			else:
+				print("i=",i,"\tj=",j,"\t",int(HOLD_MAP[i][j]),"\t",int(OCCUPY_MAP[i][j]) )
 	QUEUE_LOCKS[0].release()
 	return None, None
 
@@ -365,13 +368,14 @@ def ts_process(channel_id):
 						continue 
 				continue
 			depth, token_no = get_token(channel_id)
-			print(int(channel_id),"\t New Request  depth=",int(depth),"\t token_no=",int(token_no))
+			print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
 			if depth is None:
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor = ts2worker_tensor, dst = worker_rank)	
 			else:
 				dependency_list =  check_dependency(channel_id, depth, token_no)
 				if dependency_list is None:
+					OCCUPY_MAP[depth][token_no] = -1
 					ts2worker_tensor[0] = NO_AVAILABLE
 					dist.send(tensor = ts2worker_tensor, dst = worker_rank)
 				else:
