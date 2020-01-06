@@ -205,7 +205,7 @@ def get_token(wid):
 		if depth is not None:
 			break
 	QUEUE_LOCKS[0].release()
-	print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
+	#print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
 	return depth, token_no,dependency_list
 
 def update_token_state(wid, depth, token_no):
@@ -361,7 +361,7 @@ def ts_process(channel_id):
 				dist.send(ts2worker_tensor, dst = worker_rank)
 				#sync response
 				dist.recv(worker2ts_tensor, src = worker_rank)
-				#print(int(channel_id),"\t","FIN to_sync_layer=",int(to_sync_layer) )
+				print(int(channel_id),"\t","FIN to_sync_layer=",int(to_sync_layer) )
 				NEED_SYNC[channel_id][to_sync_layer] = 0
 				if  to_sync_layer == TOKEN_LAYERS-1:
 					dist.recv(worker2ts_tensor, src = worker_rank)
@@ -379,7 +379,7 @@ def ts_process(channel_id):
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor = ts2worker_tensor, dst = worker_rank)	
 			else:
-				print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
+				#print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
 				ts2worker_tensor[0] = DISTRIBUTE_TOKEN
 				ts2worker_tensor[1] = depth
 				ts2worker_tensor[2] = token_no
