@@ -372,11 +372,12 @@ def ts_process(channel_id):
 						continue 
 				continue
 			depth, token_no = get_token(channel_id)
-			print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
+			#print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
 			if depth is None:
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor = ts2worker_tensor, dst = worker_rank)	
 			else:
+				print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
 				dependency_list =  check_dependency(channel_id, depth, token_no)
 				if dependency_list is None:
 					OCCUPY_MAP[depth][token_no] = -1
