@@ -418,6 +418,7 @@ def ts_process(channel_id):
 					dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 				else:
 					ts2worker_tensor[0] = OTHER_TOKENS
+					print("OTHER_TOKENS\t", int(channel_id),"\t", ts2worker_tensor, "\t", dependency_list)
 					fill_cmd(channel_id,dependency_list)
 					dist.send(tensor=ts2worker_tensor, dst = worker_rank)
 
