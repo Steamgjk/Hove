@@ -449,7 +449,7 @@ def rq_process(channel_id):
 				dist.send(tensor = rc2wc_tensor, dst = wcr_rank)
 			elif rc2wc_tensor[0] == CHUNK_RESPONSE:
 				dist.send(tensor = rc2wc_tensor, dst = wcs_rank)
-			print("sended...", int(channel_id),"\t",rc2wc_tensor)
+			print("sended...", int(channel_id),"\t",rc2wc_tensor,"\tfront=",int(front), "\ttail=",int(tail))
 			front += 1
 
 def ms_process(channel_id):
