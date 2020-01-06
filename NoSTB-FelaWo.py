@@ -356,13 +356,13 @@ def check_dependency(my_depth, my_token_no):
     pre_depth = my_depth -1
     for i in range(sta, sta+TOKEN_WEIGHT[my_depth]):
         if CHUNK_HOLD_MAP[pre_depth][i] == 0:
-            #print("fp no :", int(my_depth),"\t",int(my_token_no),"\t", int(pre_depth),"\t", int(i) )
+            print("fp no :", int(my_depth),"\t",int(my_token_no),"\t", int(pre_depth),"\t", int(i) )
             return False
     if is_bp_depth(my_depth):
         fp_depth = TOKEN_LAYERS-1 - my_depth
         for i in range(sta, sta+TOKEN_WEIGHT[my_depth]):
             if CHUNK_HOLD_MAP[fp_depth][i] == 0:
-                #print("bp no :", int(my_depth),"\t",int(my_token_no),"\t", int(fp_depth),"\t", int(i) )
+                print("bp no :", int(my_depth),"\t",int(my_token_no),"\t", int(fp_depth),"\t", int(i) )
                 return False
     return True       
 
@@ -496,7 +496,7 @@ def coordinate_proc_request(wid):
             request_chunk_no = ts2wc_tensor[3]
             #sta = request_chunk_no*CHUNK_WIDTH
             #recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
-            
+
             sta = request_chunk_no*TOKEN_CAPACITY
             recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
