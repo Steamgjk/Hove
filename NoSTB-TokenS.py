@@ -199,11 +199,10 @@ def get_token(wid):
 				token_no = j
 				OCCUPY_MAP[i][j]=wid
 				break
-			else:
-				print("i=",i,"\tj=",j,"\t",int(HOLD_MAP[i][j]),"\t",int(OCCUPY_MAP[i][j]) )
 		if depth is not None:
 			break
 	QUEUE_LOCKS[0].release()
+	print("get_token\t",wid,"\t depth=",int(depth),"\ttoken_no=",int(token_no))
 	return depth, token_no
 
 def update_token_state(wid, depth, token_no):
