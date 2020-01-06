@@ -428,8 +428,7 @@ def train_sync_proc(wid):
             input_data = get_input_data(depth, token_no)
             print("training self... ", int(depth),"\t", int(token_no))
             train_model(depth, token_no, input_data)
-            #report_progress_tensor[1] = depth
-            #report_progress_tensor[2] = token_no
+            print("FIN training self... ", int(depth),"\t", int(token_no))
             dist.send(tensor = report_progress_tensor, dst = dst_rank)
             dist.send(tensor = new_request_tensor, dst = dst_rank)
 
