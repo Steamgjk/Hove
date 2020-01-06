@@ -304,6 +304,44 @@ def check_dependency(request_wid, request_depth, request_token_no):
 
 def fill_cmd(my_wid, dependency_list):
 	#print("my_wid=",int(my_wid),"\t len=",len(dependency_list))
+	TS2C_MSG_QUEUE_LOCKS[0].acquire()
+	tail = TS2C_MSG_PTRS[my_wid][1]
+	idx = 0
+	for dependency_item in dependency_list:
+		if tail >= QUEUE_LEN:
+			idx = int(tail % QUEUE_LEN)
+		else:
+			idx = int(tail)
+		TS2C_MSG_QUEUES[my_wid][idx][0] = CHUNK_REQUEST
+		TS2C_MSG_QUEUES[my_wid][idx][1] = dependency_item[0] #work id
+		TS2C_MSG_QUEUES[my_wid][idx][2] = dependency_item[1] # depth
+		TS2C_MSG_QUEUES[my_wid][idx][3] = dependency_item[2] # chunk_id
+		
+		#print("CHUNK_REQUEST:",TS2C_MSG_QUEUES[my_wid][tail])
+		tail += 1
+	
+	for dependency_item in dependency_list:
+		response_wid =  dependency_item[0]
+		#print("response_wid=",int(response_wid), "\t",dependency_item, "tail=",int(tail))
+		tail = TS2C_MSG_PTRS[response_wid][1]
+		idx = 0
+		if tail >= QUEUE_LEN:
+			idx = int(tail%QUEUE_LEN)
+		else:
+			idx = int(tail)
+
+		TS2C_MSG_QUEUES[response_wid][idx][0] = CHUNK_RESPONSE
+		TS2C_MSG_QUEUES[response_wid][idx][1] = my_wid #work id
+		TS2C_MSG_QUEUES[response_wid][idx][2] = dependency_item[1] # depth
+		TS2C_MSG_QUEUES[response_wid][idx][3] = dependency_item[2] # chunk_id
+		#print("CHUNK_RESPONSE:",TS2C_MSG_QUEUES[response_wid][tail])
+		tail += 1
+	TS2C_MSG_QUEUE_LOCKS[0].release()
+		#print("add dependency_list ", len(dependency_list))
+
+
+def fill_cmd1(my_wid, dependency_list):
+	#print("my_wid=",int(my_wid),"\t len=",len(dependency_list))
 	TS2C_MSG_QUEUE_LOCKS[my_wid].acquire()
 	tail = TS2C_MSG_PTRS[my_wid][1]
 	idx = 0
