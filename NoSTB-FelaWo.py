@@ -496,6 +496,7 @@ def coordinate_proc_request(wid):
             request_chunk_no = ts2wc_tensor[3]
             #sta = request_chunk_no*CHUNK_WIDTH
             #recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
+            
             sta = request_chunk_no*TOKEN_CAPACITY
             recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
             print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
