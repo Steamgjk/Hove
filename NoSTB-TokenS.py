@@ -333,7 +333,7 @@ def ts_process(channel_id):
 	while True:
 		#print(int(channel_id)," Recvinb")
 		dist.recv(tensor = worker2ts_tensor, src = worker_rank)
-		#print(int(channel_id)," Recved ", worker2ts_tensor)
+		print(int(channel_id)," Recved ", worker2ts_tensor)
 		if worker2ts_tensor[0] == CONNECTION_REQUEST:
 			connection_lock.acquire()
 			CONNECTION_ESTABLISHED[channel_id] =1
@@ -364,8 +364,8 @@ def ts_process(channel_id):
 					while READY_RST[channel_id] == 1:
 						continue 
 				continue
-
 			depth, token_no = get_token(channel_id)
+			print(int(channel_id),"\t New Request  depth=",int(depth),"\t token_no=",int(token_no))
 			if depth is None:
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor = ts2worker_tensor, dst = worker_rank)	
