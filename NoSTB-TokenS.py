@@ -191,10 +191,12 @@ def reset():
 def get_token(wid):
 	depth = None
 	token_no = None
+	dependency_list = None
 	QUEUE_LOCKS[0].acquire()
 	for i in range(TOKEN_LAYERS-1,0,-1):
 		for j in range(TOKEN_NUMBER[i]):
-			if HOLD_MAP[i][j] <0 and OCCUPY_MAP[i][j]<0 and check_dependency(wid, i, j) is not None:
+			dependency_list = check_dependency(wid, i, j)
+			if HOLD_MAP[i][j] <0 and OCCUPY_MAP[i][j]<0 and dependency_list is not None:
 				depth= i 
 				token_no = j
 				OCCUPY_MAP[i][j]=wid
@@ -202,8 +204,8 @@ def get_token(wid):
 		if depth is not None:
 			break
 	QUEUE_LOCKS[0].release()
-	print("get_token\t",wid,"\t depth=",int(depth),"\ttoken_no=",int(token_no))
-	return depth, token_no
+	print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
+	return depth, token_no,dependency_list
 
 def update_token_state(wid, depth, token_no):
 	sta = token_no * TOKEN_WEIGHT[depth]
@@ -370,7 +372,7 @@ def ts_process(channel_id):
 					while READY_RST[channel_id] == 1:
 						continue 
 				continue
-			depth, token_no = get_token(channel_id)
+			depth, token_no,dependency_list = get_token(channel_id)
 			#print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
 			if depth is None:
 				ts2worker_tensor[0] = NO_AVAILABLE
