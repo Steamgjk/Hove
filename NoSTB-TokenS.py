@@ -317,13 +317,13 @@ def fill_cmd(my_wid, dependency_list):
 		TS2C_MSG_QUEUES[my_wid][idx][2] = dependency_item[1] # depth
 		TS2C_MSG_QUEUES[my_wid][idx][3] = dependency_item[2] # chunk_id
 		
-		print("CHUNK_REQUEST:",TS2C_MSG_QUEUES[my_wid][tail])
+		#print("CHUNK_REQUEST:",TS2C_MSG_QUEUES[my_wid][tail])
 		tail += 1
 	
 	TS2C_MSG_QUEUE_LOCKS[my_wid].release()
 	for dependency_item in dependency_list:
 		response_wid =  dependency_item[0]
-		print("response_wid=",int(response_wid), "\t",dependency_item, "tail=",int(tail))
+		#print("response_wid=",int(response_wid), "\t",dependency_item, "tail=",int(tail))
 		TS2C_MSG_QUEUE_LOCKS[response_wid].acquire()
 		tail = TS2C_MSG_PTRS[response_wid][1]
 		idx = 0
@@ -336,7 +336,7 @@ def fill_cmd(my_wid, dependency_list):
 		TS2C_MSG_QUEUES[response_wid][idx][1] = my_wid #work id
 		TS2C_MSG_QUEUES[response_wid][idx][2] = dependency_item[1] # depth
 		TS2C_MSG_QUEUES[response_wid][idx][3] = dependency_item[2] # chunk_id
-		print("CHUNK_RESPONSE:",TS2C_MSG_QUEUES[response_wid][tail])
+		#print("CHUNK_RESPONSE:",TS2C_MSG_QUEUES[response_wid][tail])
 		tail += 1
 		TS2C_MSG_QUEUE_LOCKS[response_wid].release()
 		#print("add dependency_list ", len(dependency_list))
@@ -444,7 +444,7 @@ def rq_process(channel_id):
 		if front < tail:
 			idx = int(front% QUEUE_LEN)
 			rc2wc_tensor = TS2C_MSG_QUEUES[channel_id][idx]
-			#print("sending...", int(channel_id),"\t",rc2wc_tensor)
+			print("sending...", int(channel_id),"\t",rc2wc_tensor)
 			if rc2wc_tensor[0] == CHUNK_REQUEST:
 				dist.send(tensor = rc2wc_tensor, dst = wcr_rank)
 			elif rc2wc_tensor[0] == CHUNK_RESPONSE:

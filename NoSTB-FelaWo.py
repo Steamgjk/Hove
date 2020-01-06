@@ -508,10 +508,10 @@ def coordinate_proc_request(wid):
             #recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
             sta = request_chunk_no*TOKEN_CAPACITY
             recv_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
-            #print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
+            print("request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
             dist.recv(tensor = recv_tensor, src = request_sender_wid + WCS_BASE)
             CHUNK_HOLD_MAP[request_depth][request_chunk_no] = 1
-            #print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
+            print("fin request wid=",int(wid),"request_depth=",int(request_depth),"\twho gives me=",int(request_sender_wid), "\tchunk_no=",int(request_chunk_no))
 
 def coordinate_proc_response(wid):
     my_rank = wid + WCS_BASE
@@ -531,7 +531,7 @@ def coordinate_proc_response(wid):
             #chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+CHUNK_WIDTH)]
             sta = request_chunk_no*TOKEN_CAPACITY
             chunk_tensor = TOKEN_DATA_STORAGE[request_depth][sta:(sta+TOKEN_CAPACITY)]
-            #print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
+            print("response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
             dist.send(tensor = chunk_tensor, dst = requester_wid + WCR_BASE)
             print("fin response wid=",int(wid),"\twho need it=",int(requester_wid), "\tchunk_no=",int(request_chunk_no))
 
