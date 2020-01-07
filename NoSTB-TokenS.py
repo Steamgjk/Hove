@@ -542,7 +542,8 @@ if __name__ == '__main__':
 			reset()
 			SYNC_CNTERS[-1]+=1
 			if iter_num == 100:
-				print(ans_list)
+				for itm in ans_list:
+					print(itm)
 				exit(0)
 			
 
