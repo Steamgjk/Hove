@@ -403,7 +403,7 @@ def train_sync_proc(wid):
                 if args.sleepn > 0:
                     print("I need sleep {:d} s".format(args.sleepn))
                     time.sleep(args.sleepn)
-            
+            CHUNK_HOLD_MAP.zero_()
             dist.send(tensor = new_request_tensor, dst = dst_rank)
 
 
