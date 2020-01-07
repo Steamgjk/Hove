@@ -200,11 +200,11 @@ def get_token(wid):
 		for j in range(TOKEN_NUMBER[i]):
 			if OCCUPY_MAP[i][j] < 0:
 				dependency_list= check_dependency(wid, i, j)
+				depth = i 
+				token_no = j 
 				if dependency_list is not None:
-					depth = i 
-					token_no = j 
 					OCCUPY_MAP[depth][token_no]=wid
-					break 
+				break 
 		if depth is not None:
 			break
 	QUEUE_LOCKS[0].release()
@@ -533,11 +533,12 @@ if __name__ == '__main__':
 			time_list.append(time.time())
 			iter_num = len(time_list)-1
 			print("iter_num=",iter_num)
-			iteration_time =  float(time_list[-1]*1.0 - time_list[0])/iter_num
+			
 			if iter_num > 0:
+				iteration_time =  float(time_list[-1]*1.0 - time_list[0])/iter_num
 				print("Iter : ", int(iter_num),"\t",iteration_time)
-			if iter_num % 10 == 0:
-				ans_list.append(iteration_time)
+				if iter_num % 10 == 0 :
+					ans_list.append(iteration_time)
 			reset()
 			SYNC_CNTERS[-1]+=1
 			if iter_num == 100:
