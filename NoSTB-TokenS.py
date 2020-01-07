@@ -527,15 +527,22 @@ if __name__ == '__main__':
 
 	SYNC_CNTERS[-1]+=1
 	time_list = []
+	ans_list = []
 	while True:
 		if int(SYNC_CNTERS[0:args.wn].sum()) == int(SYNC_CNTERS[-1]*args.wn):
 			time_list.append(time.time())
 			iter_num = len(time_list)-1
 			print("iter_num=",iter_num)
+			iteration_time =  float(time_list[-1]*1.0 - time_list[0])/iter_num
 			if iter_num > 0:
-				print("Iter : ", int(iter_num),"\t", float(time_list[-1]*1.0 - time_list[0])/iter_num)
+				print("Iter : ", int(iter_num),"\t",iteration_time)
+			if iter_num % 10 == 0:
+				ans_list.append(iteration_time)
 			reset()
 			SYNC_CNTERS[-1]+=1
+			if iter_num == 100:
+				print(ans_list)
+				exit(0)
 			
 
 	for ts_p in ts_proc_list:
