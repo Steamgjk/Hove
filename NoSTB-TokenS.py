@@ -444,7 +444,7 @@ def ts_process(channel_id):
 			else:
 				depth, token_no,dependency_list = get_token(channel_id)
 			#print(int(channel_id),"\t New Request  depth=",(depth),"\t token_no=",(token_no))
-			if depth is None:
+			if depth is None or dependency_list is None:
 				ts2worker_tensor[0] = NO_AVAILABLE
 				dist.send(tensor = ts2worker_tensor, dst = worker_rank)	
 			else:
