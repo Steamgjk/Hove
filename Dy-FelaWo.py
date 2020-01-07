@@ -503,6 +503,8 @@ def train_sync_proc(wid):
         #print("RECVED ..", ts2worker_tensor)
         if ts2worker_tensor[0]== CONN_ESTABLISH:
             local_step = int(ts2worker_tensor[1])
+            #should include for straggler scenario
+            #CHUNK_HOLD_MAP.zero_()
             #print("local_step=",local_step)
             if local_step % args.wn == wid:
                 if args.sleepn > 0:
