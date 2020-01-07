@@ -180,7 +180,7 @@ def reset():
 	HOLD_MAP.zero_().add_(-1)
 	OCCUPY_MAP.zero_().add_(-1)
 	CHUNK_HOLD_MAP.zero_().add_(-2)
-	for i in range(args.wn):
+	for i in range(args.wn):ken
 		QUEUE_PTRS[i][0] = 0
 	COMPLETE_MAP.zero_()
 	NEED_SYNC.zero_().add_(1)
@@ -195,7 +195,19 @@ def get_token(wid):
 	dependency_list = None
 	
 	QUEUE_LOCKS[0].acquire()
-
+	for i in range(TOKEN_LAYERS):
+		if not HOLD_MAP[i].sum() == TOKEN_NUMBER[i]:
+			depth= i 
+			break
+	if depth is not None:
+		for j in range(TOKEN_NUMBER[depth]):
+			if OCCUPY_MAP[depth][j] < 0:
+				dependency_list= check_dependency(wid, depth, j)
+				token_no = j 
+				if dependency_list is not None:
+					OCCUPY_MAP[depth][token_no]=wid
+				break 
+	'''
 	for i in range(TOKEN_LAYERS):
 		for j in range(TOKEN_NUMBER[i]):
 			if OCCUPY_MAP[i][j] < 0:
@@ -205,8 +217,10 @@ def get_token(wid):
 				if dependency_list is not None:
 					OCCUPY_MAP[depth][token_no]=wid
 				break 
+
 		if depth is not None:
 			break
+	'''
 	QUEUE_LOCKS[0].release()
 	#print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
 	return depth, token_no,dependency_list
