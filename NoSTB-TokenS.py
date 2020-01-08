@@ -208,7 +208,7 @@ def get_token(wid):
 					OCCUPY_MAP[depth][token_no]=wid
 				break 
 	QUEUE_LOCKS[0].release()
-	#print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
+	print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
 	return depth, token_no,dependency_list
 
 def get_token1(wid):
