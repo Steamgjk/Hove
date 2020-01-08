@@ -196,7 +196,7 @@ def get_token(wid):
 	
 	QUEUE_LOCKS[0].acquire()
 	for i in range(TOKEN_LAYERS):
-		if not HOLD_MAP[i].sum() == TOKEN_NUMBER[i]:
+		if not COMPLETE_MAP[i].sum() == TOKEN_NUMBER[i]:
 			depth= i 
 			break
 	if depth is not None:
