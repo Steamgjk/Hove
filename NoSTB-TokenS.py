@@ -212,7 +212,7 @@ def get_token(wid):
 					print("None  depth=",int(depth), "\t", "token_no=",int(token_no))
 					token_no = None
 	QUEUE_LOCKS[0].release()
-	print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
+	#print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
 	return depth, token_no,dependency_list
 
 def get_token1(wid):
