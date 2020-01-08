@@ -415,9 +415,9 @@ def train_sync_proc(wid):
                 while check_dependency(depth, token_no) == False:
                     continue 
             input_data = get_input_data(depth, token_no)
-            print("training self... ", int(depth),"\t", int(token_no))
+            #print("training self... ", int(depth),"\t", int(token_no))
             train_model(depth, token_no, input_data)
-            print("FIN training self... ", int(depth),"\t", int(token_no))
+            #print("FIN training self... ", int(depth),"\t", int(token_no))
             dist.send(tensor = report_progress_tensor, dst = dst_rank)
             dist.send(tensor = new_request_tensor, dst = dst_rank)
 

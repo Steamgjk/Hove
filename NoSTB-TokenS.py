@@ -206,10 +206,10 @@ def get_token(wid):
 				token_no = j 
 				if dependency_list is not None:
 					OCCUPY_MAP[depth][token_no]=wid
-					print("got depth=",int(depth),"\t token_no=",int(token_no))
+					#print("got depth=",int(depth),"\t token_no=",int(token_no))
 					break 
 				else:
-					print("None  depth=",int(depth), "\t", "token_no=",int(token_no))
+					#print("None  depth=",int(depth), "\t", "token_no=",int(token_no))
 					token_no = None
 	QUEUE_LOCKS[0].release()
 	#print("get_token\t",wid,"\t depth=", (depth),"\ttoken_no=", (token_no))
